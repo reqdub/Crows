@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://beb7nvubqs7nm"]
+
+[ext_resource type="Texture2D" uid="uid://chjv84m05f1t6" path="res://Sprites/Items/Stick.png" id="1_kwlns"]
+[ext_resource type="Script" uid="uid://c1qkyg3t8spg5" path="res://Scenes/Items/temporal_item.gd" id="1_mntdy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_06in5"]
+size = Vector2(123, 9)
+
+[sub_resource type="Gradient" id="Gradient_mntdy"]
+colors = PackedColorArray(0.401304, 0.245539, 0.113863, 1, 0.273806, 0.156853, 0.108774, 1)
+
+[node name="Stick" type="RigidBody2D"]
+collision_layer = 64
+collision_mask = 64
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_mntdy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_06in5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("1_kwlns")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 30
+one_shot = true
+explosiveness = 1.0
+emission_shape = 3
+emission_rect_extents = Vector2(60, 10)
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 10.0
+initial_velocity_max = 40.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_initial_ramp = SubResource("Gradient_mntdy")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="finished" from="CPUParticles2D" to="." method="_on_cpu_particles_2d_finished"]

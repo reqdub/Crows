@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bdsj2auht1wbm"]
+
+[ext_resource type="Shader" uid="uid://22o0amwhemlt" path="res://Shaders/TreeShake.gdshader" id="1_qqt62"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_qqt62")
+shader_parameter/speed = 1.0
+shader_parameter/minStrength = 0.05
+shader_parameter/maxStrength = 0.1
+shader_parameter/strengthScale = 100.0
+shader_parameter/interval = 3.5
+shader_parameter/detail = 1.0
+shader_parameter/distortion = 0.0
+shader_parameter/heightOffset = 0.0
+shader_parameter/offset = 0.0

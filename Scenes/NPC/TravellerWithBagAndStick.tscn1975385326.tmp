@@ -1,0 +1,392 @@
+[gd_scene load_steps=42 format=3 uid="uid://blp3a3k5imhd1"]
+
+[ext_resource type="Texture2D" uid="uid://d2xkne4tibpuf" path="res://Sprites/UI/Speech_Bubble.png" id="3_ikxsi"]
+[ext_resource type="Texture2D" uid="uid://bkhd5qpo7jcxk" path="res://Sprites/Character/View.png" id="4_s0nbw"]
+[ext_resource type="Texture2D" uid="uid://b60ctx7f77gus" path="res://Sprites/Character/Player/Shadow.png" id="6_iiypd"]
+[ext_resource type="Texture2D" uid="uid://cbh20l1v3bn45" path="res://Sprites/NPC/Arms/Male/Arms1.png" id="7_dv8px"]
+[ext_resource type="Texture2D" uid="uid://b871hwjfy4rc7" path="res://Sprites/NPC/Peasant Male/Head.png" id="8_bwvm2"]
+[ext_resource type="Texture2D" uid="uid://hy7fgx1p83w" path="res://Sprites/NPC/Body/Male/Body1.png" id="9_2xnqw"]
+[ext_resource type="Script" uid="uid://dilmabvp33gy5" path="res://Scenes/NPC/bag_and_stick.gd" id="10_a0fft"]
+[ext_resource type="Texture2D" uid="uid://chjv84m05f1t6" path="res://Sprites/Items/Stick.png" id="11_w3kb3"]
+[ext_resource type="Script" uid="uid://x75kdc2eb1mv" path="res://Scenes/NPC/npc_dialogue.gd" id="12_dv8px"]
+[ext_resource type="Texture2D" uid="uid://bhycyf4n7lh2m" path="res://Sprites/Items/Bag.png" id="12_fbofu"]
+[ext_resource type="Texture2D" uid="uid://sgsnbyywla03" path="res://Sprites/Effects/stun.png" id="13_yb16o"]
+[ext_resource type="Script" uid="uid://b5ka1xxnunxhb" path="res://Scenes/Statemachine/state_machine.gd" id="15_qsanh"]
+[ext_resource type="Script" uid="uid://dj6pi3o0ark70" path="res://Scenes/Statemachine/idle.gd" id="16_o6pjw"]
+[ext_resource type="Script" uid="uid://pr4e0twtdmp3" path="res://Scenes/Statemachine/walk.gd" id="17_8xlbe"]
+[ext_resource type="Script" uid="uid://by5mceetv5cgc" path="res://Scenes/Statemachine/panic.gd" id="18_cuvyi"]
+[ext_resource type="Script" uid="uid://pcohio278h2d" path="res://Scenes/Statemachine/chase.gd" id="19_v7ufl"]
+[ext_resource type="Script" uid="uid://cgcavdcnfrij1" path="res://Scenes/Statemachine/battle.gd" id="20_3v14a"]
+[ext_resource type="Script" uid="uid://bsxpgvarcynvh" path="res://Scenes/Statemachine/knockdown.gd" id="21_vbn50"]
+[ext_resource type="Script" uid="uid://dnse54rqekqyi" path="res://Scenes/NPC/caution.gd" id="22_60l3s"]
+[ext_resource type="Script" uid="uid://63hs6xtfngws" path="res://Scenes/NPC/warning.gd" id="23_b4m6q"]
+[ext_resource type="Script" uid="uid://bkafk8c6pv8na" path="res://Scenes/NPC/actions.gd" id="24_5nkpa"]
+[ext_resource type="Script" uid="uid://dh7420a0r2wl2" path="res://Scenes/NPC/npc_health.gd" id="25_06p5y"]
+[ext_resource type="Script" uid="uid://bh54h0xose8vc" path="res://Scenes/NPC/npc_combat.gd" id="25_ikxsi"]
+[ext_resource type="Script" uid="uid://c58c53dinnc2a" path="res://Scenes/NPC/basic_npc.gd" id="25_s0nbw"]
+[ext_resource type="Script" uid="uid://v6dhy5au7qqm" path="res://Scenes/NPC/npc_reactions.gd" id="26_feki1"]
+[ext_resource type="Script" uid="uid://c5s3foypv5d4h" path="res://Scenes/NPC/npc_visual.gd" id="29_iiypd"]
+[ext_resource type="Script" uid="uid://7mnq8tnahcbc" path="res://Scenes/NPC/npc_movement.gd" id="30_dv8px"]
+
+[sub_resource type="Animation" id="Animation_3riwd"]
+resource_name = "Empty_Hands_Walk"
+length = 1.6
+loop_mode = 1
+step = 0.2
+
+[sub_resource type="Animation" id="Animation_gc6e7"]
+resource_name = "Knockdown"
+length = 1.5
+step = 0.1
+
+[sub_resource type="Animation" id="Animation_nyftf"]
+resource_name = "Panic"
+length = 1.6
+loop_mode = 1
+step = 0.2
+
+[sub_resource type="Animation" id="Animation_s4340"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_cy40q"]
+resource_name = "Walk"
+length = 1.6
+loop_mode = 1
+step = 0.2
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n5kyw"]
+_data = {
+&"Empty_Hands_Walk": SubResource("Animation_3riwd"),
+&"Knockdown": SubResource("Animation_gc6e7"),
+&"Panic": SubResource("Animation_nyftf"),
+&"RESET": SubResource("Animation_s4340"),
+&"Walk": SubResource("Animation_cy40q")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cy40q"]
+radius = 18.0
+height = 86.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7mr8v"]
+radius = 46.0
+height = 92.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gc6e7"]
+radius = 6.00521
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nyftf"]
+radius = 18.0
+height = 80.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m4aiy"]
+radius = 2.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vm1lp"]
+radius = 14.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nyftf"]
+bg_color = Color(0.180392, 0.180392, 0.180392, 0.588235)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7mr8v"]
+bg_color = Color(0.819608, 0, 0.219608, 0.588235)
+
+[node name="NPC" type="CharacterBody2D" groups=["Character"]]
+y_sort_enabled = true
+collision_mask = 0
+script = ExtResource("25_s0nbw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Visual")
+libraries = {
+&"": SubResource("AnimationLibrary_n5kyw")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("CapsuleShape2D_cy40q")
+
+[node name="OnScreenIndicators" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -216)
+
+[node name="CollectArea" type="Area2D" parent="."]
+position = Vector2(0, -64)
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollectArea"]
+position = Vector2(0, -8)
+shape = SubResource("CapsuleShape2D_7mr8v")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+volume_db = 7.653
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="LeftHand" type="Sprite2D" parent="Visual"]
+position = Vector2(28, -30)
+scale = Vector2(4, 4)
+texture = ExtResource("7_dv8px")
+hframes = 2
+vframes = 2
+frame = 1
+
+[node name="Head" type="Sprite2D" parent="Visual"]
+position = Vector2(0, -78)
+scale = Vector2(4, 4)
+texture = ExtResource("8_bwvm2")
+flip_h = true
+hframes = 2
+vframes = 2
+frame = 3
+
+[node name="HeadCollision" type="Area2D" parent="Visual/Head"]
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visual/Head/HeadCollision"]
+position = Vector2(0.25, -1.75)
+shape = SubResource("CircleShape2D_gc6e7")
+
+[node name="Body" type="Sprite2D" parent="Visual"]
+position = Vector2(0, -7)
+scale = Vector2(4, 4)
+texture = ExtResource("9_2xnqw")
+flip_h = true
+hframes = 2
+
+[node name="BodyArea" type="Area2D" parent="Visual/Body"]
+position = Vector2(0, 1.75)
+scale = Vector2(0.25, 0.25)
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visual/Body/BodyArea"]
+position = Vector2(0, -18)
+shape = SubResource("CapsuleShape2D_nyftf")
+
+[node name="Bag" type="Node2D" parent="Visual"]
+position = Vector2(-123, -52)
+script = ExtResource("10_a0fft")
+
+[node name="Stick" type="Sprite2D" parent="Visual/Bag"]
+position = Vector2(57, -5.00001)
+rotation = 0.174533
+scale = Vector2(4, 4)
+texture = ExtResource("11_w3kb3")
+
+[node name="DampedSpringJoint2D" type="PinJoint2D" parent="Visual/Bag"]
+position = Vector2(0, -21)
+node_a = NodePath("../Anchor")
+node_b = NodePath("../Bag")
+softness = 10.0
+
+[node name="Anchor" type="StaticBody2D" parent="Visual/Bag"]
+position = Vector2(0, -21)
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visual/Bag/Anchor"]
+position = Vector2(0, 13)
+shape = SubResource("CircleShape2D_m4aiy")
+
+[node name="Bag" type="RigidBody2D" parent="Visual/Bag"]
+collision_layer = 192
+collision_mask = 192
+mass = 2.0
+gravity_scale = 0.2
+contact_monitor = true
+max_contacts_reported = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visual/Bag/Bag"]
+position = Vector2(0, 8)
+shape = SubResource("CircleShape2D_vm1lp")
+
+[node name="Sprite2D" type="Sprite2D" parent="Visual/Bag/Bag"]
+position = Vector2(0, -20)
+texture = ExtResource("12_fbofu")
+offset = Vector2(0, 20)
+
+[node name="RightHand" type="Sprite2D" parent="Visual"]
+position = Vector2(-36, -36)
+rotation = 2.23402
+scale = Vector2(4, 4)
+texture = ExtResource("7_dv8px")
+flip_h = true
+hframes = 2
+vframes = 2
+
+[node name="Inventory" type="Node" parent="."]
+
+[node name="Reactions" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("26_feki1")
+fear_chance = null
+caution_chance = null
+number_of_warnings = null
+number_of_cautions = null
+delay_before_start_fight = null
+npc_reaction_time = null
+
+[node name="Combat" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("25_ikxsi")
+
+[node name="Health" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("25_06p5y")
+
+[node name="HealthBar" type="ProgressBar" parent="Health"]
+unique_name_in_owner = true
+visible = false
+offset_left = -68.0
+offset_top = -168.0
+offset_right = 66.0
+offset_bottom = -141.0
+theme_override_styles/background = SubResource("StyleBoxFlat_nyftf")
+theme_override_styles/fill = SubResource("StyleBoxFlat_7mr8v")
+show_percentage = false
+
+[node name="Label" type="Label" parent="Health/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Visuals" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("29_iiypd")
+
+[node name="Movement" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("30_dv8px")
+
+[node name="ViewArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+visibility_layer = 64
+position = Vector2(0, -72)
+collision_layer = 73
+collision_mask = 73
+
+[node name="Collision" type="CollisionPolygon2D" parent="ViewArea"]
+position = Vector2(33, -90)
+polygon = PackedVector2Array(26, 48, 231, -152, 301, -54, 333, 97, 305, 218, 234, 332, 26, 128)
+
+[node name="RayCast2D" type="RayCast2D" parent="ViewArea/Collision"]
+unique_name_in_owner = true
+position = Vector2(46, 89)
+target_position = Vector2(413, 0)
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="Sprite" type="Sprite2D" parent="ViewArea/Collision"]
+modulate = Color(1, 1, 1, 0.0588235)
+position = Vector2(179, 88)
+texture = ExtResource("4_s0nbw")
+flip_h = true
+
+[node name="LootDropPosition" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-1, 3)
+
+[node name="DebugLabel" type="Label" parent="."]
+offset_left = -81.0
+offset_top = -228.0
+offset_right = 87.0
+offset_bottom = -173.0
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Dialogue" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("12_dv8px")
+
+[node name="Background" type="Sprite2D" parent="Dialogue"]
+position = Vector2(-144, -128)
+texture = ExtResource("3_ikxsi")
+
+[node name="Label" type="Label" parent="Dialogue/Background"]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.822
+offset_left = -96.0
+offset_top = -42.0
+offset_right = -99.0
+offset_bottom = -36.912
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="LeftSide" type="Marker2D" parent="Dialogue"]
+position = Vector2(-144, -128)
+
+[node name="RightSide" type="Marker2D" parent="Dialogue"]
+position = Vector2(152, -128)
+
+[node name="StateMachine" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("15_qsanh")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("16_o6pjw")
+
+[node name="Walk" type="Node" parent="StateMachine"]
+script = ExtResource("17_8xlbe")
+
+[node name="Panic" type="Node" parent="StateMachine"]
+script = ExtResource("18_cuvyi")
+
+[node name="Chase" type="Node" parent="StateMachine"]
+script = ExtResource("19_v7ufl")
+
+[node name="Battle" type="Node" parent="StateMachine"]
+script = ExtResource("20_3v14a")
+
+[node name="Knockdown" type="Node" parent="StateMachine"]
+script = ExtResource("21_vbn50")
+
+[node name="Caution" type="Node" parent="StateMachine"]
+script = ExtResource("22_60l3s")
+
+[node name="Warning" type="Node" parent="StateMachine"]
+script = ExtResource("23_b4m6q")
+
+[node name="Timer" type="Timer" parent="StateMachine/Warning"]
+one_shot = true
+
+[node name="Actions" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("24_5nkpa")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.705882)
+position = Vector2(0, 40)
+scale = Vector2(4, 4)
+texture = ExtResource("6_iiypd")
+
+[node name="Stun" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(96, -32)
+scale = Vector2(3, 3)
+texture = ExtResource("13_yb16o")
+vframes = 3
+frame = 1
+
+[connection signal="body_entered" from="CollectArea" to="." method="_on_collect_area_body_entered"]
+[connection signal="body_entered" from="Visual/Bag/Bag" to="Visual/Bag" method="_on_bag_body_entered"]
+[connection signal="timeout" from="StateMachine/Warning/Timer" to="StateMachine/Warning" method="_on_timer_timeout"]

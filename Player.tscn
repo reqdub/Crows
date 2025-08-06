@@ -1,0 +1,948 @@
+[gd_scene load_steps=21 format=4 uid="uid://bn4obgm0ayvbk"]
+
+[ext_resource type="Texture2D" uid="uid://b60ctx7f77gus" path="res://Sprites/Character/Player/Shadow.png" id="2_5ncpa"]
+[ext_resource type="Texture2D" uid="uid://dinvaumcbnyca" path="res://Sprites/Character/Player/Body.png" id="2_cxr5p"]
+[ext_resource type="Texture2D" uid="uid://dxndqwubg04js" path="res://Sprites/Character/Player/Left Hand.png" id="2_dtqjt"]
+[ext_resource type="Script" uid="uid://dg2miea545ihh" path="res://player.gd" id="2_e80uo"]
+[ext_resource type="Texture2D" uid="uid://c27bajlcpn8rr" path="res://Sprites/Character/Player/Head.png" id="3_5ncpa"]
+[ext_resource type="Texture2D" uid="uid://sgsnbyywla03" path="res://Sprites/Effects/stun.png" id="3_hp6x6"]
+[ext_resource type="Texture2D" uid="uid://85ugwvmvmvh6" path="res://Sprites/Character/Player/Right Hand.png" id="3_tdg3f"]
+[ext_resource type="Texture2D" uid="uid://bplt3t4varl1b" path="res://Sprites/Items/Rock1.png" id="4_e80uo"]
+[ext_resource type="Texture2D" uid="uid://sjs8d77e5tns" path="res://Sprites/Background/Bushes/s_bush_gooseberry_0.png" id="8_wi0c6"]
+[ext_resource type="AudioStream" uid="uid://cwrtx0oax0rm7" path="res://Sounds/SFX/pray.wav" id="10_3tkgg"]
+
+[sub_resource type="Animation" id="Animation_5ncpa"]
+resource_name = "Idle"
+length = 8.0
+loop_mode = 1
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/LeftHand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.999055, 2, 2.99906, 4, 4.99905, 6, 6.99905, 8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(10, -8), Vector2(10, -10), Vector2(10, -8), Vector2(10, -10), Vector2(10, -8), Vector2(10, -10), Vector2(10, -8), Vector2(10, -10), Vector2(10, -8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visual/RightHand:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4, 5, 6, 7, 8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-7, -7), Vector2(-7, -8), Vector2(-7, -7), Vector2(-7, -8), Vector2(-7, -7), Vector2(-7, -8), Vector2(-7, -7), Vector2(-7, -8), Vector2(-7, -7)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visual/RightHand/Weapon:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-5.5, 10.5)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Visual/Head:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -18)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Visual:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Stars:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.5, 2, 4, 6, 7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"values": [{
+"args": [],
+"method": &"blink"
+}, {
+"args": [],
+"method": &"blink"
+}, {
+"args": [],
+"method": &"blink"
+}, {
+"args": [],
+"method": &"blink"
+}, {
+"args": [],
+"method": &"blink"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_wi0c6"]
+resource_name = "Knockdown"
+length = 3.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/RightHand/Weapon:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-5.5, 10.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Head:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -18)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visual:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visual/RightHand/Weapon:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Stars:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 2.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Stars:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2]
+}
+
+[sub_resource type="Animation" id="Animation_l6ohk"]
+resource_name = "Pray"
+length = 3.5
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visual/LeftHand:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.4, 2.6, 2.8, 3, 3.2, 3.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(10, -9), Vector2(6, -9), Vector2(6, -11), Vector2(6, -9), Vector2(6, -11), Vector2(6, -9), Vector2(10, -9), Vector2(6, -9), Vector2(6, -11), Vector2(6, -9), Vector2(6, -11), Vector2(6, -9), Vector2(10, -9), Vector2(6, -9), Vector2(6, -11), Vector2(6, -9), Vector2(6, -11), Vector2(6, -9)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visual/LeftHand:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 3.2, 3.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -2.26893, -2.26893, 0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Visual/Head:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -18)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Visual/Head:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Visual/Body:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Visual/Body:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Visual/RightHand:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.402456, 0.6, 0.8, 0.997544, 1.2, 1.4, 1.60246, 1.8, 2, 2.19754, 2.4, 2.6, 2.80246, 3, 3.2, 3.39754),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-7, -7), Vector2(-10.05, -8.055), Vector2(-10.05, -10.055), Vector2(-10.05, -8.055), Vector2(-10.05, -10.055), Vector2(-10.05, -8.055), Vector2(-7, -7), Vector2(-10.05, -8.055), Vector2(-10.05, -10.055), Vector2(-10.05, -8.055), Vector2(-10.05, -10.055), Vector2(-10.05, -8.055), Vector2(-7, -7), Vector2(-10.05, -8.055), Vector2(-10.05, -10.055), Vector2(-10.05, -8.055), Vector2(-10.05, -10.055), Vector2(-10.05, -8.055)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Visual/RightHand:rotation")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.2, 3.2, 3.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 2.26893, 2.26893, 0.0]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Visual/RightHand/Weapon:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/11/type = "audio"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("AudioStreamPlayer")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("10_3tkgg")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/11/use_blend = true
+tracks/12/type = "method"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath(".")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0.6, 1.6, 2.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": [],
+"method": &"blink"
+}, {
+"args": [],
+"method": &"blink"
+}, {
+"args": [],
+"method": &"blink"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_dtqjt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/LeftHand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(10, -4)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Head:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, -17)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visual/Body:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visual/RightHand:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-7, -7)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Visual/RightHand:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Visual/RightHand/Weapon:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-5.5, 10.5)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Visual:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Visual/RightHand/Weapon:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Stars:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Stars:frame")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Visual/LeftHand:rotation")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Visual/Head:rotation")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Visual/Body:rotation")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Visual:position")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_kne1u"]
+resource_name = "Throw"
+length = 0.2
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"throw_item"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/RightHand/Weapon:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visual/LeftHand:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(10, -8)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visual/Head:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, -17)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Visual/Body:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Visual/RightHand:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-7, -7)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Visual/RightHand:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 3.14159, 6.28319]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Visual:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Stars:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/9/type = "method"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath(".")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"blink"
+}]
+}
+
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_hp6x6"]
+data = PackedByteArray("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AEBNONEAONEACAQCA45UGgIaBABAIBTQAAAAAoFONEACAQCCACAQCAAKKARQAAAAAAogAFFFAAEEAAA4QiAAAAAAAAKaKaIaAgAONEAhpxgGg4wAU0QCAQAIBAaBAIBBAAggEAFNEAgCmiAQCmgQAQDRBBAaaKaIAAoFEAAAAAAAACiAQCAQCABAIDjQaIAcBppphqpkNVMAWmGCSQ000wjRAIBDTTDDAMMMkMNMEBoGGmqmGmGCwwTTTAYDjRTRAAgEAggEBqoGiQwQQA00SADQaYDDDFTDAMNVNMEBpggGGGGGGmA00wAaYBDRDTVRAMEEgghhoggCA0000QACAQAIBAIBAIIAAgEAApoEAgEACACiAAAQCgIBAIBTQIABBAooIpogAogACAQCAUUUAQAARRAQABAAAAogEAgEAgAAQAAE0CgEUAARAAKIBAIBAAgABFAIoBAAEAEUCgCmgQAKKKKKARQRBFAAEIooABEIEAggEAEUAACARRQAABhRBFABFEBFFFAAgEEUEEggEASACATjgAQAABFNAooooAoAAEAEAAACiABTjARTjQBQAAAFFEAAAAAAAQCAQAQCgACQQQgQQRQAAAAABFABOOMECgQAAAEU4QQAQSASCCCEAIIBAIoAAAAAigACiACA4wRAAAAAAKaBBOVAgEEAONEAQQACAQGgAQAIBAIBAIDRAAkBpgEAggEEQCAQCCGmGgYIDTTTBADTBMEEkNVMEEECCGiSCQ0wwwDDDLVDDFVTAklhgksEMEMAwSSKqqqA1QTBBAIBBABTAAgggggggAgCAQA00GmmAwRBBBAIAIBBAEBpppxgEBwGAQ00000Q0QBAKaaaDQaIAgggggkMEloGACCAQAQCmgIBAIBDRBAIAAgNOMBpppoACiAACnGACABAaBAIAKaIAApxogEEEEAACAQAQCAQCABBABBBTjRAAgAoEAgAogACAQ0SAQQCAAIAKIABQIABBOONEAEAgEACmgUUQAQCAQTRAIABTjRAAgFFFBAABBAEEAigEUCAAAQAAAAAQCCKAIIoABBAABAAgEEBBAkkEgSCAQACCAQQAIABFBFFBAIAigkEEhAkEgQCSCRQCCAQAJBBBIIIJAIAEUAUUU44UAAARQARQQQCAAIAJxxwgFEEAAGgU0Cg4whQCAQCARQABONAABFNAoAAAAAACAEUUwQKaDjRBABAAgEAAAgAAAACiAQCAQCAQAIBAIaYaYIIAOMApoMBghoKmmACACAUUQQACcaIBBBAAgAFEAAAAAAAAAAAAEUAAgAQQCKBQAAAAoooAAABFAICgAQAAAEUQAAAAAAAAAAAAAABONEAhpoGmmCCGmCA0wTRTRAIBAIIAghpghppppoCCCA1UGmCGAYZLLFDDJLBAhgghpoEAgEAGiGmGC1U1QBDTTBBBDTTBENMNVENMAgCGmmmiGmmmgIJBAYYaYIYBphhihghqpgCCGGmGmCCCAaqYaJBDTRBAAppgggkBpgAwQwGmmmmgwQIAIBAIAAaAgOEAhogFOMAACAQAUUUAAAIAAKIBAIBAAgEAgEAgOME0CA0QQACAQAIAKBTQIBAAgNAgAgEAEACAHGiAQGgQAIDRAAIAKRSAoAFAAgAAFEACmgUQAQCAQAIBABQIBAIAEAgAAAAAAAAAQCACiiAAwjRAIBAIBABBONAAAAogAgA40U0QCAQCABAIBAIAKAAAFAAIooBEJwGiAAAAAiAAAAARRQAARQAAAAAAopoFFEECgACgAAiigCKKIAAAAAAAAAAFEAgEAgAQCAAQAAAAAAAAAAACAQCABFBBBAIIAIAEAggEEAgEACACCQQCQSQCAQJJCBJJBIEAkAgEAAiEQRRAAAKAITQBxogEAAoFFEEQAAACAQGqgaaaYIIaaYDABpggNNNEBoCAQQQGmmiCAAKaIBAIBAIAgEEANENMEMAQ0000QGiAQAIIIAaaYaYBgsMMEkkMEMASSGCQQ1UwQBDTAaYBDTTBNEEAgNEppoGGmCGmmiCCABAaIaacYAIAEEAgEBoggEAQCQQQ0000wBAIIIBAIIIAEENEEBpogEACAQAQQCA4wTRAIIaIIIKApxogAAopxoAUQA40QA4QAAKaIIBAIDQAgEAgEAEAgACAQCAQCAQCABAIIBBBDTDBMBohoggggABALuAFAAIGP/9//3//v//ADAFjOPkMroACAQCAQCAQAIBAIBTRAIBAAgEAgEAgAoAUCgUUUU40QABABQBTjQDCNFFEAEAgEACAQCAQCAQCAABThAAAAABBEAogAAAAAAAAAUQHGimiABAIAAAABRQBEIgAAABFFEAAQAQCAQCAQTQBQCKARQKAgEAgEAgpogAQAAAAAAAAAABTjRAIAccBooooFFAAAoCiAAAAAAEUQQCKQQSKARRBOEApxogEAEEAAAAAAAUAQRQAABTQIBAAgAAAFONEAgCCCCCSGmCGgaaaaIIIIIJAMEklqqphpoGCCCQQCGqmgYDDVTVTDTDBMNNMEMEAgME0wGmA00QGgJTjABABAIBAAgEEAgghokCGmGCGCQ0wQDBIaaYDBBDBNNNMBppppoA0Q0QQQQ0wwBDTTTTQaIaAOMAgAgAgEACAQCAQQQQAwRBABDRBABAApogAgpogAgAQCCACAQCAQAIBAcaaIIBAAAgAONEAAoCAQCAQAUQAQRAIAKIIBAIAAAooooAAAAAQAAAigUQnAcaIIBAIAKBBFFAoogAAAAAAAAAAAUQAQQKKKAAAAAAAAAAAAAAAAAAAACinCigAARQATjjSKKKAoAIhFFFOOEAEAEUAUU0QAIDjTQIBAIAAgAgEAgEAgEACAQCAQCAUwQBRQKKKKKcBoFFOONAoAAEUAAigAAAAAAAABRRRRAAAAAAIAAAAAEEU0CiinGimgBAAKKBRAACAooAAAAFONEACAQCmgCiigIAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAKaIIBABAcAggAgEAgEAoGiAQCCGmmAwDTDTDTBBBDAEEEEAgNMEEAwSGCGGmmmgIIAIBABDTTAEBqyxpoggACACAQCAQCAQAIBAIBBAaIAgApogpogEACAQCAQCAQCABAIBAIBAIDCMENMBgkNNMAGCGqmCGCSQIYDBBIaaqaBppqphppgNMEwGmiAQQAQQDTTDTBBDBBAEENNNBogEACAQGiCCCAQwTTBBBBAIBTBONEBxogAggACA40QCmiAAKcaKAAAABTBAgEAgpogAoHHCgEEEAEUAKaDjRAaIDTBNEAEApxxwEEAAAQAAAAAAAABRAKaBQKAogAAAAAFNMEQQCnGiAQCABTjRAAACKKAoBFAAIoAooCgAAAAAAACgcaAAACcAAAAAABFAIBABMI0AAAAEUAAACKCAQAARQAAJxoFFOEAAAAAEUAE4UAEQRTjQACKAQQBBAIBABABAIAAgEAgEAgEAQQRQCCACKAABFAIIIBAIAEAgAgAigAQAAAAAAARQARBBAIAIABFFMI0CiiAAAEUQRRRQAAKKAAAAAAAAAAAAAACiiiiiiigACKACAQACcaAAooAFAAAAAACnCAAAAAAAAAAAAAAKIBAAgEBwgEAgMIQCA440QCAAKAAAKIAIBAAgEAgEAgEAgAQCAQCCACAQBABAIBAIBAAgpogEAgNEEACCCASCCGmADTAYDTTjAaAggghppghpgCGmGmGAw0wwTVTAaYBDBDBMAgggEAgBoCCACA0QQCCAIaYDTAaYDBANNMAONAgAoCnGiCCA0Q0wRTRAIBAIDjBBogEAgEAggAQQQCGmCA4wAIAKaIBAIDBEEAgEEAgpwGiAQAQCAQCABAIBAIBAIBAAgEAgEAgEACAQQGmCGmmgaDRBTRAIIDBBxogEAEAEACAQQCAQAQCABAIBAIBAAKAooooogAAAAAAAACmiCAQAKaKccccaAAAAFEAgEAgEACACigACnGiABAIAKKIABRBFFFFFFABFEIUAAnGiAQCAAKKAQAQCAQAIoAAooAAAoCigAAAAiggAQQCQCAQCKABFAAIooBBAAAgAnGgUU40QAIBAIBABQAAAAAAIoAIBAEAEUAUQCAQAIBAIBTQKAAAAAAAAAAFFAAU40QCAQAUQQAAAAABRTjBEAgEAgNEEAAQCAQCAQCAQAIBAIBAIBAAgEAgEEAgEACACAQQCAQCADRBAIBABTjCNEAEAgEEAEACCACAQCAQAIIBADRIIDTABpgEEEEBpgAwQ000GiAQAIBAIBTRAIIANENNNEAgpoCAQCAQCAQCABAIKaIIAIBAAgEAgNNNNEACCACAQCAQAIBAaIKaIBAAgEAgggEEAgAU0QCAQCAQAIBAIBAIBAIAEAgFNAooooHGiAQCAQCAQAIBBAaIaYBAEAgAgEBogMESAwQ0wCGmADTRBAIAIBAAgEAggEAgEAAQCACinCAAAAAAAAAAARRBABAIIBAIIAEgEEAgEAEAgCCASASAQRQAAAAAAAAAAAAAAAAigEEAgAQCACKAAAAAAAAAAAAAAAAAAigAiiiigcaAAKKKKKcBogEAFAAAgAAUQAQCAQCAAAAAAAAAAIAAgEAgEBoggEACmiAQCAQCAIIIaaaaIIBAAEEEBpppqoGGmGmGmCCGgYBBAaIaqYIBpppoNEEAEEACAQQGmA1UQDTBBBBBABAAgggMENMBpoGAQQCAQQGmADTAaaIBBBBABgkklhpgggAQGiGmCSSSQJDTQaDRAIIAEAgEAgEEBoGA0000wQGmgaDQaaIIIDTABpgNMBgNMACGA0wQ00wCAaYIDVTBIaYAhppopoggEACCAQGiCGmiABAIBAIIDRBAEAggAgBoggAQAQCAQQQCABAIBTRBAIBAAgAgEAgNEgA01UwwwwwwwDDDDVTAaaaANBpppggMEME000QAQCAQAEAu4AUAAgYAAEAAAAAAAH/iQSP49Mw/QIBAIBAIBAIAEAgEAgAAAAAAAACinGiAQAIBAIBAIBAAgEAgEAgEAgAQCAQQCmiAQAIBAIBAIBAAgEAFFFFAAAAAAAAAAAACgKKAAAAAAACAoAIBAIBAIICgAigEAgEAAQARRAACKKKAooogAAAAAAAEUAEUACiAQAIBAIBAIBTBAAFFAFONAoCiinGiAQCAQAIBAIBAIBAAgEAgEBogEACAQAUAAUUUQAAKKcaIBAIAEAgEAgApxoCAQCAQAAAAAAAAKKAKIAIAEAgEAgEAgEACAQCACiACABAIBTQKcaIAEAgEAgEAgEACAQCAQCAQAIAKAAAAAAAAAAFFFFFONEACAQCAQCAQAIBAIBAIAKKBxogEAgEAgEACAQCAQCAQAIIBAKaIBAIAEAgEAgEAgEACAQGiAQCAQAIBAIBBAIBAEBpgNMBpgMEwGmA0wCCmgaaYDDTDTDTAENMBppoggEACCAQQCAQCABAIDTTTBDTBMEMEhghpggGmCCGmCGCSQIYIaaYDTAaCphgsMUMUMsBQyWGSSSSSQJJJIYIaYBDBMEBpgNNNMEAGmiAQCAQCABAIIBBAIIBAAgEAEAgEAgCA0Q0wGmA0wTRIDTTTTBABpgEhppppggCGqmGmCGmCAaaaaIIBAIBAAgEAggEApoCAQAUUUAAUQRABAKaBABTBEAgEAgEApoAUUCiACAQCABAIBAIBAIBAAgEAgEAgEACAQCAQCAQCABAIBAIBAIBAAgEAgEAgEAAUAAAACiiigKKKIAIBAIBAAFFFAAAAAAAACACAQCAQAIBAKccKKKIAAAAAAAAAAAAAAAAAAAAAAAAAAAACKKKAoooooAIBAIAgEEAkEEgAAQARQAAAAAAAIpABAIBABAAgEAEUAAAAAAABRRTjRAIAEAgEAgFNAAACnGiAQCAQAIBAIBAIBAIAEApoAAIpAIAgAgAiiinCARRQCCAQCARBAAAAAAAAAEEQCAQCAQAUQRRABAIBAIBAAgEAgNEEAgAU0QCAQCAQAIBAIBAIBAIAEEAEAgEAgACigAEUU40QAIBAIBAIBAIAFNEAgEAggEACCA0wGmA0wAaYDTTRBAIAEAgEAEEAgEAGiGqmmA0wAaaaDRAIBAIAEAgEAgEAgAAAggEAgEAggAQQCACKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKIBAAgEAgAgEAgAQCAQCAQCAQAIBAIBAIBAAgEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAAgEAgEAONEACAQQCAQQGmgaIBAIBAIBAAgEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAAgEAgEAFFFEAAAQCAQCAQAIBAIBAIBAIAEAgEAgEAgEACCAQQGmmiAIBAIBBAYJJAkksMMMMEkgGA0040QGiCABBAIaIaYDTABppoggAgEACAQCAQCAQCABTRRAIBAIBAAgEAggEEBoGA00QCAQCAQAIBAaIIAIBAEAgEEAgpogAQCAQCAQCAQAIBAIBAIBAAgFNAAIoIBAAgAiiAACAQAKaAAAAAAAAAFFEAgEAgEACAQCAQCA0QQAIBAIBABAIAEAgEAgEAgEACAQCAQCAQAIBAIBAKaAAAAAAAAoopoAAAAAEUgEEAAAABAIBAIBAAgEAgEAgAooCiigAgAinGgIBAIBAIBAIAEAgEApoogEACAQCmgAAAAAAAAKKIBAIAFNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoogEAgEACAQCAQCmgAAAAAAAAAAAAAoogEAgEAgAU0AAAAAACgKIBAIBAIBAAgAoAIBAIAIAAACiiAQCAQAIBAIBAIBAAgEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAAgEAgEAgEAgAQCAQCAQCAQAKKIAAIBAIAEAgEAgEAgEACAQCAQCAQAIBAIBAIBAIAgAgEAgEAgEACAQCAQCAQAIBAIBAIBAIAEAgEAgEAgEACAQCAQCAAAKKKKKKKKKKAooooooooooCiiiiiiiiigaIaaIaaIaaAhpohpohpogGmiGmmmCGmgYBAIBAIBTRAAgEAgEAgEACAQCAQCAQCABAIBAIBAIBAAgEAgFFFAICigAUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFAFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFEAEACAQCAQAQCAQAIDRDTBDTDBMEEEAgEAgEACAQCAQCCAwTDVTAIAIDRAENENNMApogAQCAQCAQGiAIIBAIIBAIAAgEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAAgEBxooooooCiiiiiiiiigKKKKACAQCABAIoAEAgEAgAQCAUUAgAigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKIAIBAIAAgEAgEAgEACAQCAQCAQCABAIBAIBAIBAAgEAgEAgEACAQCAQCAQCABAIBAIBAIBAAgEAgEAgEACAQCAQCAQCABAIBAIBAIBAAgEAgEAgEACAQCAQCAQCABAIBAIBAKKABAIBAIIBIIEEgkEggggEgCQSCQgSSECBBIJBIIIBAIAEEAkEgkEEACAQCAQCAQQAIIBABFABAIAEAgEAgEAgAQCCASCQSCCABFAAgEAgEACigEAgAiiigKKKKKKACAQAIBAIBAIBAAEUUUUUUUUUAACKKKKKKKKAooooooooooCiiiiiiiiigKKKaIaYBAIAQC7gBQACBj//wAA//////vzAOng1yyxAFNEAgEAgEACAQQCAQCAQAIBAIAIBAIBABohpgEAgEACAQCA0ww1UwAIBABBAIDTAMMMEhpgAgEACCAQCAQCAQAKaIDRDTAIAEAgEAgEApoCAQCAQCAQCABAIIBAIBAIAAgEAgEAgEACAQQCAQCA0wDDDDDDBIaYAEAEAgEAggEACA01UwAQCABBAIBAIBAIAEBpqpgEAgEACAQCAQCCGgYaYaYaYaYIBpgEAgNMMMMAwwww1UwCAQAIBAIBAIAIAEAgEAgEAgEACAQCAQCAQAIBAIBAIBAIAEAgEAgEAgEACAQCAQCAQAIBAIBAIBAIAEAgEAgEAgEACAQQAQCAQAIBAIBAIBAIAEAgEAgEAgEACAQCAAEAgACKKKKKKKKKAoooAIIJJJIEkggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUQAQCAQGiAaaaIBAIBAIAEAggFNEEAgAQCAQCACAQAIBAIBAIBAIAEAgEAgEAgEACAQCAQCAQAIBAIBAIIBAAgghpgEAgEACAQCAQQ0w0wBIIaYBAIAIAEEAgEAgEAgAQCAQCAQCAAIBAIBAIDRDBMAgEApogEACAQCAQCAQCABAIBAIBAIBAAgEAgEAgEACAQCAQQCCGgYYDRAIBAIBAAgEAgEAgEACAQCAQQCAQABAIBAIBAIBAAgEAgEAgEACAQCAQCAQCABAIBAIBAIBAAgEAgEAgEACAQCAQCAQCABAIBAIBAIBAAgEAgEAgEACAQCAQCAQCABAIBAIBAIBAAgEAgEAooAEEEgkEEAAAAAAAAAAAAAAAAABBJJJCAIAEAEUUUUUUQRRQAQCAQARBFFFFFFFFFEEUUAAiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiAGCQJJJJJIYaYIBppogFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFNENMENMEMEwQ0wQ0wQwQIYaYIaYIaaBoggNMENMEMEwGiAUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUAAQCCCQSCCQCABABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBJCBBAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAogNNNEACiiimiGmCGAIYaYIaYIaYAhpghpghpggGmCGmmiAUUQADTAaIBRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUAEgEEUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRQASASASABIBIBIBBFEEUUUUUUUUUQRRRRRRRRQABBFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUAEgASAQQACAAQAAIABAAIAIBIAEgEEAEAggAAQACAAQACAABAAIABAAIAAEAAgAgEEAACAAQAQCQCQAJAJAJAJAJAAkBAIgkkkkgSSSSSSSSSSBJJJJJJJJJIEEAAAggAgEgASASAQQACAABAAIABAAIAAEAAgAEAAgAAQACAAQACAABAAIABAAIAAEAAgAEAAgAAQACAAQACAABAAIABAAIAAEAAgAEAAgQRAaYIaYDRAAogBpghpghoGCGmCGmA0QAKKKKKKKKKKAooooooooooCiiiiiiiAGgaaIBRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBEANMENNNEACiiiiiiiiigKKKKKaIaYIBppogFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEEUUUUUUUUUQRRRRRRRRRRBFFFFFFFFFEBALuAFAAIGAABAAAAAQAA9//86d3DJ7EEUUUUUUUUUQRRRRRRQASCBBIJBIJBIJAEgkEgkEgkEgCQSQggSCQSAJBIJBIJBIIEEgkEgkEgkASCQSCQSCSEBKJQQJBIJBIAkEgkEgkEggQSCQSCQSCQBBAIBAIIJJIEkkkkkkkkkAQAKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiimiGmGmAaYaYIKKKKKAoooooogBpgGmGmGmCCiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKIAaYAgoooooooooCiiiiiAGmGgYaYaYaYaYaBhphphphphoGGmGmGmGmGgYIKKKKKKKKAgBphphphpgCCiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooooooCiiiiiiiiigKKKKKKKKKKAooooooBIIIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAEAu4AUAAgYAAAAAQABAAD2ifr53E0luQQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAQC7gBKVB4gAAQAAAAEAAfaJ+vncTSW5AIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAIAEAgEAgEAgAQCAQCAQCAQAIBAIBAIBAA=")
+format = 3
+mix_rate = 48000
+
+[sub_resource type="Animation" id="Animation_oudfo"]
+resource_name = "Walk"
+length = 0.8
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/LeftHand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(10, -8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visual/RightHand:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-7, -7)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visual/RightHand/Weapon:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-5.5, 10.5)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Visual/Head:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -18)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Visual:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.139626, 0.0, 0.139626, 0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Stars:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Visual:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -6), Vector2(0, 0), Vector2(0, -6), Vector2(0, 0)]
+}
+tracks/8/type = "audio"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("AudioStreamPlayer")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"clips": [{
+"end_offset": 0.963119,
+"start_offset": 0.122125,
+"stream": SubResource("AudioStreamWAV_hp6x6")
+}, {
+"end_offset": 0.963119,
+"start_offset": 0.122125,
+"stream": SubResource("AudioStreamWAV_hp6x6")
+}],
+"times": PackedFloat32Array(0, 0.4)
+}
+tracks/8/use_blend = true
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Visual/LeftHand:rotation")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Visual/RightHand:rotation")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/11/type = "method"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath(".")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"blink"
+}, {
+"args": [],
+"method": &"blink"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cxr5p"]
+_data = {
+&"Idle": SubResource("Animation_5ncpa"),
+&"Knockdown": SubResource("Animation_wi0c6"),
+&"Pray": SubResource("Animation_l6ohk"),
+&"RESET": SubResource("Animation_dtqjt"),
+&"Throw": SubResource("Animation_kne1u"),
+&"Walk": SubResource("Animation_oudfo")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wi0c6"]
+radius = 8.0
+height = 28.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3tkgg"]
+radius = 21.0
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
+modulate = Color(0.792157, 0.792157, 0.792157, 1)
+collision_mask = 0
+slide_on_ceiling = false
+script = ExtResource("2_e80uo")
+throw_cooldown = 0.5
+
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.713726)
+position = Vector2(0, 11)
+texture = ExtResource("2_5ncpa")
+
+[node name="Visual" type="Node2D" parent="."]
+rotation = 1.5708
+
+[node name="LeftHand" type="Sprite2D" parent="Visual"]
+position = Vector2(10, -4)
+texture = ExtResource("3_tdg3f")
+offset = Vector2(0, 5)
+flip_h = true
+
+[node name="Head" type="Sprite2D" parent="Visual"]
+position = Vector2(1, -17)
+texture = ExtResource("3_5ncpa")
+flip_h = true
+hframes = 2
+vframes = 2
+
+[node name="Body" type="Sprite2D" parent="Visual"]
+texture = ExtResource("2_cxr5p")
+flip_h = true
+
+[node name="RightHand" type="Sprite2D" parent="Visual"]
+position = Vector2(-7, -7)
+texture = ExtResource("2_dtqjt")
+offset = Vector2(-2.35427, 2.999)
+flip_h = true
+
+[node name="Weapon" type="Sprite2D" parent="Visual/RightHand"]
+position = Vector2(-5.5, 10.5)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_e80uo")
+
+[node name="Stars" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.713726)
+position = Vector2(20, -9)
+texture = ExtResource("3_hp6x6")
+vframes = 3
+
+[node name="Stealth" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -1)
+texture = ExtResource("8_wi0c6")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_cxr5p")
+}
+
+[node name="ThrowPosition" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-2, -18)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("CapsuleShape2D_wi0c6")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_left = -19.0
+offset_top = -54.0
+offset_right = 21.0
+offset_bottom = -31.0
+theme_override_font_sizes/font_size = 24
+
+[node name="PrescenceArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PrescenceArea"]
+shape = SubResource("CircleShape2D_3tkgg")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="PrescenceArea" to="." method="_on_prescence_area_body_entered"]
+[connection signal="body_exited" from="PrescenceArea" to="." method="_on_prescence_area_body_exited"]

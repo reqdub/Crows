@@ -1,0 +1,9 @@
+collission layers
+
+1 - floor, Despawn_Area, Drop Area, Walker, View Area
+2 - Dead Area, Throwable
+4 - View Area, Throwable
+3 - Collect Area
+5 - bag, stick, Throwable, floor
+7 - floor, bag on stick, throwable
+8 - bag on stick

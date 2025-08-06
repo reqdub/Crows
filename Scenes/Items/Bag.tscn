@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://dni7luuktbeiw"]
+
+[ext_resource type="Script" uid="uid://jso0afiuyyqs" path="res://Scenes/Items/bag.gd" id="1_hlvd6"]
+[ext_resource type="Texture2D" uid="uid://b8dlmurve7ywu" path="res://Sprites/Items/BagDropped.png" id="1_rveoa"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rveoa"]
+radius = 19.5
+height = 47.0
+
+[sub_resource type="Gradient" id="Gradient_hlvd6"]
+colors = PackedColorArray(0.6, 0.45098, 0.309804, 1, 0.262745, 0.223529, 0.188235, 1)
+
+[node name="Bag" type="RigidBody2D"]
+collision_layer = 64
+collision_mask = 64
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_hlvd6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -0.5)
+shape = SubResource("CapsuleShape2D_rveoa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+texture = ExtResource("1_rveoa")
+
+[node name="DropPosition" type="Marker2D" parent="."]
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 0.8
+direction = Vector2(10, 10)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 30.0
+initial_velocity_max = 60.0
+scale_amount_min = 8.0
+scale_amount_max = 12.0
+color_initial_ramp = SubResource("Gradient_hlvd6")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="finished" from="CPUParticles2D" to="." method="_on_cpu_particles_2d_finished"]

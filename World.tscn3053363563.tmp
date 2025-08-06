@@ -1,0 +1,384 @@
+[gd_scene load_steps=29 format=3 uid="uid://dbrp3rkcelwif"]
+
+[ext_resource type="Script" uid="uid://ckeqc26yapcl7" path="res://world.gd" id="1_eu7l1"]
+[ext_resource type="Texture2D" uid="uid://dvbtjcagyidat" path="res://Sprites/Background/meadow-1.png" id="2_p1v5b"]
+[ext_resource type="Script" uid="uid://o1vkalo88itr" path="res://spawner.gd" id="3_wygdx"]
+[ext_resource type="Texture2D" uid="uid://dtw3h04lju3b4" path="res://Sprites/UI/CooldownBodrder.png" id="5_5j71u"]
+[ext_resource type="AudioStream" uid="uid://c4v10s5io466k" path="res://Sounds/SFX/launch.wav" id="6_fvag4"]
+[ext_resource type="Texture2D" uid="uid://b8mbx6l60jly0" path="res://Sprites/UI/CooldownProgress.png" id="6_jyqkj"]
+[ext_resource type="AudioStream" uid="uid://cij7n0p0ybe0c" path="res://Music/Forest.mp3" id="6_p1v5b"]
+[ext_resource type="Texture2D" uid="uid://c12yln7qda2o4" path="res://Sprites/UI/Throwing_Strength_Border.png" id="7_bah7m"]
+[ext_resource type="Script" uid="uid://bynt7cslre3so" path="res://ui.gd" id="7_fv4w7"]
+[ext_resource type="Script" uid="uid://cbdfrkkqpvx3g" path="res://brawl.gd" id="8_6w02q"]
+[ext_resource type="Texture2D" uid="uid://bq82d3maekb3t" path="res://Sprites/UI/Throwing_Strength.png" id="8_fv4w7"]
+[ext_resource type="Texture2D" uid="uid://ncca57rw2cbn" path="res://Sprites/Effects/Smoke_Particle1.png" id="9_1fphk"]
+[ext_resource type="Texture2D" uid="uid://ceagllkbknw12" path="res://Sprites/UI/StealthPressed.png" id="9_jyqkj"]
+[ext_resource type="Texture2D" uid="uid://bm3tlx3f4nwcx" path="res://Sprites/Effects/shape_star_.png" id="10_cvq6i"]
+[ext_resource type="AudioStream" uid="uid://dfn3fnukj65mn" path="res://Sounds/SFX/BoxingBell.wav" id="10_sjtuv"]
+[ext_resource type="AudioStream" uid="uid://cyd4175v0s7yb" path="res://Sounds/SFX/Fighting.wav" id="11_cvq6i"]
+[ext_resource type="Texture2D" uid="uid://w1gtch16l73" path="res://Sprites/UI/Aim.png" id="11_kva58"]
+[ext_resource type="Texture2D" uid="uid://761koibr0hj3" path="res://Sprites/UI/Coin.png" id="12_f5c0m"]
+[ext_resource type="Texture2D" uid="uid://js0ryaroueat" path="res://Sprites/UI/Karma.png" id="13_b2ar6"]
+[ext_resource type="Texture2D" uid="uid://b6ge320vt42ye" path="res://Sprites/UI/Stealth.png" id="14_ee7l0"]
+[ext_resource type="Texture2D" uid="uid://sjs8d77e5tns" path="res://Sprites/Background/Bushes/s_bush_gooseberry_0.png" id="15_ydbc3"]
+[ext_resource type="Texture2D" uid="uid://b8h5gq4me5clg" path="res://Sprites/Background/Bushes/s_bush_barberry_1.png" id="16_aj1ai"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wygdx"]
+size = Vector2(157.341, 1015.02)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ee7l0"]
+size = Vector2(189, 801)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cvq6i"]
+size = Vector2(2622, 73)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p1v5b"]
+size = Vector2(140.578, 321.645)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f5c0m"]
+size = Vector2(152, 143)
+
+[sub_resource type="Gradient" id="Gradient_tiyat"]
+colors = PackedColorArray(0.904253, 0.597179, 0.283748, 0.788235, 0.301961, 0.360784, 0.239216, 0.87451)
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_eu7l1")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("7_fv4w7")
+throw_cooldown_time = 1.0
+
+[node name="ThrowStrength" type="TextureProgressBar" parent="CanvasLayer/UI"]
+visible = false
+modulate = Color(1, 1, 1, 0.705882)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -88.0
+offset_top = -136.0
+offset_right = 8.0
+offset_bottom = -104.0
+grow_horizontal = 2
+grow_vertical = 0
+texture_over = ExtResource("7_bah7m")
+texture_progress = ExtResource("8_fv4w7")
+texture_progress_offset = Vector2(1, 0)
+
+[node name="Cooldown" type="TextureProgressBar" parent="CanvasLayer/UI"]
+visible = false
+modulate = Color(1, 1, 1, 0.705882)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -72.0
+offset_top = -152.0
+offset_right = -8.0
+offset_bottom = -88.0
+grow_horizontal = 2
+grow_vertical = 0
+fill_mode = 4
+texture_over = ExtResource("5_5j71u")
+texture_progress = ExtResource("6_jyqkj")
+texture_progress_offset = Vector2(1, 0)
+
+[node name="Aim" type="Sprite2D" parent="CanvasLayer/UI"]
+visible = false
+texture = ExtResource("11_kva58")
+
+[node name="Stealth" type="TextureButton" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.797
+anchor_top = 0.67
+anchor_right = 0.864
+anchor_bottom = 0.789
+offset_left = -35.696
+offset_top = -35.0081
+offset_right = 15.12
+offset_bottom = 15.8799
+grow_horizontal = 0
+grow_vertical = 0
+texture_normal = ExtResource("14_ee7l0")
+texture_pressed = ExtResource("9_jyqkj")
+
+[node name="StealthCooldown" type="TextureProgressBar" parent="CanvasLayer/UI"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.797
+anchor_top = 0.67
+anchor_right = 0.864
+anchor_bottom = 0.789
+offset_left = -36.144
+offset_top = -35.16
+offset_right = -49.328
+offset_bottom = -48.272
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(2, 2)
+fill_mode = 4
+texture_over = ExtResource("5_5j71u")
+texture_progress = ExtResource("6_jyqkj")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 67.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="Karma" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="KarmaTexture" type="TextureRect" parent="CanvasLayer/UI/MarginContainer/Karma"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("13_b2ar6")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/UI/MarginContainer/Karma"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 48
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Inventory" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 50
+
+[node name="Coin" type="TextureRect" parent="CanvasLayer/UI/MarginContainer/Inventory"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("12_f5c0m")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/UI/MarginContainer/Inventory"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 48
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ThrowCooldown" type="Timer" parent="CanvasLayer/UI"]
+
+[node name="Label" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_left = 456.0
+offset_top = 264.0
+offset_right = 619.0
+offset_bottom = 343.0
+theme_override_font_sizes/font_size = 24
+
+[node name="Camera" type="Camera2D" parent="."]
+unique_name_in_owner = true
+zoom = Vector2(0.6, 0.6)
+
+[node name="Spawner" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-1435, 226)
+scale = Vector2(0.580345, 0.580345)
+script = ExtResource("3_wygdx")
+
+[node name="Timer" type="Timer" parent="Spawner"]
+wait_time = 2.0
+autostart = true
+
+[node name="LeftPosition" type="Marker2D" parent="Spawner"]
+
+[node name="RightPosition" type="Marker2D" parent="Spawner"]
+position = Vector2(4974.63, 10.3387)
+
+[node name="Despawn_Area" type="Area2D" parent="Spawner"]
+position = Vector2(2472.67, -389.424)
+scale = Vector2(1.72311, 1.72311)
+
+[node name="CollisionShapeRight" type="CollisionShape2D" parent="Spawner/Despawn_Area"]
+position = Vector2(1711, 6)
+shape = SubResource("RectangleShape2D_wygdx")
+
+[node name="CollisionShapeLeft" type="CollisionShape2D" parent="Spawner/Despawn_Area"]
+position = Vector2(-1656, 26)
+shape = SubResource("RectangleShape2D_ee7l0")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("2_p1v5b")
+
+[node name="Player_Position" type="Marker2D" parent="Background"]
+position = Vector2(-73, 144)
+scale = Vector2(3, 3)
+
+[node name="Bushes" type="Node2D" parent="Background"]
+position = Vector2(-60, 162)
+scale = Vector2(4, 4)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/Bushes"]
+position = Vector2(-30, -4)
+texture = ExtResource("15_ydbc3")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/Bushes"]
+position = Vector2(34, -6)
+texture = ExtResource("16_aj1ai")
+
+[node name="Walk_Area" type="Node2D" parent="Background"]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Floor" type="StaticBody2D" parent="Background/Walk_Area" groups=["Floor"]]
+position = Vector2(0, -8)
+scale = Vector2(0.580345, 0.580345)
+collision_layer = 80
+collision_mask = 80
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/Walk_Area/Floor"]
+position = Vector2(36.1854, 552.258)
+scale = Vector2(1.72311, 1.72311)
+shape = SubResource("RectangleShape2D_cvq6i")
+one_way_collision = true
+one_way_collision_margin = 4.0
+
+[node name="Drops" type="Node2D" parent="Background"]
+unique_name_in_owner = true
+
+[node name="DangerPoint" type="Marker2D" parent="Background"]
+position = Vector2(-78, 142)
+
+[node name="Drop area" type="Area2D" parent="Background"]
+position = Vector2(557.131, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/Drop area"]
+position = Vector2(295.869, 152)
+shape = SubResource("RectangleShape2D_p1v5b")
+
+[node name="Drop area2" type="Area2D" parent="Background"]
+position = Vector2(-4.64276, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/Drop area2"]
+position = Vector2(-54.3572, 164)
+shape = SubResource("RectangleShape2D_p1v5b")
+
+[node name="Drop area3" type="Area2D" parent="Background"]
+position = Vector2(-618.067, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/Drop area3"]
+position = Vector2(-318.933, 163)
+shape = SubResource("RectangleShape2D_p1v5b")
+
+[node name="CollectArea" type="Area2D" parent="Background"]
+position = Vector2(-1013, -518)
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/CollectArea"]
+position = Vector2(0, -3.5)
+shape = SubResource("RectangleShape2D_f5c0m")
+metadata/_edit_lock_ = true
+
+[node name="Music" type="Node" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("6_p1v5b")
+volume_db = -20.0
+autoplay = true
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Sounds" type="AudioStreamPlayer" parent="Sounds"]
+unique_name_in_owner = true
+stream = ExtResource("6_fvag4")
+
+[node name="Brawl" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-72, 152)
+script = ExtResource("8_6w02q")
+
+[node name="Smoke" type="CPUParticles2D" parent="Brawl"]
+emitting = false
+amount = 20
+texture = ExtResource("9_1fphk")
+lifetime = 2.0
+one_shot = true
+explosiveness = 0.2
+emission_shape = 1
+emission_sphere_radius = 128.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 200.0
+scale_amount_min = 3.0
+scale_amount_max = 6.0
+color_ramp = SubResource("Gradient_tiyat")
+
+[node name="Stars" type="CPUParticles2D" parent="Brawl"]
+emitting = false
+texture = ExtResource("10_cvq6i")
+lifetime = 2.0
+one_shot = true
+explosiveness = 0.2
+emission_shape = 1
+emission_sphere_radius = 128.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 200.0
+angle_max = 180.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color_ramp = SubResource("Gradient_tiyat")
+
+[node name="Left" type="Marker2D" parent="Brawl"]
+position = Vector2(-240, -32)
+
+[node name="Right" type="Marker2D" parent="Brawl"]
+position = Vector2(264, -32)
+
+[node name="Ding" type="AudioStreamPlayer" parent="Brawl"]
+stream = ExtResource("10_sjtuv")
+
+[node name="Fight" type="AudioStreamPlayer" parent="Brawl"]
+stream = ExtResource("11_cvq6i")
+
+[node name="Particles" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Signal_Bus" type="Node" parent="."]
+
+[connection signal="gui_input" from="CanvasLayer/UI" to="CanvasLayer/UI" method="_on_gui_input"]
+[connection signal="button_down" from="CanvasLayer/UI/Stealth" to="CanvasLayer/UI" method="_on_stealth_button_down"]
+[connection signal="button_up" from="CanvasLayer/UI/Stealth" to="CanvasLayer/UI" method="_on_stealth_button_up"]
+[connection signal="timeout" from="CanvasLayer/UI/ThrowCooldown" to="CanvasLayer/UI" method="_on_throw_cooldown_timeout"]
+[connection signal="timeout" from="Spawner/Timer" to="Spawner" method="_on_timer_timeout"]
+[connection signal="area_entered" from="Spawner/Despawn_Area" to="Spawner" method="_on_despawn_area_area_entered"]
+[connection signal="body_entered" from="Spawner/Despawn_Area" to="Spawner" method="_on_despawn_area_body_entered"]
+[connection signal="area_entered" from="Background/Drop area" to="." method="_on_drop_area_area_entered"]
+[connection signal="body_entered" from="Background/Drop area" to="." method="_on_drop_area_body_entered"]
+[connection signal="area_entered" from="Background/Drop area2" to="." method="_on_drop_area_area_entered"]
+[connection signal="body_entered" from="Background/Drop area2" to="." method="_on_drop_area_2_body_entered"]
+[connection signal="area_entered" from="Background/Drop area3" to="." method="_on_drop_area_area_entered"]
+[connection signal="body_entered" from="Background/Drop area3" to="." method="_on_drop_area_3_body_entered"]
+[connection signal="body_entered" from="Background/CollectArea" to="." method="_on_collect_area_body_entered"]

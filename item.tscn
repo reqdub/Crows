@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://4u2qbpkh2k0j"]
+
+[ext_resource type="Script" uid="uid://gutnoxkgk7b" path="res://item.gd" id="1_tnite"]
+[ext_resource type="Texture2D" uid="uid://4s4yukyivklx" path="res://Sprites/Items/coin.png" id="2_ttk8k"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vpy52"]
+radius = 15.0
+
+[node name="Item" type="RigidBody2D"]
+collision_layer = 16
+collision_mask = 16
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_tnite")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_vpy52")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("2_ttk8k")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

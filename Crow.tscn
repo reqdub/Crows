@@ -1,0 +1,135 @@
+[gd_scene load_steps=11 format=3 uid="uid://dwb5qi8mx2x1o"]
+
+[ext_resource type="Script" uid="uid://d3cosg8o2penw" path="res://crow.gd" id="1_7xjjw"]
+[ext_resource type="Texture2D" uid="uid://bq4og6i1g486n" path="res://Sprites/Fly/Fly.png" id="2_bdh54"]
+[ext_resource type="AudioStream" uid="uid://cm8m8jkmun1s2" path="res://Sounds/Fly_Sound.mp3" id="3_0nsy2"]
+
+[sub_resource type="Animation" id="Animation_pkg7o"]
+resource_name = "Fly_Left"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [10, 11, 12, 13, 14]
+}
+
+[sub_resource type="Animation" id="Animation_ioo17"]
+resource_name = "Fly_Right"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [5, 6, 7, 8, 9]
+}
+
+[sub_resource type="Animation" id="Animation_gbfbk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_aqk2v"]
+resource_name = "Fly_Up"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+
+[sub_resource type="Animation" id="Animation_036b0"]
+resource_name = "Fly_Down"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [15, 16, 17, 18, 19]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wse8f"]
+_data = {
+&"Fly_Down": SubResource("Animation_036b0"),
+&"Fly_Left": SubResource("Animation_pkg7o"),
+&"Fly_Right": SubResource("Animation_ioo17"),
+&"Fly_Up": SubResource("Animation_aqk2v"),
+&"RESET": SubResource("Animation_gbfbk")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dwbse"]
+radius = 16.2788
+
+[node name="Crow" type="RigidBody2D"]
+gravity_scale = 0.0
+script = ExtResource("1_7xjjw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+root_node = NodePath("../CollisionShape2D/Fly")
+libraries = {
+&"": SubResource("AnimationLibrary_wse8f")
+}
+speed_scale = 0.75
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_dwbse")
+
+[node name="Fly" type="Sprite2D" parent="CollisionShape2D"]
+position = Vector2(-1, 4)
+scale = Vector2(3, 3)
+texture = ExtResource("2_bdh54")
+hframes = 5
+vframes = 4
+frame = 15
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -49.0
+offset_top = -150.0
+offset_right = 61.0
+offset_bottom = -57.0
+theme_override_font_sizes/font_size = 25
+text = "1010"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_0nsy2")
