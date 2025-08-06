@@ -72,24 +72,43 @@ func throw():
 func _on_karma_changed(amount):
 	change_karma(amount)
 
-func change_karma(amount):
-	if amount > 0:
-		for i in range(amount):
-			Karma.add_karma(1)
-			$MarginContainer/Karma/Label.set_text(str(Karma.karma))
-			await get_tree().create_timer(0.1).timeout
+func change_karma(amount: int):
+	var step = 1
+	if abs(amount) >= 1000:
+		step = 100
+	elif abs(amount) >= 100:
+		step = 10
 	else:
-		for i in range(abs(amount)):
-			Karma.remove_karma(1)
-			$MarginContainer/Karma/Label.set_text(str(Karma.karma))
-			await get_tree().create_timer(0.1).timeout
+		step = 1
+	# Убеждаемся, что шаг не превышает оставшуюся сумму
+	#if amount < 0:
+		#step = -step
+	var current_amount = abs(amount)
+	# Запускаем цикл для изменения кармы
+	while current_amount != 0:
+		var change_step = 0
+		if abs(current_amount) >= abs(step):
+			change_step = step
+		else:
+			# Если оставшаяся сумма меньше шага, меняем на неё
+			change_step = current_amount
+		# Обновляем карму и UI
+		if amount > 0:
+			Karma.add_karma(change_step)
+		else:
+			Karma.remove_karma(change_step)
+		$MarginContainer/Karma/Label.text = str(Karma.karma)
+		# Вычитаем из оставшейся суммы
+		current_amount -= change_step
+		# Задержка
+		await get_tree().create_timer(0.01).timeout
 	if Karma.karma >= 0: $MarginContainer/Karma/KarmaTexture.texture = good_karma_icon
 	else: $MarginContainer/Karma/KarmaTexture.texture = bad_karma_icon
 
 func remove_karma():
 	if Karma.karma > 0: return
 	var karma_needed_to_became_zero = abs(Karma.karma)
-	await change_karma(karma_needed_to_became_zero)
+	change_karma(karma_needed_to_became_zero)
 	var guard_progress_tween = create_tween()
 	guard_progress_tween.tween_property(%GuardProgress, "value", 0, 2.0)
 	$MarginContainer/Karma/KarmaTexture.texture = good_karma_icon

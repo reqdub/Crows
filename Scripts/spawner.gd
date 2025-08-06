@@ -17,9 +17,6 @@ var spawn_enabled : bool = true
 var current_number_of_npc : int = 0
 var number_of_guards : int = 0
 
-var spawn_peasant_chance : int = 100
-var spawn_guard_chance : int = 5
-
 func _ready() -> void:
 	start_spawn()
 
@@ -51,7 +48,7 @@ func spawn(from_left_side : bool):
 	var new_npc_type
 	var danger_ratio = float(area_danger_level) / 100.0
 	# NPC уменьшается от 95% до 5%
-	var npc_chance = 0.95 - (danger_ratio * danger_ratio) * 0.90
+	var npc_chance = 0.05 - (danger_ratio * danger_ratio) * 0.90
 	print("Шанс спавна для NPC = ", str(npc_chance))
 	#Квадратичная функия уменьшения спавна для NPC с повышение уровня опасности зоны
 	Logger.log("Шанс спавна NPC = ", str(npc_chance))

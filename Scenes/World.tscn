@@ -624,7 +624,7 @@ stream = ExtResource("41_i2iik")
 stream = ExtResource("42_drsnn")
 
 [node name="PunchTimer" type="Timer" parent="Brawl"]
-wait_time = 0.1
+wait_time = 0.05
 
 [node name="Particles" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -848,9 +848,8 @@ anchor_left = 0.45
 anchor_top = 0.611
 anchor_right = 0.483
 anchor_bottom = 0.67
-offset_left = -6.10352e-05
 offset_top = 0.119995
-offset_right = -31.36
+offset_right = -31.3599
 offset_bottom = -31.6
 grow_horizontal = 2
 grow_vertical = 2

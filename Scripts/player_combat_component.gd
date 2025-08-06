@@ -2,6 +2,10 @@ extends Node2D
 
 class_name Player_Combat
 
+@onready var audioplayer = $"../AudioStreamPlayer"
+@onready var hit_sound = load("res://Sounds/SFX/hit.wav")
+@onready var stun_sound = load("res://Sounds/SFX/stun.ogg")
+
 var parent
 var health_component : Player_Health
 var visual_component
@@ -40,14 +44,17 @@ func start_combat():
 	statemachine.change_state(statemachine.state.FIGHT)
 
 func end_combat(win : bool, winner = null):
-	if winner != null and winner.is_in_group("Guard"):
-		parent.is_criminal_scum = false
-		parent.criminal.emit(false)
-		parent.drop_loot(winner)
+	if not win:
+		if winner != null and winner.is_in_group("Guard"):
+			parent.is_criminal_scum = false
+			parent.criminal.emit(false)
+			parent.drop_loot(winner)
 	Logger.log("Player ", "заканчивает бой")
 	is_in_battle = false
 	if win: statemachine.change_state(statemachine.state.IDLE)
 	else:
+		audioplayer.stream = hit_sound
+		audioplayer.play()
 		statemachine.change_state(statemachine.state.KNOCKDOWN)
 	if not parent.is_player_in_initial_position:
 		parent.block_player_control.emit(true)
@@ -65,6 +72,9 @@ func take_hit(source, amount, _is_headshot):
 
 func deal_damage(target):
 	if not can_attack: return
+	audioplayer.stream = hit_sound
+	audioplayer.pitch_scale = randf_range(0.9, 1.1)
+	audioplayer.play()
 	var random_damage : Array = calculate_damage()
 	var damage = randi_range(random_damage[0], random_damage[1])
 	var is_headshot : bool = false
@@ -72,7 +82,7 @@ func deal_damage(target):
 		is_headshot = true
 	target.combat_component.take_hit(target, damage, is_headshot)
 	can_attack = false
-	var attack_cooldown : float = randf_range(0.8, 1.2)
+	var attack_cooldown : float = randf_range(0.8, 1.4)
 	$AttackCooldown.start(attack_cooldown)
 
 func _on_attack_cooldown_timeout() -> void:

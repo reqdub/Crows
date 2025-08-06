@@ -3,8 +3,6 @@ extends Node2D
 class_name Player_Health
 
 @onready var on_screen_text_node = get_node("/root/World/OnScreenText")
-@onready var stun_sound = load("res://Sounds/SFX/stun.ogg")
-@onready var audioplayer = $"../AudioStreamPlayer"
 @onready var damage_indicator = preload("res://Scenes/damage_indicator.tscn")
 @onready var health_bar = $HealthBar
 
@@ -60,6 +58,7 @@ func _on_regen_timer_timeout() -> void:
 	$RegenTimer.start(regen_timeout)
 
 func regenerate_health():
+	if combat_component.is_in_battle: return
 	if current_health >= max_total_health: return
 	current_health += regen_amount
 	update_health_bar()

@@ -10,12 +10,12 @@ var max_health_tough = 25
 # Paths to nodes managed by this component (relative to its parent, the main NPC)
 @onready var health_bar = %HealthBar
 @onready var health_bar_label = $HealthBar/Label
-@onready var audio_stream_player = %AudioStreamPlayer2D
+
 @onready var on_screen_text_node = get_node("/root/World/OnScreenText")
 
 # Resources
 @onready var damage_indicator_prefab = preload("res://Scenes/damage_indicator.tscn")
-@onready var hit_sound = load("res://Sounds/SFX/hit.wav")
+
 
 var parent_npc
 var visual_component : NPC_Visuals
@@ -82,10 +82,6 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 	else:
 		if source_node.is_in_group("Throwable"): 
 			source_node.disable()
-	if audio_stream_player and hit_sound:
-		audio_stream_player.stream = hit_sound
-		audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
-		audio_stream_player.play()
 	var health_before_damage_taken : int = current_health
 	if damage_amount > 0:
 		add_damage_indicator(damage_amount)

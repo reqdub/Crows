@@ -59,11 +59,11 @@ func stop_brawl() -> void:
 	stop_battle_tween.tween_property(fighter_1, "rotation", 0, 0.3)
 	if brawl_winner == fighter_1:
 		fighter_1.combat_component.end_combat(true)
-		fighter_2.combat_component.end_combat(false)
+		fighter_2.combat_component.end_combat(false, fighter_1)
 		is_brawl_running = false
 	else:
 		fighter_1.combat_component.end_combat(false)
-		fighter_2.combat_component.end_combat(true)
+		fighter_2.combat_component.end_combat(true, fighter_2)
 		is_brawl_running = false
 
 func log_brawl_start():

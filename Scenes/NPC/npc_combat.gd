@@ -5,6 +5,8 @@ class_name NPC_Combat
 # References to scene nodes needed for combat (e.g., Brawl node, weapon spawns)
 @onready var brawl_node : Brawl = get_node("/root/World/Brawl") # Global node
 @onready var drop_position = %LootDropPosition # To drop loot on death/knockout
+@onready var audio_stream_player = %AudioStreamPlayer2D
+@onready var hit_sound = load("res://Sounds/SFX/hit.wav")
 
 var parent_npc
 var vision_component : NPC_Vision
@@ -74,6 +76,9 @@ func take_hit(source, amount, is_headshot : bool):
 func deal_damage(target) -> void:
 	if not can_attack: return
 	if reactions_component.check_terminal_statuses(): return
+	audio_stream_player.stream = hit_sound
+	audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
+	audio_stream_player.play()
 	Logger.log(parent_npc.name, str("Атакую ", target_enemy.name))
 	var damage = attack_damage
 	var is_headshot : bool = false
@@ -81,7 +86,7 @@ func deal_damage(target) -> void:
 		is_headshot = true
 	target.combat_component.take_hit(target, damage, is_headshot)
 	can_attack = false
-	var attack_cooldown : float = randf_range(0.8, 1.2)
+	var attack_cooldown : float = randf_range(0.5, 1.0)
 	$AttackCooldown.start(attack_cooldown)
 
 func _on_health_knocked_out(is_knocked_out : bool) -> void:
