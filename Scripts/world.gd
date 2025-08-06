@@ -6,7 +6,7 @@ var player_node : player
 @onready var audio_manager = $AudioManager
 
 func _ready() -> void:
-	$Background/Player_Position.add_child(load("res://Player.tscn").instantiate())
+	$Background/Player_Position.add_child(load("res://Scenes/Player.tscn").instantiate())
 	player_node = get_node("Background/Player_Position/Player")
 	player_node.statue = %GoddessPosition.global_position
 	Karma.player_node = player_node

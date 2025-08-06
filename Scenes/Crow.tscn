@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://dwb5qi8mx2x1o"]
 
-[ext_resource type="Script" uid="uid://d3cosg8o2penw" path="res://crow.gd" id="1_7xjjw"]
-[ext_resource type="Texture2D" uid="uid://bq4og6i1g486n" path="res://Sprites/Fly/Fly.png" id="2_bdh54"]
+[ext_resource type="Script" uid="uid://d3cosg8o2penw" path="res://Scripts/crow.gd" id="1_7xjjw"]
+[ext_resource type="Texture2D" path="res://Sprites/Fly/Fly.png" id="2_bdh54"]
 [ext_resource type="AudioStream" uid="uid://cm8m8jkmun1s2" path="res://Sounds/Fly_Sound.mp3" id="3_0nsy2"]
 
 [sub_resource type="Animation" id="Animation_pkg7o"]

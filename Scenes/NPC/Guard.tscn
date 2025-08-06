@@ -1009,6 +1009,8 @@ script = ExtResource("12_l7tr6")
 unique_name_in_owner = true
 script = ExtResource("13_l7tr6")
 
+[node name="AttackCooldown" type="Timer" parent="Combat"]
+
 [node name="Health" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("14_l7tr6")
@@ -1169,7 +1171,8 @@ scale = Vector2(4, 4)
 texture = ExtResource("5_fim8g")
 
 [connection signal="body_entered" from="CollectArea" to="." method="_on_collect_area_body_entered"]
-[connection signal="body_entered" from="Visual/Body/BodyArea" to="Health" method="_on_body_area_body_entered"]
-[connection signal="body_entered" from="Visual/Head/HeadCollision" to="Health" method="_on_head_collision_body_entered"]
+[connection signal="body_entered" from="Visual/Body/BodyArea" to="Combat" method="_on_body_area_body_entered"]
+[connection signal="body_entered" from="Visual/Head/HeadCollision" to="Combat" method="_on_head_collision_body_entered"]
+[connection signal="timeout" from="Combat/AttackCooldown" to="Combat" method="_on_attack_cooldown_timeout"]
 [connection signal="body_entered" from="Vision/ViewArea" to="Vision" method="_on_view_area_body_entered"]
 [connection signal="body_exited" from="Vision/ViewArea" to="Vision" method="_on_view_area_body_exited"]

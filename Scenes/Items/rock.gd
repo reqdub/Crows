@@ -1,19 +1,17 @@
 extends RigidBody2D
 
-enum type {
-	ROCK
-}
-
-var item_type = type.ROCK
-var throw_strength : float = 0.0
-var base_damage : int = randi_range(5, 5)
-var is_damage_dealt : bool = false
-@onready var particles = load("res://on_throwable_destroy_particles.tscn")
+@onready var particles = load("res://Scenes/on_throwable_destroy_particles.tscn")
 @onready var particles_world_node = get_node("/root/World/Particles")
+
+var item_type : int = 0
+var throw_strength : float = 0.0
+var base_player_damage
+var weapon_damage : int = randi_range(1, 4)
+var is_damage_dealt : bool = false
 
 func _ready() -> void:
 	match item_type:
-		type.ROCK:
+		0:#ROCK
 			$Sprite2D.texture = load("res://Sprites/Items/Rock1.png")
 	var direction = (global_position - get_global_mouse_position()).normalized()
 	var impulse = direction * -2000 * throw_strength
@@ -22,7 +20,8 @@ func _ready() -> void:
 
 func deal_damage() -> int:
 	if is_damage_dealt : return -1
-	return int(base_damage * throw_strength)
+	var damage = int((base_player_damage + weapon_damage) * throw_strength)
+	return damage
 
 func destroy():
 	var particles_instance = particles.instantiate()
@@ -31,8 +30,9 @@ func destroy():
 	$DestroyTimer.stop()
 	self.queue_free()
 
-func set_type(throwable_type):
-	item_type = throwable_type
+func set_item(_item_type, _base_player_damage):
+	item_type = _item_type
+	base_player_damage = _base_player_damage
 
 func _on_deactivate_timer_timeout() -> void:
 	self.contact_monitor = false

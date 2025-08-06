@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Crows"
-run/main_scene="res://World.tscn"
+run/main_scene="res://Scenes/World.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -19,10 +19,14 @@ config/icon="res://icon.svg"
 
 Karma="*res://Scripts/karma.gd"
 SpeechReplicas="*res://Scripts/speech_replicas.gd"
-Logger="*res://logger.gd"
+Logger="*res://Scripts/logger.gd"
 Inventory="*res://Scripts/inventory.gd"
 AudioManager="*res://Scripts/audio_manager.gd"
 SoundCache="*res://Scripts/sound_cache.gd"
+
+[debug]
+
+gdscript/warnings/unused_signal=0
 
 [display]
 

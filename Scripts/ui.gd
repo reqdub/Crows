@@ -179,7 +179,7 @@ func _on_stealth_button_up() -> void:
 			$Stealth.disabled = false
 
 func _on_pray_pressed() -> void:
-	player_node.pray()
+	player_node.visual_component.pray()
 
 func _on_player_pray_finished():
 	var i = Karma.karma

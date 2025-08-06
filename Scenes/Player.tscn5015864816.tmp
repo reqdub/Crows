@@ -1,15 +1,20 @@
-[gd_scene load_steps=21 format=4 uid="uid://bn4obgm0ayvbk"]
+[gd_scene load_steps=26 format=4 uid="uid://bn4obgm0ayvbk"]
 
-[ext_resource type="Texture2D" uid="uid://b60ctx7f77gus" path="res://Sprites/Character/Player/Shadow.png" id="2_5ncpa"]
-[ext_resource type="Texture2D" uid="uid://dinvaumcbnyca" path="res://Sprites/Character/Player/Body.png" id="2_cxr5p"]
-[ext_resource type="Texture2D" uid="uid://dxndqwubg04js" path="res://Sprites/Character/Player/Left Hand.png" id="2_dtqjt"]
-[ext_resource type="Script" uid="uid://dg2miea545ihh" path="res://player.gd" id="2_e80uo"]
-[ext_resource type="Texture2D" uid="uid://c27bajlcpn8rr" path="res://Sprites/Character/Player/Head.png" id="3_5ncpa"]
-[ext_resource type="Texture2D" uid="uid://sgsnbyywla03" path="res://Sprites/Effects/stun.png" id="3_hp6x6"]
-[ext_resource type="Texture2D" uid="uid://85ugwvmvmvh6" path="res://Sprites/Character/Player/Right Hand.png" id="3_tdg3f"]
-[ext_resource type="Texture2D" uid="uid://bplt3t4varl1b" path="res://Sprites/Items/Rock1.png" id="4_e80uo"]
-[ext_resource type="Texture2D" uid="uid://sjs8d77e5tns" path="res://Sprites/Background/Bushes/s_bush_gooseberry_0.png" id="8_wi0c6"]
-[ext_resource type="AudioStream" uid="uid://cwrtx0oax0rm7" path="res://Sounds/SFX/pray.wav" id="10_3tkgg"]
+[ext_resource type="Script" uid="uid://dg2miea545ihh" path="res://Scripts/player.gd" id="1_o3h8g"]
+[ext_resource type="Texture2D" uid="uid://b60ctx7f77gus" path="res://Sprites/Character/Player/Shadow.png" id="2_1e7my"]
+[ext_resource type="Texture2D" uid="uid://85ugwvmvmvh6" path="res://Sprites/Character/Player/Right Hand.png" id="3_arntx"]
+[ext_resource type="Texture2D" uid="uid://c27bajlcpn8rr" path="res://Sprites/Character/Player/Head.png" id="4_lslt6"]
+[ext_resource type="Texture2D" uid="uid://dinvaumcbnyca" path="res://Sprites/Character/Player/Body.png" id="5_ulo2v"]
+[ext_resource type="Texture2D" uid="uid://dxndqwubg04js" path="res://Sprites/Character/Player/Left Hand.png" id="6_1iu4k"]
+[ext_resource type="Texture2D" uid="uid://bplt3t4varl1b" path="res://Sprites/Items/Rock1.png" id="7_m0x7a"]
+[ext_resource type="Texture2D" uid="uid://sgsnbyywla03" path="res://Sprites/Effects/stun.png" id="8_5v66d"]
+[ext_resource type="Texture2D" uid="uid://sjs8d77e5tns" path="res://Sprites/Background/Bushes/s_bush_gooseberry_0.png" id="9_x63xi"]
+[ext_resource type="Script" uid="uid://bo26p3jb6muue" path="res://Scripts/player_health_component.gd" id="10_i2e8t"]
+[ext_resource type="Script" uid="uid://bto5o1ob3dbic" path="res://Scripts/player_combat_component.gd" id="11_qidb7"]
+[ext_resource type="Script" uid="uid://b68w7n68c11c0" path="res://Scripts/player_visual_component.gd" id="12_70hv0"]
+[ext_resource type="Script" uid="uid://cf1its45nd5by" path="res://Scripts/player_statemachine.gd" id="13_8flut"]
+[ext_resource type="AudioStream" uid="uid://drvjwk807lcxq" path="res://Sounds/SFX/stun.ogg" id="14_1e7my"]
+[ext_resource type="AudioStream" uid="uid://cwrtx0oax0rm7" path="res://Sounds/SFX/pray.wav" id="14_u7x0b"]
 
 [sub_resource type="Animation" id="Animation_5ncpa"]
 resource_name = "Idle"
@@ -203,6 +208,21 @@ tracks/5/keys = {
 "update": 1,
 "values": [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2]
 }
+tracks/6/type = "audio"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AudioStreamPlayer")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("14_1e7my")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/6/use_blend = true
 
 [sub_resource type="Animation" id="Animation_l6ohk"]
 resource_name = "Pray"
@@ -350,7 +370,7 @@ tracks/11/keys = {
 "clips": [{
 "end_offset": 0.0,
 "start_offset": 0.0,
-"stream": ExtResource("10_3tkgg")
+"stream": ExtResource("14_u7x0b")
 }],
 "times": PackedFloat32Array(0)
 }
@@ -863,55 +883,71 @@ radius = 21.0
 modulate = Color(0.792157, 0.792157, 0.792157, 1)
 collision_mask = 0
 slide_on_ceiling = false
-script = ExtResource("2_e80uo")
+script = ExtResource("1_o3h8g")
 throw_cooldown = 0.5
 
 [node name="Shadow" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.713726)
 position = Vector2(0, 11)
-texture = ExtResource("2_5ncpa")
+texture = ExtResource("2_1e7my")
 
 [node name="Visual" type="Node2D" parent="."]
 rotation = 1.5708
 
 [node name="LeftHand" type="Sprite2D" parent="Visual"]
 position = Vector2(10, -4)
-texture = ExtResource("3_tdg3f")
+texture = ExtResource("3_arntx")
 offset = Vector2(0, 5)
 flip_h = true
 
 [node name="Head" type="Sprite2D" parent="Visual"]
 position = Vector2(1, -17)
-texture = ExtResource("3_5ncpa")
+texture = ExtResource("4_lslt6")
 flip_h = true
 hframes = 2
 vframes = 2
 
 [node name="Body" type="Sprite2D" parent="Visual"]
-texture = ExtResource("2_cxr5p")
+texture = ExtResource("5_ulo2v")
 flip_h = true
 
 [node name="RightHand" type="Sprite2D" parent="Visual"]
 position = Vector2(-7, -7)
-texture = ExtResource("2_dtqjt")
+texture = ExtResource("6_1iu4k")
 offset = Vector2(-2.35427, 2.999)
 flip_h = true
 
 [node name="Weapon" type="Sprite2D" parent="Visual/RightHand"]
 position = Vector2(-5.5, 10.5)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("4_e80uo")
+texture = ExtResource("7_m0x7a")
 
 [node name="Stars" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.713726)
 position = Vector2(20, -9)
-texture = ExtResource("3_hp6x6")
+texture = ExtResource("8_5v66d")
 vframes = 3
 
 [node name="Stealth" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(0, -1)
-texture = ExtResource("8_wi0c6")
+texture = ExtResource("9_x63xi")
+
+[node name="Health_Component" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("10_i2e8t")
+
+[node name="Combat_Component" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("11_qidb7")
+
+[node name="Visual_Component" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("12_70hv0")
+
+[node name="Statemachine" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("13_8flut")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

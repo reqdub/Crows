@@ -6,7 +6,7 @@ var guard = preload("res://Scenes/NPC/Guard.tscn")
 @onready var left_despawn_point =  $Despawn_Area/CollisionShapeLeft
 @onready var right_despawn_point = $Despawn_Area/CollisionShapeRight
 
-@export var spawn_speed = 5.0
+@export var spawn_speed = 1.5
 @export var spawn_chance = 50
 @export var max_entities = 2
 @export var max_guards = 1
@@ -20,18 +20,22 @@ var number_of_guards : int = 0
 var spawn_peasant_chance : int = 100
 var spawn_guard_chance : int = 5
 
+func _ready() -> void:
+	start_spawn()
+
 func _on_timer_timeout() -> void:
 	if not spawn_enabled: return
 	if spawn_chance <= randi_range(0, 100): return
 	if current_number_of_npc >= max_entities: return
 	else: spawn(random_spawn_direction())
 	current_number_of_npc += 1
+	start_spawn()
 
 func stop_spawn():
 	$Timer.stop()
 
 func start_spawn():
-	$Timer.start()
+	$Timer.start(spawn_speed)
 
 func random_spawn_direction() -> bool:
 	var left_side : bool = true

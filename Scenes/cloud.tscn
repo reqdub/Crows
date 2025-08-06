@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://3i82u46xc7p7"]
 
-[ext_resource type="Script" uid="uid://e1mlttty5txx" path="res://cloud.gd" id="1_d50mw"]
+[ext_resource type="Script" uid="uid://e1mlttty5txx" path="res://Scripts/cloud.gd" id="1_d50mw"]
 
 [node name="Cloud" type="Sprite2D"]
 script = ExtResource("1_d50mw")

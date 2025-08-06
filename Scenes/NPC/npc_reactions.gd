@@ -120,7 +120,7 @@ func _react_to_player(player_node: Node2D) -> void:
 		or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
 			movement_component.movement_target = Vector2.ZERO
 			movement_component.move_to_point() # This call assumes walker handles moving to null target as stopping
-	elif player_node.is_in_battle: # Player script property
+	elif player_node.combat_component.is_in_battle: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
 		Logger.log(player_node.name, "Игрок в бою")
@@ -129,7 +129,7 @@ func _react_to_player(player_node: Node2D) -> void:
 		or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
 			movement_component.movement_target = Vector2.ZERO
 			movement_component.move_to_point()
-	elif player_node.is_knockdown: # Player script property
+	elif player_node.health_component.is_knockdown: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
 		Logger.log(parent_npc.name, "Игрок без сознания")
@@ -138,7 +138,7 @@ func _react_to_player(player_node: Node2D) -> void:
 		or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
 			movement_component.movement_target = Vector2.ZERO
 			movement_component.move_to_point()
-	elif player_node.is_praying and not health_component.is_damaged: # Player script property
+	elif player_node.visual_component.is_praying and not health_component.is_damaged: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
 		Logger.log(parent_npc.name, "Игрок молится")

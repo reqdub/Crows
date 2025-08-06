@@ -7,5 +7,6 @@ func _ready():
 	await get_tree().create_timer(1.0).timeout
 	self.queue_free()
 
-func damage_amount(_amount):
+func setup(_amount : int, color : Color):
 	$Label.set_text(str(_amount))
+	$Label.add_theme_color_override("font_color", color)

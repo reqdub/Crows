@@ -5,7 +5,7 @@ class_name npc
 @export var dialogues : Resource
 # @export var walk_speed = randi_range(500, 1000) # Now in NPC_Movement
 
-@onready var loot = preload("res://item.tscn")
+@onready var loot = preload("res://Scenes/item.tscn")
 @onready var signal_bus = get_node("/root/World/Signal_Bus")
 @onready var statemachine_node : StateMachine = %StateMachine
 @onready var danger_point = get_node("/root/World/Background/DangerPoint")
@@ -69,14 +69,14 @@ func setup_npc(_npc_type : npc_type, _spawn_point, _despawn_point):
 func say(phrase_type : String):
 	say_phrase.emit(npc_name, phrase_type)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if velocity != Vector2.ZERO:
 		move_and_slide()
 
 func set_movement(direction : Vector2, movement_speed : float):
 	velocity = direction * movement_speed
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	$DebugLabel.set_text(str(movement_component.walk_speed))
 
 func _on_collect_area_body_entered(body: Node2D) -> void:

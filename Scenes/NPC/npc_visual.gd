@@ -75,7 +75,7 @@ func stop_all_animations() -> void:
 		animation_player.stop()
 
 # --- Damage Visuals ---
-func _on_health_damaged_by_hit(_source_node: Node2D, is_headshot: bool) -> void:
+func _on_health_damaged_by_hit(_source_node: Node2D, _is_headshot: bool) -> void:
 	update_damage_visuals()
 
 func update_damage_visuals() -> void:

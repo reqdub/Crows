@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://hk2pm82gyvp5"]
 
-[ext_resource type="Script" uid="uid://c35thx4ondbrl" path="res://entity_off_screan_indicator.gd" id="1_gjm8a"]
+[ext_resource type="Script" uid="uid://c35thx4ondbrl" path="res://Scripts/entity_off_screan_indicator.gd" id="1_gjm8a"]
 [ext_resource type="Texture2D" uid="uid://ceqdk04su0wdi" path="res://Sprites/UI/OffScreanNPCIndicator.png" id="2_0nryt"]
 
 [sub_resource type="Animation" id="Animation_aq0i0"]

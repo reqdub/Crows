@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c7k0cyo1ymlki"]
 
-[ext_resource type="Script" uid="uid://q4bxjb3qdbji" path="res://damage_indicator.gd" id="1_mbbgf"]
+[ext_resource type="Script" uid="uid://q4bxjb3qdbji" path="res://Scripts/damage_indicator.gd" id="1_mbbgf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mbbgf"]
 radius = 21.0

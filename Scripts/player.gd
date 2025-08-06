@@ -6,10 +6,14 @@ class_name player
 @onready var throwable_area = get_node("/root/World/Background/Walk_Area")
 
 @onready var drop_area = get_node("/root/World/Background/Walk_Area")
-@onready var drop = preload("res://item.tscn")
+@onready var drop = preload("res://Scenes/item.tscn")
 
 @onready var throw_sound = load("res://Sounds/SFX/throw.wav")
-@onready var stun_sound = load("res://Sounds/SFX/stun.ogg")
+
+@onready var health_component = %Health_Component
+@onready var combat_component = %Combat_Component
+@onready var visual_component = %Visual_Component
+@onready var statemachine_component = %Statemachine
 
 @export var throw_cooldown : float = 2.0
 
@@ -24,13 +28,14 @@ enum look_side {
 }
 var looking_at = look_side.LEFT
 var switch_look_direction_cooldown : float = 2.0
+
 var is_looking_on_cooldown : bool = false
 var looking_timer : SceneTreeTimer
-
 var movement_tween : Tween
 var stealth_tween : Tween
 var initial_position : Vector2
 var statue : Vector2
+
 var walk_speed = 3
 var is_throw_on_cooldown : bool = false
 var throw_strength : float
@@ -38,79 +43,25 @@ var stealth_chance : int = 80
 
 var is_criminal_scum : bool = false
 var is_player_in_initial_position : bool = true
-var is_pray_cancelled : bool = false
 var is_in_stealth : bool = false
-var is_damaged : bool = false
-var is_knockdown = false
-var is_praying : bool = false
-var is_in_battle : bool = false
-
-enum state {
-	IDLE,
-	FIGHT,
-	STEALTH,
-	KNOCKDOWN
-}
-var current_state = state.IDLE
 
 func _ready() -> void:
+	setup_components()
 	initial_position = self.global_position
-	change_state(state.IDLE)
+	statemachine_component.change_state(statemachine_component.state.IDLE)
 	look_right()
 
-func change_state(new_state):
-	exit_state()
-	enter_state(new_state)
-
-func enter_state(new_state):
-	match new_state:
-		0 : #IDLE
-			idle_state()
-		1 : #FIGHT
-			block_player_control.emit(true)
-			fight_state()
-		2 : #STEALTH
-			stealth_state()
-		3:#KNOCKDOWN
-			block_player_control.emit(true)
-			$Visual/Head.frame = 3
-			knockdown_state()
-func exit_state():
-	match current_state:
-		0 : #IDLE
-			pass
-		1 : #FIGHT
-			block_player_control.emit(false)
-		2 : #STEALTH
-			pass
-		3:#KNOCKDOWN
-			$Visual/Head.frame = 2
-			block_player_control.emit(false)
-
-func idle_state():
-	current_state = state.IDLE
-	$AnimationPlayer.play("Idle")
-func fight_state():
-	current_state = state.FIGHT
-func stealth_state():
-	current_state = state.STEALTH
-	is_in_stealth = true
-func knockdown_state():
-	current_state = state.KNOCKDOWN
-	Logger.log("Игрок ", " в нокдауне")
-	is_knockdown = true
-	$AudioStreamPlayer.stream = stun_sound
-	$AudioStreamPlayer.play()
-	$AnimationPlayer.play("Knockdown")
-	await $AnimationPlayer.animation_finished
-	is_knockdown = false
-	change_state(state.IDLE)
+func setup_components():
+	health_component.setup_component(self, combat_component, visual_component, statemachine_component)
+	combat_component.setup_component(self, health_component, visual_component, statemachine_component)
+	visual_component.setup_component(self)
+	statemachine_component.setup_component(self, health_component, visual_component)
 
 func blink():
 	var blink_chance = 50
 	if blink_chance <= randi_range(0, 100): return
 	var timer = get_tree().create_timer(0.4)
-	if is_damaged:
+	if health_component.is_damaged:
 		$Visual/Head.frame = 2
 		await timer.timeout
 		$Visual/Head.frame = 3
@@ -121,6 +72,7 @@ func blink():
 
 func throw_item():
 	var throwable_instance = throwable_item.instantiate()
+	throwable_instance.set_item(combat_component.current_weapon_type, combat_component.base_damage)
 	throwable_instance.global_position = %ThrowPosition.global_position
 	throwable_instance.throw_strength = self.throw_strength
 	throwable_area.add_child(throwable_instance)
@@ -143,8 +95,8 @@ func _on_timer_timeout() -> void:
 	is_throw_on_cooldown = false
 
 func stealth():
-	if current_state == state.STEALTH: return
-	change_state(state.STEALTH)
+	if statemachine_component.current_state == statemachine_component.state.STEALTH: return
+	statemachine_component.change_state(statemachine_component.state.STEALTH)
 	$Stealth.visible = true
 	$CollisionShape2D.set_deferred("disabled", true)
 	$CollisionShape2D.set_deferred("disabled", false)
@@ -159,12 +111,12 @@ func remove_stealth():
 	$Visual.modulate = Color.from_rgba8(255,255,255,255)
 	$CollisionShape2D.set_deferred("disabled", true)
 	$CollisionShape2D.set_deferred("disabled", false)
-	if is_knockdown: return
-	if is_in_battle: return
-	change_state(state.IDLE)
+	if health_component.is_knockdown: return
+	if combat_component.is_in_battle: return
+	statemachine_component.change_state(statemachine_component.state.IDLE)
 
 func cancel_all_actions():
-	if current_state == state.STEALTH:
+	if statemachine_component.current_state == statemachine_component.state.STEALTH:
 		remove_stealth()
 		$Visual/RightHand/Weapon.visible = false
 
@@ -178,30 +130,6 @@ func walk_to(to : Vector2):
 	$AnimationPlayer.play("Walk")
 	await movement_tween.finished
 	$AnimationPlayer.stop()
-
-func pray():
-	block_player_control.emit(true)
-	await walk_to(statue)
-	is_praying = true
-	$AnimationPlayer.play("Pray")
-	await $AnimationPlayer.animation_finished
-	is_praying = false
-	emit_signal("pray_finished")
-	$AnimationPlayer.stop()
-	await walk_to(initial_position)
-	block_player_control.emit(false)
-
-func cancel_pray():
-	is_pray_cancelled = true
-	$Timer.stop()
-	if movement_tween:
-		movement_tween.kill()
-	is_pray_cancelled = false
-
-func stop_praying():
-	$AnimationPlayer.stop()
-	cancel_pray()
-	is_praying = false
 
 func become_criminal():
 	is_criminal_scum = true
@@ -218,29 +146,6 @@ func drop_loot(loot_collector):
 			droppable_item_instance.set_item(item_name, loot_collector)
 			droppable_item_instance.global_position = self.global_position
 			drop_area.call_deferred("add_child", droppable_item_instance)
-
-func start_combat():
-	if is_praying:
-		stop_praying()
-	Logger.log("Player ", "начинает бой")
-	is_in_battle = true
-	change_state(state.FIGHT)
-func end_combat(win : bool, winner = null):
-	if winner != null and winner.is_in_group("Guard"):
-		is_criminal_scum = false
-		criminal.emit(false)
-		drop_loot(winner)
-	Logger.log("Player ", "заканчивает бой")
-	is_in_battle = false
-	if win: change_state(state.IDLE)
-	else:
-		is_damaged = true
-		$Visual/Head.frame = 2
-		change_state(state.KNOCKDOWN)
-	if not is_player_in_initial_position:
-		block_player_control.emit(true)
-		await walk_to(initial_position)
-		block_player_control.emit(false)
 
 func look_left():
 	looking_at = look_side.LEFT
@@ -266,7 +171,7 @@ func look_at_target(target):
 	is_looking_on_cooldown = false
 
 func check_stealth(difficulty_modifier : float = 1.0) -> bool:
-	if current_state != state.STEALTH: return false
+	if statemachine_component.current_state != statemachine_component.state.STEALTH: return false
 	Logger.log("Игрок ", str("Проходит проверку скрытности"))
 	var random_chance = randi_range(1, 100)
 	var stealth_value = stealth_chance / difficulty_modifier
@@ -277,7 +182,7 @@ func check_stealth(difficulty_modifier : float = 1.0) -> bool:
 	remove_stealth()
 	return false
 func _process(_delta: float) -> void:
-	$Label.set_text(str(state.keys()[current_state]))
+	$Label.set_text(str(statemachine_component.state.keys()[statemachine_component.current_state]))
 
 func _on_prescence_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Empty_Space"):

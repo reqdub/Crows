@@ -5,7 +5,7 @@ class_name Guard
 @export var dialogues : Resource
 # @export var walk_speed = randi_range(500, 1000) # Now in NPC_Movement
 
-@onready var loot = preload("res://item.tscn")
+@onready var loot = preload("res://Scenes/item.tscn")
 @onready var signal_bus = get_node("/root/World/Signal_Bus")
 @onready var statemachine_node : StateMachine = %StateMachine
 @onready var danger_point = get_node("/root/World/Background/DangerPoint")

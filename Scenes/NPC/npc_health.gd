@@ -26,7 +26,7 @@ var karma_component : NPC_Karma
 # Internal state variables for health
 var current_health : int
 var max_total_health : int
-
+var knock_out_hp_treshhold : int
 # Status flags related to health
 var is_damaged : bool = false
 var is_head_damaged : bool = false
@@ -59,6 +59,7 @@ func setup_component(_parent_npc, _visual_component, _statemachine_component, _k
 func _ready() -> void:
 	randomize_vitality()
 	current_health = max_total_health
+	knock_out_hp_treshhold = int(max_total_health * 0.1)
 	if health_bar:
 		health_bar.max_value = max_total_health
 		health_bar.value = current_health
@@ -73,14 +74,14 @@ func randomize_vitality() -> void:
 			max_total_health = max_health_normal
 		Vitality.TOUGH:
 			max_total_health = max_health_tough
-	max_total_health = 10
 
 func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = false) -> void:
 	if is_dead or is_knockdown:
 		return
 	if damage_amount == -1: return
-	else: source_node.disable()
-	
+	else:
+		if source_node.is_in_group("Throwable"): 
+			source_node.disable()
 	if audio_stream_player and hit_sound:
 		audio_stream_player.stream = hit_sound
 		audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
@@ -89,8 +90,8 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 	if damage_amount > 0:
 		add_damage_indicator(damage_amount)
 		current_health -= damage_amount
+		if current_health <= 0: current_health = 1
 		is_damaged = true
-		
 		if health_bar:
 			health_bar.visible = true
 			health_bar.value = current_health
@@ -103,12 +104,9 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 		else:
 			is_body_damaged = true
 			Logger.log(parent_name, str("Получено урона в туловище ", damage_amount))
-		if health_bar:
-			var health_tween = get_tree().create_tween()
-			health_tween.tween_property(health_bar, "value", current_health, 0.3)
-		if current_health <= 0:
-			current_health = 0
-			is_dead = true
+		var health_tween = get_tree().create_tween()
+		health_tween.tween_property(health_bar, "value", current_health, 0.3)
+		if current_health <= knock_out_hp_treshhold:
 			knock_out()
 			return
 		elif current_health <= 3:
@@ -122,10 +120,8 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 
 func knock_out() -> void:
 	is_knockdown = true
-	if health_bar:
-		health_bar.visible = false
-	var parent_name = get_parent().name
-	Logger.log(parent_name, "Получено слишком много урона, падаю без сознания")
+	health_bar.visible = false
+	Logger.log(parent_npc.npc_name, "Получено слишком много урона, падаю без сознания")
 	statemachine_component.change_state(statemachine_component.state.KNOCKDOWN)
 	knocked_out.emit(true)
 
@@ -137,10 +133,8 @@ func add_damage_indicator(amount: int) -> void:
 	if not damage_indicator_prefab:
 		Logger.error("Damage indicator prefab not loaded!")
 		return
-
 	var damage_indicator_instance = damage_indicator_prefab.instantiate()
-	damage_indicator_instance.damage_amount(amount)
-	
+	damage_indicator_instance.setup(amount, Color.RED)
 	if on_screen_text_node and get_node_or_null("%OnScreenIndicators"):
 		damage_indicator_instance.global_position = get_node("%OnScreenIndicators").global_position
 		on_screen_text_node.call_deferred("add_child", damage_indicator_instance)
@@ -150,19 +144,9 @@ func add_damage_indicator(amount: int) -> void:
 		damage_indicator_instance.global_position = get_parent().global_position
 		get_tree().get_root().add_child(damage_indicator_instance) # Add to root if no specific UI parent
 
-func _on_head_collision_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Throwable"):
-		take_damage(body, body.deal_damage(), true)
-		body.destroy()
-
-func _on_body_area_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Throwable"):
-		take_damage(body, body.deal_damage(), true)
-		body.destroy()
-
-func _on_npc_combat_started(with_target : Node2D):
+func _on_npc_combat_started(_with_target : Node2D):
 	health_bar.visible = false
 
-func _on_npc_combat_ended(winner : bool):
+func _on_npc_combat_ended(_winner : bool):
 	if current_health < max_total_health:
 		health_bar.visible = true

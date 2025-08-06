@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var cloud = preload("res://cloud.tscn")
+@onready var cloud = preload("res://Scenes/cloud.tscn")
 
 var number_of_possible_clouds = 7
 

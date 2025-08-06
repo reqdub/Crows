@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cnnrt2xwa1kk4"]
 
-[ext_resource type="Script" uid="uid://ef53biv5bgua" path="res://on_throwable_destroy_particles.gd" id="1_n1lv1"]
+[ext_resource type="Script" uid="uid://ef53biv5bgua" path="res://Scripts/on_throwable_destroy_particles.gd" id="1_n1lv1"]
 
 [node name="On_Throwable_Destroy_Particles" type="CPUParticles2D"]
 emitting = false

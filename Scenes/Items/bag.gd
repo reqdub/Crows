@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-@onready var loot = preload("res://item.tscn")
+@onready var loot = preload("res://Scenes/item.tscn")
 @export var item_deletion_time : float = 3.0
 var timer
 var has_loot : bool = true

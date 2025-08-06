@@ -8,6 +8,7 @@ var player_node
 var fighter_1
 var fighter_2
 var fighter_1_origin_position : Vector2
+var brawl_winner : Node2D
 
 var battle_tween : Tween
 
@@ -17,13 +18,14 @@ var brawl_cooldown := 2.0
 var is_brawl_running := false
 var is_brawl_cancelled := false
 
+signal brawl_ended
+
 func set_brawl_start_point():
 	global_position = fighter_2.global_position
 
 func start_brawl(fighter, target: player = player_node) -> void:
 	if is_brawl_running:
 		return
-
 	# Инициализация боя
 	is_brawl_running = true
 	is_brawl_cancelled = false
@@ -33,7 +35,7 @@ func start_brawl(fighter, target: player = player_node) -> void:
 	log_brawl_start()
 	
 	fighter.combat_component.start_combat()
-	target.start_combat()
+	target.combat_component.start_combat()
 	cache_origin_position(fighter)
 	
 	play_brawl_effects()
@@ -42,7 +44,7 @@ func start_brawl(fighter, target: player = player_node) -> void:
 	await wait_during_brawl()
 	await animate_fighter_return()
 	Logger.log("End brawl visual")
-	finalize_brawl_result()
+	finalize_brawl_result(brawl_winner)
 
 func stop_brawl() -> void:
 	if not is_brawl_running:
@@ -55,8 +57,14 @@ func stop_brawl() -> void:
 	var stop_battle_tween = create_tween().set_parallel(true)
 	stop_battle_tween.tween_property(fighter_1, "global_position", fighter_1_origin_position, 0.3)
 	stop_battle_tween.tween_property(fighter_1, "rotation", 0, 0.3)
-	fighter_1.combat_component.end_combat(false)
-	fighter_2.end_combat(true)
+	if brawl_winner == fighter_1:
+		fighter_1.combat_component.end_combat(true)
+		fighter_2.combat_component.end_combat(false)
+		is_brawl_running = false
+	else:
+		fighter_1.combat_component.end_combat(false)
+		fighter_2.combat_component.end_combat(true)
+		is_brawl_running = false
 
 func log_brawl_start():
 	Logger.log(fighter_1.npc_name, " Начался бой")
@@ -89,8 +97,8 @@ func animate_fighter_approach() -> void:
 func wait_during_brawl() -> void:
 	if not is_brawl_running or is_brawl_cancelled:
 		return
-	$Timer.start(time_in_brawl)
-	await $Timer.timeout
+	$PunchTimer.start()
+	await brawl_ended
 
 func animate_fighter_return() -> void:
 	if not is_brawl_running or is_brawl_cancelled:
@@ -101,11 +109,15 @@ func animate_fighter_return() -> void:
 	battle_tween.tween_property(fighter_1, "rotation", 0, 0.3)
 	await wait_for_tween(battle_tween)
 
-func finalize_brawl_result():
+func finalize_brawl_result(winner):
 	if not is_brawl_running or is_brawl_cancelled:
 		return
-	fighter_1.combat_component.end_combat(true)
-	fighter_2.end_combat(false, fighter_1)
+	if winner == fighter_1:
+		fighter_1.combat_component.end_combat(true)
+		fighter_2.combat_component.end_combat(false, fighter_1)
+	else:
+		fighter_1.combat_component.end_combat(false)
+		fighter_2.combat_component.end_combat(true, fighter_2)
 	Logger.log(get_name(), " Бой закончился")
 	is_brawl_running = false
 	is_brawl_cancelled = false
@@ -119,10 +131,28 @@ func wait_for_tween(tween: Tween) -> void:
 
 func cancel_tween():
 	is_brawl_cancelled = true
-	$Timer.stop()
+	$PunchTimer.stop()
 	if battle_tween:
 		battle_tween.kill()
 	is_brawl_running = false
 
 func get_fighter_approach_angle() -> float:
 	return deg_to_rad(-90) if fighter_1.global_position.x > fighter_2.global_position.x else deg_to_rad(90)
+
+func _on_punch_timer_timeout() -> void:
+	if not is_brawl_running: return
+	if is_brawl_cancelled: return
+	if fighter_1.health_component.is_knockdown:
+		brawl_winner = fighter_2
+		$PunchTimer.stop()
+		stop_brawl()
+		brawl_ended.emit()
+		return
+	elif fighter_2.health_component.is_knockdown:
+		brawl_winner = fighter_1
+		$PunchTimer.stop()
+		stop_brawl()
+		brawl_ended.emit()
+		return
+	fighter_1.combat_component.deal_damage(fighter_2)
+	fighter_2.combat_component.deal_damage(fighter_1)

@@ -7,7 +7,7 @@ var actions_node : Actions
 #Заметив что-то подозрительное, NPC пройдет еще пару шагов
 var delay_before_stop : float = randf_range(0.1, 0.3)
 #Сколько времени NPC будет стоять на одном месте
-var time_in_caution : float = randf_range(0.5, 1.5)
+var time_in_caution : float = randf_range(0.3, 0.8)
 var delay_timer : SceneTreeTimer
 var caution_timer : SceneTreeTimer
 

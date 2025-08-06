@@ -93,7 +93,7 @@ func _react_to_weapon(_weapon_node: Node2D) -> void:
 			movement_component.movement_target = parent_npc.danger_point.global_position
 			request_state_change(statemachine_node.state.CHASE)
 
-func _react_to_damaged_character(char_node: Node2D) -> void:
+func _react_to_damaged_character(_char_node: Node2D) -> void:
 	is_damaged_npc_been_seen = true
 	if check_terminal_statuses(): return
 	movement_component.stop_moving()
@@ -127,14 +127,14 @@ func _react_to_player(player_node: Node2D) -> void:
 			await get_tree().create_timer(delay_before_start_fight).timeout
 			if check_terminal_statuses(): return
 			if combat_component.is_in_fight: return
-			if player_node.is_in_battle:
+			if player_node.combat_component.is_in_battle:
 				parent_npc.say("taunt")
 				movement_component.movement_target = Vector2.ZERO
 				request_state_change(statemachine_node.state.WALK)
 			else:
 				combat_component.initiate_combat(player_node) # Will move to combat component
 				request_state_change(statemachine_node.state.BATTLE)
-	elif player_node.is_in_battle: # Player script property
+	elif player_node.combat_component.is_in_battle: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
 		Logger.log(player_node.name, "Игрок в бою")
@@ -143,7 +143,7 @@ func _react_to_player(player_node: Node2D) -> void:
 		or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
 			movement_component.movement_target = Vector2.ZERO
 			movement_component.move_to_point()
-	elif player_node.is_knockdown: # Player script property
+	elif player_node.health_component.is_knockdown: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
 		Logger.log(parent_npc.name, "Игрок без сознания")
@@ -152,7 +152,7 @@ func _react_to_player(player_node: Node2D) -> void:
 		or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
 			movement_component.movement_target = Vector2.ZERO
 			movement_component.move_to_point()
-	elif player_node.is_praying and not health_component.is_damaged: # Player script property
+	elif player_node.visual_component.is_praying and not health_component.is_damaged: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
 		Logger.log(parent_npc.name, "Игрок молится")

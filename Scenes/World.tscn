@@ -1,88 +1,88 @@
 [gd_scene load_steps=89 format=3 uid="uid://dbrp3rkcelwif"]
 
-[ext_resource type="Script" uid="uid://ckeqc26yapcl7" path="res://world.gd" id="1_eu7l1"]
-[ext_resource type="Shader" uid="uid://djw1tr5r6ab1h" path="res://Shaders/GrassShake.gdshader" id="3_mnkyj"]
-[ext_resource type="Script" uid="uid://o1vkalo88itr" path="res://spawner.gd" id="3_wygdx"]
-[ext_resource type="Texture2D" uid="uid://c23x50rayq6oc" path="res://Sprites/Background/Statue.png" id="4_c2gv2"]
-[ext_resource type="Texture2D" uid="uid://4ys03fw7avpq" path="res://Sprites/Background/Skies.png" id="4_tlk5t"]
-[ext_resource type="Texture2D" uid="uid://dtw3h04lju3b4" path="res://Sprites/UI/CooldownBodrder.png" id="5_5j71u"]
-[ext_resource type="Script" uid="uid://b8ty62wxjay0n" path="res://clouds.gd" id="5_k3wwj"]
-[ext_resource type="Texture2D" uid="uid://bs0ue872qjbex" path="res://Sprites/Background/Dirt.png" id="5_ly4ka"]
-[ext_resource type="AudioStream" uid="uid://c4v10s5io466k" path="res://Sounds/SFX/launch.wav" id="6_fvag4"]
-[ext_resource type="Texture2D" uid="uid://b8mbx6l60jly0" path="res://Sprites/UI/CooldownProgress.png" id="6_jyqkj"]
-[ext_resource type="Texture2D" uid="uid://5kdf530crax5" path="res://Sprites/Background/Grass.png" id="6_o7opi"]
-[ext_resource type="Texture2D" uid="uid://c12yln7qda2o4" path="res://Sprites/UI/Throwing_Strength_Border.png" id="7_bah7m"]
-[ext_resource type="Script" uid="uid://bynt7cslre3so" path="res://ui.gd" id="7_fv4w7"]
-[ext_resource type="Texture2D" uid="uid://teuh1ivufmyy" path="res://Sprites/Background/Trees/Tree1.png" id="7_p6sh6"]
-[ext_resource type="Script" uid="uid://dklsyw16cxsvn" path="res://vegetation.gd" id="7_ylme8"]
-[ext_resource type="Script" uid="uid://cbdfrkkqpvx3g" path="res://brawl.gd" id="8_6w02q"]
-[ext_resource type="Texture2D" uid="uid://bq82d3maekb3t" path="res://Sprites/UI/Throwing_Strength.png" id="8_fv4w7"]
-[ext_resource type="Texture2D" uid="uid://k5nmvfe41fax" path="res://Sprites/Background/Trees/Tree2.png" id="8_olhe2"]
-[ext_resource type="Script" uid="uid://7gwhntx4q50e" path="res://Scripts/audio_manager.gd" id="8_rhl3w"]
-[ext_resource type="Texture2D" uid="uid://ncca57rw2cbn" path="res://Sprites/Effects/Smoke_Particle1.png" id="9_1fphk"]
-[ext_resource type="Script" uid="uid://cbpx3llrqbx2r" path="res://Scripts/sound_cache.gd" id="9_bun23"]
-[ext_resource type="Texture2D" uid="uid://ceagllkbknw12" path="res://Sprites/UI/StealthPressed.png" id="9_jyqkj"]
-[ext_resource type="Texture2D" uid="uid://bpo4n4cux16ki" path="res://Sprites/Background/Trees/Tree3.png" id="9_s3kwu"]
-[ext_resource type="Texture2D" uid="uid://bm3tlx3f4nwcx" path="res://Sprites/Effects/shape_star_.png" id="10_cvq6i"]
-[ext_resource type="AudioStream" uid="uid://dfn3fnukj65mn" path="res://Sounds/SFX/BoxingBell.wav" id="10_sjtuv"]
-[ext_resource type="Texture2D" uid="uid://c2o3ruiqe1gg7" path="res://Sprites/Background/Trees/Tree4.png" id="10_ybp5j"]
-[ext_resource type="AudioStream" uid="uid://cyd4175v0s7yb" path="res://Sounds/SFX/Fighting.wav" id="11_cvq6i"]
-[ext_resource type="Texture2D" uid="uid://w1gtch16l73" path="res://Sprites/UI/Aim.png" id="11_kva58"]
-[ext_resource type="Texture2D" uid="uid://b16y4yahbw0t3" path="res://Sprites/Background/Trees/Tree5.png" id="11_m21jb"]
-[ext_resource type="Texture2D" uid="uid://761koibr0hj3" path="res://Sprites/UI/Coin.png" id="12_f5c0m"]
-[ext_resource type="Texture2D" uid="uid://dn4mtqfus6qk8" path="res://Sprites/UI/Menu.png" id="12_jyqkj"]
-[ext_resource type="Texture2D" uid="uid://d3sovk0cisw6e" path="res://Sprites/Background/Trees/Tree1Shadow.png" id="12_tlk5t"]
-[ext_resource type="Texture2D" uid="uid://d37xhxon5ievf" path="res://Sprites/Background/Trees/Tree6.png" id="12_wmdyy"]
-[ext_resource type="Texture2D" uid="uid://bblgollqv7y2e" path="res://Sprites/UI/MenuButton.png" id="12_ydbc3"]
-[ext_resource type="Texture2D" uid="uid://cal3ltn5r0pb5" path="res://Sprites/Background/Mountines.png" id="13_3chcu"]
-[ext_resource type="Texture2D" uid="uid://js0ryaroueat" path="res://Sprites/UI/BadKarma.png" id="13_b2ar6"]
-[ext_resource type="Script" uid="uid://d11cbexhg42bq" path="res://menu.gd" id="13_d7dfr"]
-[ext_resource type="Texture2D" uid="uid://dfnvt8dafxegr" path="res://Sprites/Background/Trees/Tree7.png" id="13_tlk5t"]
-[ext_resource type="Texture2D" uid="uid://coo53kby84ctl" path="res://Sprites/UI/MenuButtonInput.png" id="14_aj1ai"]
-[ext_resource type="Texture2D" uid="uid://b6ge320vt42ye" path="res://Sprites/UI/Stealth.png" id="14_ee7l0"]
-[ext_resource type="Texture2D" uid="uid://bd5ftcxqo0bem" path="res://Sprites/Background/Trees/Tree2Shadow.png" id="14_i3ffs"]
-[ext_resource type="Texture2D" uid="uid://dwqjnbfxmu2u5" path="res://Sprites/Background/Trees/Tree8.png" id="14_k3wwj"]
-[ext_resource type="Material" uid="uid://bdsj2auht1wbm" path="res://Shaders/Tree.tres" id="14_o7opi"]
-[ext_resource type="Texture2D" uid="uid://d3c4wh61k2gqd" path="res://Sprites/Background/Bushes/s_bush40_0.png" id="15_2tffn"]
-[ext_resource type="Texture2D" uid="uid://cv0thqbfyan4h" path="res://Sprites/Background/Bushes/s_bush41_0.png" id="16_4s2lh"]
-[ext_resource type="Texture2D" uid="uid://b0e45ocary0ca" path="res://Sprites/Background/Trees/Tree3Shadow.png" id="16_7470a"]
-[ext_resource type="Texture2D" uid="uid://5nmnr6gyblm5" path="res://Sprites/Background/Bushes/s_bush_barberry_1.png" id="17_i3ffs"]
-[ext_resource type="Texture2D" uid="uid://5vypnwsbqpia" path="res://Sprites/Background/Bushes/s_bush_blueberry_1.png" id="18_7470a"]
-[ext_resource type="Texture2D" uid="uid://bghri4q4rgl2p" path="res://Sprites/Background/Trees/Tree4Shadow.png" id="18_nrxlq"]
-[ext_resource type="Texture2D" uid="uid://d04ng0nqp10er" path="res://Sprites/Background/Bushes/s_bush_gooseberry_1.png" id="19_nrxlq"]
-[ext_resource type="Texture2D" uid="uid://c1t3qciei7stp" path="res://Sprites/Background/Bushes/s_bush_raspberry_1.png" id="20_bdxe7"]
-[ext_resource type="Texture2D" uid="uid://dxunmsng7ps2u" path="res://Sprites/Background/Trees/Tree5Shadow.png" id="20_g4y68"]
-[ext_resource type="Texture2D" uid="uid://dftadjjhusiyj" path="res://Sprites/Background/StatueShadow.png" id="20_p6sh6"]
-[ext_resource type="Texture2D" uid="uid://hkdvnpp7mmex" path="res://Sprites/Background/Trees/Tree6Shadow.png" id="22_7470a"]
-[ext_resource type="Texture2D" uid="uid://c514lphf7gpg0" path="res://Sprites/UI/Pray.png" id="22_rhl3w"]
-[ext_resource type="Texture2D" uid="uid://dmyppfe4ruifm" path="res://Sprites/UI/PrayPressed.png" id="23_bun23"]
-[ext_resource type="Texture2D" uid="uid://dc7sltelnfnlo" path="res://Sprites/Background/Trees/Tree7Shadow.png" id="24_bdxe7"]
-[ext_resource type="Texture2D" uid="uid://di2hiaitaa5hq" path="res://Sprites/Background/Trees/Tree8Shadow.png" id="26_g4y68"]
-[ext_resource type="Texture2D" uid="uid://1vnnveaw2u0a" path="res://Sprites/Background/LightLamp.png" id="27_ybp5j"]
-[ext_resource type="Script" uid="uid://drdehe32376cf" path="res://Scripts/karma.gd" id="43_ngx0x"]
-[ext_resource type="Texture2D" uid="uid://gfkgjhlgegyj" path="res://Sprites/UI/StealthDisabled.png" id="44_wmdyy"]
-[ext_resource type="Texture2D" uid="uid://dhfabmrcixag5" path="res://Sprites/UI/PrayDisabled.png" id="47_tlk5t"]
-[ext_resource type="Script" uid="uid://c2pigvc10usdy" path="res://day_night_cycle.gd" id="52_olhe2"]
-[ext_resource type="Shader" uid="uid://c1wwowiwg0l3r" path="res://Light.gdshader" id="52_s3kwu"]
-[ext_resource type="Texture2D" uid="uid://dpgfkmu4dlw41" path="res://Sprites/Background/LightMask.png" id="53_ybp5j"]
-[ext_resource type="Texture2D" uid="uid://c65pb0jbn8voa" path="res://Sprites/UI/guard_icon.png" id="57_3chcu"]
-[ext_resource type="Texture2D" uid="uid://konii3i1fnj5" path="res://Sprites/UI/Guard_Progress_Border.png" id="58_ataof"]
-[ext_resource type="Texture2D" uid="uid://cm8ww8qwynfup" path="res://Sprites/UI/Guard_Progress.png" id="59_ngx0x"]
-[ext_resource type="Texture2D" uid="uid://478uf7x517mi" path="res://Sprites/UI/Criminal.png" id="62_xke13"]
-[ext_resource type="Script" uid="uid://betxdlflgbnwf" path="res://log.gd" id="65_g4y68"]
+[ext_resource type="Script" uid="uid://ckeqc26yapcl7" path="res://Scripts/world.gd" id="1_kf4hd"]
+[ext_resource type="Script" uid="uid://o1vkalo88itr" path="res://Scripts/spawner.gd" id="2_d533g"]
+[ext_resource type="Shader" uid="uid://djw1tr5r6ab1h" path="res://Shaders/GrassShake.gdshader" id="3_wnv30"]
+[ext_resource type="Texture2D" uid="uid://cal3ltn5r0pb5" path="res://Sprites/Background/Mountines.png" id="4_nfsqp"]
+[ext_resource type="Texture2D" uid="uid://4ys03fw7avpq" path="res://Sprites/Background/Skies.png" id="5_wcwqb"]
+[ext_resource type="Script" uid="uid://b8ty62wxjay0n" path="res://Scripts/clouds.gd" id="6_a60hx"]
+[ext_resource type="Texture2D" uid="uid://bs0ue872qjbex" path="res://Sprites/Background/Dirt.png" id="7_n5pd3"]
+[ext_resource type="Texture2D" uid="uid://5kdf530crax5" path="res://Sprites/Background/Grass.png" id="8_7cnhw"]
+[ext_resource type="Script" uid="uid://dklsyw16cxsvn" path="res://Scripts/vegetation.gd" id="9_6ee4w"]
+[ext_resource type="Material" uid="uid://bdsj2auht1wbm" path="res://Shaders/Tree.tres" id="10_h2nrh"]
+[ext_resource type="Texture2D" uid="uid://teuh1ivufmyy" path="res://Sprites/Background/Trees/Tree1.png" id="11_nda70"]
+[ext_resource type="Texture2D" uid="uid://d3sovk0cisw6e" path="res://Sprites/Background/Trees/Tree1Shadow.png" id="12_p70ga"]
+[ext_resource type="Texture2D" uid="uid://k5nmvfe41fax" path="res://Sprites/Background/Trees/Tree2.png" id="13_eq88g"]
+[ext_resource type="Texture2D" uid="uid://bd5ftcxqo0bem" path="res://Sprites/Background/Trees/Tree2Shadow.png" id="14_pey7r"]
+[ext_resource type="Texture2D" uid="uid://bpo4n4cux16ki" path="res://Sprites/Background/Trees/Tree3.png" id="15_8jik5"]
+[ext_resource type="Texture2D" uid="uid://b0e45ocary0ca" path="res://Sprites/Background/Trees/Tree3Shadow.png" id="16_pp50e"]
+[ext_resource type="Texture2D" uid="uid://c2o3ruiqe1gg7" path="res://Sprites/Background/Trees/Tree4.png" id="17_oe68r"]
+[ext_resource type="Texture2D" uid="uid://bghri4q4rgl2p" path="res://Sprites/Background/Trees/Tree4Shadow.png" id="18_46wus"]
+[ext_resource type="Texture2D" uid="uid://b16y4yahbw0t3" path="res://Sprites/Background/Trees/Tree5.png" id="19_idtu4"]
+[ext_resource type="Texture2D" uid="uid://dxunmsng7ps2u" path="res://Sprites/Background/Trees/Tree5Shadow.png" id="20_a0mrw"]
+[ext_resource type="Texture2D" uid="uid://d37xhxon5ievf" path="res://Sprites/Background/Trees/Tree6.png" id="21_4hpww"]
+[ext_resource type="Texture2D" uid="uid://hkdvnpp7mmex" path="res://Sprites/Background/Trees/Tree6Shadow.png" id="22_1q1st"]
+[ext_resource type="Texture2D" uid="uid://dfnvt8dafxegr" path="res://Sprites/Background/Trees/Tree7.png" id="23_xafdu"]
+[ext_resource type="Texture2D" uid="uid://dc7sltelnfnlo" path="res://Sprites/Background/Trees/Tree7Shadow.png" id="24_5aakm"]
+[ext_resource type="Texture2D" uid="uid://dwqjnbfxmu2u5" path="res://Sprites/Background/Trees/Tree8.png" id="25_npkjl"]
+[ext_resource type="Texture2D" uid="uid://di2hiaitaa5hq" path="res://Sprites/Background/Trees/Tree8Shadow.png" id="26_v0mqv"]
+[ext_resource type="Texture2D" uid="uid://c23x50rayq6oc" path="res://Sprites/Background/Statue.png" id="27_6buah"]
+[ext_resource type="Texture2D" uid="uid://dftadjjhusiyj" path="res://Sprites/Background/StatueShadow.png" id="28_tr2pn"]
+[ext_resource type="Texture2D" uid="uid://d3c4wh61k2gqd" path="res://Sprites/Background/Bushes/s_bush40_0.png" id="29_k7dx3"]
+[ext_resource type="Texture2D" uid="uid://cv0thqbfyan4h" path="res://Sprites/Background/Bushes/s_bush41_0.png" id="30_salhg"]
+[ext_resource type="Texture2D" uid="uid://5nmnr6gyblm5" path="res://Sprites/Background/Bushes/s_bush_barberry_1.png" id="31_mi3pb"]
+[ext_resource type="Texture2D" uid="uid://5vypnwsbqpia" path="res://Sprites/Background/Bushes/s_bush_blueberry_1.png" id="32_mo4j7"]
+[ext_resource type="Texture2D" uid="uid://d04ng0nqp10er" path="res://Sprites/Background/Bushes/s_bush_gooseberry_1.png" id="33_w4w0a"]
+[ext_resource type="Texture2D" uid="uid://c1t3qciei7stp" path="res://Sprites/Background/Bushes/s_bush_raspberry_1.png" id="34_qu1aq"]
+[ext_resource type="Texture2D" uid="uid://1vnnveaw2u0a" path="res://Sprites/Background/LightLamp.png" id="35_d1bd8"]
+[ext_resource type="Script" uid="uid://7gwhntx4q50e" path="res://Scripts/audio_manager.gd" id="36_hxv8f"]
+[ext_resource type="Script" uid="uid://cbpx3llrqbx2r" path="res://Scripts/sound_cache.gd" id="37_7orm3"]
+[ext_resource type="Script" uid="uid://cbdfrkkqpvx3g" path="res://Scripts/brawl.gd" id="38_26n4e"]
+[ext_resource type="Texture2D" uid="uid://ncca57rw2cbn" path="res://Sprites/Effects/Smoke_Particle1.png" id="39_xlj8n"]
+[ext_resource type="Texture2D" uid="uid://bm3tlx3f4nwcx" path="res://Sprites/Effects/shape_star_.png" id="40_ib1g1"]
+[ext_resource type="AudioStream" uid="uid://dfn3fnukj65mn" path="res://Sounds/SFX/BoxingBell.wav" id="41_i2iik"]
+[ext_resource type="AudioStream" uid="uid://cyd4175v0s7yb" path="res://Sounds/SFX/Fighting.wav" id="42_drsnn"]
+[ext_resource type="Script" uid="uid://drdehe32376cf" path="res://Scripts/karma.gd" id="43_ijah4"]
+[ext_resource type="Script" uid="uid://bynt7cslre3so" path="res://Scripts/ui.gd" id="44_55me5"]
+[ext_resource type="Texture2D" uid="uid://c12yln7qda2o4" path="res://Sprites/UI/Throwing_Strength_Border.png" id="45_rtdqc"]
+[ext_resource type="Texture2D" uid="uid://bq82d3maekb3t" path="res://Sprites/UI/Throwing_Strength.png" id="46_eo7uf"]
+[ext_resource type="Texture2D" uid="uid://dtw3h04lju3b4" path="res://Sprites/UI/CooldownBodrder.png" id="47_hr6rf"]
+[ext_resource type="Texture2D" uid="uid://b8mbx6l60jly0" path="res://Sprites/UI/CooldownProgress.png" id="48_4pa0e"]
+[ext_resource type="Texture2D" uid="uid://w1gtch16l73" path="res://Sprites/UI/Aim.png" id="49_dfi5t"]
+[ext_resource type="AudioStream" uid="uid://c4v10s5io466k" path="res://Sounds/SFX/launch.wav" id="50_kyy6y"]
+[ext_resource type="Texture2D" uid="uid://b6ge320vt42ye" path="res://Sprites/UI/Stealth.png" id="51_tpkkh"]
+[ext_resource type="Texture2D" uid="uid://ceagllkbknw12" path="res://Sprites/UI/StealthPressed.png" id="52_s1uji"]
+[ext_resource type="Texture2D" uid="uid://gfkgjhlgegyj" path="res://Sprites/UI/StealthDisabled.png" id="53_tyhiw"]
+[ext_resource type="Texture2D" uid="uid://c514lphf7gpg0" path="res://Sprites/UI/Pray.png" id="54_jdhmf"]
+[ext_resource type="Texture2D" uid="uid://dmyppfe4ruifm" path="res://Sprites/UI/PrayPressed.png" id="55_bottg"]
+[ext_resource type="Texture2D" uid="uid://dhfabmrcixag5" path="res://Sprites/UI/PrayDisabled.png" id="56_7b22x"]
+[ext_resource type="Texture2D" uid="uid://js0ryaroueat" path="res://Sprites/UI/BadKarma.png" id="57_wq5bf"]
+[ext_resource type="Texture2D" uid="uid://c65pb0jbn8voa" path="res://Sprites/UI/guard_icon.png" id="58_wlbba"]
+[ext_resource type="Texture2D" uid="uid://konii3i1fnj5" path="res://Sprites/UI/Guard_Progress_Border.png" id="59_t6wob"]
+[ext_resource type="Texture2D" uid="uid://cm8ww8qwynfup" path="res://Sprites/UI/Guard_Progress.png" id="60_n8hw1"]
+[ext_resource type="Texture2D" uid="uid://761koibr0hj3" path="res://Sprites/UI/Coin.png" id="61_wt7op"]
+[ext_resource type="Texture2D" uid="uid://478uf7x517mi" path="res://Sprites/UI/Criminal.png" id="62_fryod"]
+[ext_resource type="Texture2D" uid="uid://dn4mtqfus6qk8" path="res://Sprites/UI/Menu.png" id="63_yudfn"]
+[ext_resource type="Script" uid="uid://d11cbexhg42bq" path="res://Scripts/menu.gd" id="64_8d4rq"]
+[ext_resource type="Texture2D" uid="uid://bblgollqv7y2e" path="res://Sprites/UI/MenuButton.png" id="65_orwbc"]
+[ext_resource type="Texture2D" uid="uid://coo53kby84ctl" path="res://Sprites/UI/MenuButtonInput.png" id="66_jnjxo"]
+[ext_resource type="Shader" uid="uid://c1wwowiwg0l3r" path="res://Light.gdshader" id="67_jewup"]
+[ext_resource type="Script" uid="uid://c2pigvc10usdy" path="res://Scripts/day_night_cycle.gd" id="68_t2bui"]
+[ext_resource type="Texture2D" uid="uid://dpgfkmu4dlw41" path="res://Sprites/Background/LightMask.png" id="69_uowaf"]
+[ext_resource type="Script" uid="uid://betxdlflgbnwf" path="res://Scripts/log.gd" id="70_dmj13"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ee7l0"]
 size = Vector2(189, 801)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6xgc5"]
-shader = ExtResource("3_mnkyj")
+shader = ExtResource("3_wnv30")
 shader_parameter/wind_strength = 2.0
 shader_parameter/wind_speed = 2.0
 shader_parameter/wind_direction = Vector2(1, 0)
 shader_parameter/grass_height = 0.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o7opi"]
-shader = ExtResource("3_mnkyj")
+shader = ExtResource("3_wnv30")
 shader_parameter/wind_strength = 2.0
 shader_parameter/wind_speed = 1.0
 shader_parameter/wind_direction = Vector2(1, 0)
@@ -190,10 +190,10 @@ _data = {
 bg_color = Color(0.29219, 0.29219, 0.29219, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_olhe2"]
-shader = ExtResource("52_s3kwu")
+shader = ExtResource("67_jewup")
 
 [node name="World" type="Node2D"]
-script = ExtResource("1_eu7l1")
+script = ExtResource("1_kf4hd")
 
 [node name="Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
@@ -204,11 +204,9 @@ zoom = Vector2(0.6, 0.6)
 unique_name_in_owner = true
 position = Vector2(-1435, 226)
 scale = Vector2(0.580345, 0.580345)
-script = ExtResource("3_wygdx")
+script = ExtResource("2_d533g")
 
 [node name="Timer" type="Timer" parent="Spawner"]
-wait_time = 0.5
-autostart = true
 
 [node name="LeftPosition" type="Marker2D" parent="Spawner"]
 
@@ -232,14 +230,14 @@ material = SubResource("ShaderMaterial_6xgc5")
 
 [node name="Mountines" type="Sprite2D" parent="Background"]
 position = Vector2(0, -478)
-texture = ExtResource("13_3chcu")
+texture = ExtResource("4_nfsqp")
 
 [node name="Sky" type="Sprite2D" parent="Background"]
 position = Vector2(0, -504)
-texture = ExtResource("4_tlk5t")
+texture = ExtResource("5_wcwqb")
 
 [node name="Clouds" type="Node2D" parent="Background/Sky"]
-script = ExtResource("5_k3wwj")
+script = ExtResource("6_a60hx")
 
 [node name="Left" type="Marker2D" parent="Background/Sky/Clouds"]
 position = Vector2(-1304, -64)
@@ -251,11 +249,11 @@ position = Vector2(1288, -64)
 
 [node name="Dirt" type="Sprite2D" parent="Background"]
 position = Vector2(0, 152)
-texture = ExtResource("5_ly4ka")
+texture = ExtResource("7_n5pd3")
 
 [node name="Grass" type="Sprite2D" parent="Background"]
 material = SubResource("ShaderMaterial_o7opi")
-texture = ExtResource("6_o7opi")
+texture = ExtResource("8_7cnhw")
 
 [node name="Player_Position" type="Marker2D" parent="Background"]
 position = Vector2(-64, 136)
@@ -272,119 +270,119 @@ shape = SubResource("CircleShape2D_olhe2")
 modulate = Color(0.870588, 0.92549, 0.866667, 1)
 y_sort_enabled = true
 scale = Vector2(1.5, 1.5)
-script = ExtResource("7_ylme8")
+script = ExtResource("9_6ee4w")
 
 [node name="Trees" type="Node2D" parent="Background/Vegetation"]
 y_sort_enabled = true
 
 [node name="Tree1" type="Sprite2D" parent="Background/Vegetation/Trees"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(-36, -94)
-texture = ExtResource("7_p6sh6")
+texture = ExtResource("11_nda70")
 
 [node name="Shadow1" type="Sprite2D" parent="Background/Vegetation/Trees/Tree1"]
 modulate = Color(1, 1, 1, 0.196078)
 y_sort_enabled = true
 use_parent_material = true
 position = Vector2(50.6666, -1.33331)
-texture = ExtResource("12_tlk5t")
+texture = ExtResource("12_p70ga")
 
 [node name="Tree2" type="Sprite2D" parent="Background/Vegetation/Trees"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(-104, -176.667)
-texture = ExtResource("8_olhe2")
+texture = ExtResource("13_eq88g")
 
 [node name="Shadow2" type="Sprite2D" parent="Background/Vegetation/Trees/Tree2"]
 modulate = Color(1, 1, 1, 0.196078)
 y_sort_enabled = true
 use_parent_material = true
 position = Vector2(61.9999, -1.33298)
-texture = ExtResource("14_i3ffs")
+texture = ExtResource("14_pey7r")
 
 [node name="Tree3" type="Sprite2D" parent="Background/Vegetation/Trees"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(-185, -126.667)
-texture = ExtResource("9_s3kwu")
+texture = ExtResource("15_8jik5")
 
 [node name="Shadow3" type="Sprite2D" parent="Background/Vegetation/Trees/Tree3"]
 modulate = Color(1, 1, 1, 0.196078)
 y_sort_enabled = true
 use_parent_material = true
 position = Vector2(72.9999, -1.33299)
-texture = ExtResource("16_7470a")
+texture = ExtResource("16_pp50e")
 
 [node name="Tree4" type="Sprite2D" parent="Background/Vegetation/Trees"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(-305, -204)
-texture = ExtResource("10_ybp5j")
+texture = ExtResource("17_oe68r")
 
 [node name="Shadow4" type="Sprite2D" parent="Background/Vegetation/Trees/Tree4"]
 modulate = Color(1, 1, 1, 0.196078)
 y_sort_enabled = true
 use_parent_material = true
 position = Vector2(113, -1.33333)
-texture = ExtResource("18_nrxlq")
+texture = ExtResource("18_46wus")
 
 [node name="Tree5" type="Sprite2D" parent="Background/Vegetation/Trees"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(-489, -126.667)
-texture = ExtResource("11_m21jb")
+texture = ExtResource("19_idtu4")
 
 [node name="Shadow5" type="Sprite2D" parent="Background/Vegetation/Trees/Tree5"]
 modulate = Color(1, 1, 1, 0.196078)
 y_sort_enabled = true
 use_parent_material = true
 position = Vector2(67.6666, -5.33299)
-texture = ExtResource("20_g4y68")
+texture = ExtResource("20_a0mrw")
 
 [node name="Tree6" type="Sprite2D" parent="Background/Vegetation/Trees"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(135, -206.667)
-texture = ExtResource("12_wmdyy")
+texture = ExtResource("21_4hpww")
 
 [node name="Shadow6" type="Sprite2D" parent="Background/Vegetation/Trees/Tree6"]
 modulate = Color(1, 1, 1, 0.196078)
 y_sort_enabled = true
 use_parent_material = true
 position = Vector2(54.3333, -1.99963)
-texture = ExtResource("22_7470a")
+texture = ExtResource("22_1q1st")
 
 [node name="Tree7" type="Sprite2D" parent="Background/Vegetation/Trees"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(150.667, -57.3333)
-texture = ExtResource("13_tlk5t")
+texture = ExtResource("23_xafdu")
 
 [node name="Shadow7" type="Sprite2D" parent="Background/Vegetation/Trees/Tree7"]
 modulate = Color(1, 1, 1, 0.196078)
 y_sort_enabled = true
 use_parent_material = true
 position = Vector2(78.6662, -5.33331)
-texture = ExtResource("24_bdxe7")
+texture = ExtResource("24_5aakm")
 
 [node name="Tree8" type="Sprite2D" parent="Background/Vegetation/Trees"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(436.333, -137.333)
-texture = ExtResource("14_k3wwj")
+texture = ExtResource("25_npkjl")
 
 [node name="Shadow8" type="Sprite2D" parent="Background/Vegetation/Trees/Tree8"]
 modulate = Color(1, 1, 1, 0.196078)
 y_sort_enabled = true
 use_parent_material = true
 position = Vector2(75.6667, -1.33366)
-texture = ExtResource("26_g4y68")
+texture = ExtResource("26_v0mqv")
 
 [node name="Goddess" type="Sprite2D" parent="Background/Vegetation"]
 position = Vector2(-432, -0.666667)
 scale = Vector2(0.666667, 0.666667)
-texture = ExtResource("4_c2gv2")
+texture = ExtResource("27_6buah")
 
 [node name="GoddessPosition" type="Marker2D" parent="Background/Vegetation/Goddess"]
 unique_name_in_owner = true
@@ -394,7 +392,7 @@ position = Vector2(112, 104)
 modulate = Color(1, 1, 1, 0.235294)
 show_behind_parent = true
 position = Vector2(32, 16)
-texture = ExtResource("20_p6sh6")
+texture = ExtResource("28_tr2pn")
 
 [node name="Bushes" type="Node2D" parent="Background/Vegetation"]
 y_sort_enabled = true
@@ -403,67 +401,67 @@ scale = Vector2(1.5, 1.5)
 
 [node name="Bush1" type="Sprite2D" parent="Background/Vegetation/Bushes"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(95.7778, 51.3334)
-texture = ExtResource("15_2tffn")
+texture = ExtResource("29_k7dx3")
 
 [node name="Bush2" type="Sprite2D" parent="Background/Vegetation/Bushes"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(39.1112, 62.2222)
-texture = ExtResource("16_4s2lh")
+texture = ExtResource("30_salhg")
 
 [node name="Bush3" type="Sprite2D" parent="Background/Vegetation/Bushes"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(-7.11113, 52.8889)
-texture = ExtResource("17_i3ffs")
+texture = ExtResource("31_mi3pb")
 
 [node name="Bush9" type="Sprite2D" parent="Background/Vegetation/Bushes"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(-149.333, 45.7778)
-texture = ExtResource("17_i3ffs")
+texture = ExtResource("31_mi3pb")
 
 [node name="Bush4" type="Sprite2D" parent="Background/Vegetation/Bushes"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(-186.667, 49.7778)
-texture = ExtResource("18_7470a")
+texture = ExtResource("32_mo4j7")
 
 [node name="Bush5" type="Sprite2D" parent="Background/Vegetation/Bushes"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(-372, 42.2223)
-texture = ExtResource("19_nrxlq")
+texture = ExtResource("33_w4w0a")
 
 [node name="Bush6" type="Sprite2D" parent="Background/Vegetation/Bushes"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(60, 46.8889)
-texture = ExtResource("20_bdxe7")
+texture = ExtResource("34_qu1aq")
 
 [node name="Bush7" type="Sprite2D" parent="Background/Vegetation/Bushes"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(-117.778, 54)
-texture = ExtResource("20_bdxe7")
+texture = ExtResource("34_qu1aq")
 
 [node name="Bush8" type="Sprite2D" parent="Background/Vegetation/Bushes"]
 y_sort_enabled = true
-material = ExtResource("14_o7opi")
+material = ExtResource("10_h2nrh")
 position = Vector2(188, 36.2222)
-texture = ExtResource("20_bdxe7")
+texture = ExtResource("34_qu1aq")
 
 [node name="Lamp" type="Sprite2D" parent="Background/Vegetation"]
 y_sort_enabled = true
 position = Vector2(-613.333, 64)
-texture = ExtResource("27_ybp5j")
+texture = ExtResource("35_d1bd8")
 
 [node name="Lamp2" type="Sprite2D" parent="Background/Vegetation"]
 y_sort_enabled = true
 position = Vector2(602.667, 64)
-texture = ExtResource("27_ybp5j")
+texture = ExtResource("35_d1bd8")
 flip_h = true
 
 [node name="Forest" type="Sprite2D" parent="Background"]
@@ -559,7 +557,7 @@ position = Vector2(-920, 128)
 position = Vector2(886, 128)
 
 [node name="AudioManager" type="Node" parent="."]
-script = ExtResource("8_rhl3w")
+script = ExtResource("36_hxv8f")
 
 [node name="SFX" type="Node" parent="AudioManager"]
 
@@ -580,19 +578,18 @@ unique_name_in_owner = true
 volume_db = -20.0
 
 [node name="SoundCache" type="Node" parent="AudioManager"]
-script = ExtResource("9_bun23")
+script = ExtResource("37_7orm3")
 
 [node name="Brawl" type="Node2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(-72, 152)
-script = ExtResource("8_6w02q")
+script = ExtResource("38_26n4e")
 
 [node name="Smoke" type="CPUParticles2D" parent="Brawl"]
 emitting = false
 amount = 20
-texture = ExtResource("9_1fphk")
+texture = ExtResource("39_xlj8n")
 lifetime = 2.0
-one_shot = true
 explosiveness = 0.2
 emission_shape = 1
 emission_sphere_radius = 128.0
@@ -606,9 +603,8 @@ color_ramp = SubResource("Gradient_tiyat")
 
 [node name="Stars" type="CPUParticles2D" parent="Brawl"]
 emitting = false
-texture = ExtResource("10_cvq6i")
+texture = ExtResource("40_ib1g1")
 lifetime = 2.0
-one_shot = true
 explosiveness = 0.2
 emission_shape = 1
 emission_sphere_radius = 128.0
@@ -622,14 +618,13 @@ scale_amount_max = 4.0
 color_ramp = SubResource("Gradient_tiyat")
 
 [node name="Ding" type="AudioStreamPlayer" parent="Brawl"]
-stream = ExtResource("10_sjtuv")
+stream = ExtResource("41_i2iik")
 
 [node name="Fight" type="AudioStreamPlayer" parent="Brawl"]
-stream = ExtResource("11_cvq6i")
+stream = ExtResource("42_drsnn")
 
-[node name="Timer" type="Timer" parent="Brawl"]
-wait_time = 1.5
-one_shot = true
+[node name="PunchTimer" type="Timer" parent="Brawl"]
+wait_time = 0.1
 
 [node name="Particles" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -640,7 +635,7 @@ unique_name_in_owner = true
 
 [node name="Karma" type="Node" parent="."]
 unique_name_in_owner = true
-script = ExtResource("43_ngx0x")
+script = ExtResource("43_ijah4")
 
 [node name="UI" type="Control" parent="."]
 unique_name_in_owner = true
@@ -656,7 +651,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("7_fv4w7")
+script = ExtResource("44_55me5")
 throw_cooldown_time = 0.5
 stealth_cooldown_time = 0.5
 
@@ -675,8 +670,8 @@ offset_right = -16.0
 offset_bottom = -312.0
 grow_horizontal = 2
 grow_vertical = 0
-texture_over = ExtResource("7_bah7m")
-texture_progress = ExtResource("8_fv4w7")
+texture_over = ExtResource("45_rtdqc")
+texture_progress = ExtResource("46_eo7uf")
 texture_progress_offset = Vector2(1, 0)
 
 [node name="Cooldown" type="TextureProgressBar" parent="UI"]
@@ -695,16 +690,16 @@ offset_bottom = -296.0
 grow_horizontal = 2
 grow_vertical = 0
 fill_mode = 4
-texture_over = ExtResource("5_5j71u")
-texture_progress = ExtResource("6_jyqkj")
+texture_over = ExtResource("47_hr6rf")
+texture_progress = ExtResource("48_4pa0e")
 texture_progress_offset = Vector2(1, 0)
 
 [node name="Aim" type="Sprite2D" parent="UI"]
 visible = false
-texture = ExtResource("11_kva58")
+texture = ExtResource("49_dfi5t")
 
 [node name="AimSound" type="AudioStreamPlayer" parent="UI/Aim"]
-stream = ExtResource("6_fvag4")
+stream = ExtResource("50_kyy6y")
 
 [node name="Stealth" type="TextureButton" parent="UI"]
 layout_mode = 1
@@ -719,9 +714,9 @@ offset_right = 9.95996
 offset_bottom = 4.83997
 grow_horizontal = 0
 grow_vertical = 0
-texture_normal = ExtResource("14_ee7l0")
-texture_pressed = ExtResource("9_jyqkj")
-texture_disabled = ExtResource("44_wmdyy")
+texture_normal = ExtResource("51_tpkkh")
+texture_pressed = ExtResource("52_s1uji")
+texture_disabled = ExtResource("53_tyhiw")
 
 [node name="Pray" type="TextureButton" parent="UI"]
 layout_mode = 1
@@ -736,9 +731,9 @@ offset_right = -0.556091
 offset_bottom = -159.96
 grow_horizontal = 0
 grow_vertical = 0
-texture_normal = ExtResource("22_rhl3w")
-texture_pressed = ExtResource("23_bun23")
-texture_disabled = ExtResource("47_tlk5t")
+texture_normal = ExtResource("54_jdhmf")
+texture_pressed = ExtResource("55_bottg")
+texture_disabled = ExtResource("56_7b22x")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Pray"]
 libraries = {
@@ -762,8 +757,8 @@ grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(2, 2)
 fill_mode = 4
-texture_over = ExtResource("5_5j71u")
-texture_progress = ExtResource("6_jyqkj")
+texture_over = ExtResource("47_hr6rf")
+texture_progress = ExtResource("48_4pa0e")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI"]
 custom_minimum_size = Vector2(0, 64)
@@ -784,7 +779,7 @@ size_flags_horizontal = 8
 [node name="KarmaTexture" type="TextureRect" parent="UI/MarginContainer/Karma"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-texture = ExtResource("13_b2ar6")
+texture = ExtResource("57_wq5bf")
 expand_mode = 2
 
 [node name="Label" type="Label" parent="UI/MarginContainer/Karma"]
@@ -803,7 +798,7 @@ alignment = 1
 [node name="GuardTexture" type="TextureRect" parent="UI/MarginContainer/Guard"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-texture = ExtResource("57_3chcu")
+texture = ExtResource("58_wlbba")
 expand_mode = 2
 
 [node name="GuardProgress" type="TextureProgressBar" parent="UI/MarginContainer/Guard"]
@@ -811,8 +806,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 64)
 layout_mode = 2
 nine_patch_stretch = true
-texture_over = ExtResource("58_ataof")
-texture_progress = ExtResource("59_ngx0x")
+texture_over = ExtResource("59_t6wob")
+texture_progress = ExtResource("60_n8hw1")
 
 [node name="Inventory" type="HBoxContainer" parent="UI/MarginContainer"]
 layout_mode = 2
@@ -822,7 +817,7 @@ theme_override_constants/separation = 50
 [node name="Coin" type="TextureRect" parent="UI/MarginContainer/Inventory"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-texture = ExtResource("12_f5c0m")
+texture = ExtResource("61_wt7op")
 expand_mode = 2
 
 [node name="Money" type="Label" parent="UI/MarginContainer/Inventory"]
@@ -860,7 +855,7 @@ offset_bottom = -31.6
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)
-texture = ExtResource("62_xke13")
+texture = ExtResource("62_fryod")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UI/CriminalIcon"]
 libraries = {
@@ -881,8 +876,8 @@ offset_right = 512.0
 offset_bottom = 344.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("12_jyqkj")
-script = ExtResource("13_d7dfr")
+texture = ExtResource("63_yudfn")
+script = ExtResource("64_8d4rq")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Menu"]
 layout_mode = 1
@@ -912,7 +907,7 @@ theme_override_constants/separation = 16
 custom_minimum_size = Vector2(160, 60)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("12_ydbc3")
+texture = ExtResource("65_orwbc")
 region_rect = Rect2(0, 0, 182, 62)
 patch_margin_left = 20
 patch_margin_top = 3
@@ -934,7 +929,7 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(160, 60)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("12_ydbc3")
+texture = ExtResource("65_orwbc")
 region_rect = Rect2(0, 0, 182, 62)
 patch_margin_left = 20
 patch_margin_top = 3
@@ -956,7 +951,7 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(160, 60)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("12_ydbc3")
+texture = ExtResource("65_orwbc")
 region_rect = Rect2(0, 0, 182, 62)
 patch_margin_left = 20
 patch_margin_top = 3
@@ -978,7 +973,7 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(160, 60)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("12_ydbc3")
+texture = ExtResource("65_orwbc")
 region_rect = Rect2(0, 0, 182, 62)
 patch_margin_left = 20
 patch_margin_top = 3
@@ -1006,7 +1001,7 @@ custom_minimum_size = Vector2(120, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("14_aj1ai")
+texture = ExtResource("66_jnjxo")
 region_rect = Rect2(0, 0, 60, 60)
 patch_margin_left = 10
 patch_margin_top = 12
@@ -1037,7 +1032,7 @@ custom_minimum_size = Vector2(120, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("14_aj1ai")
+texture = ExtResource("66_jnjxo")
 region_rect = Rect2(0, 0, 60, 60)
 patch_margin_left = 10
 patch_margin_top = 12
@@ -1068,7 +1063,7 @@ custom_minimum_size = Vector2(120, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("14_aj1ai")
+texture = ExtResource("66_jnjxo")
 region_rect = Rect2(0, 0, 60, 60)
 patch_margin_left = 10
 patch_margin_top = 12
@@ -1099,7 +1094,7 @@ custom_minimum_size = Vector2(120, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("14_aj1ai")
+texture = ExtResource("66_jnjxo")
 region_rect = Rect2(0, 0, 60, 60)
 patch_margin_left = 10
 patch_margin_top = 12
@@ -1132,7 +1127,7 @@ alignment = 1
 
 [node name="Log" type="TextureButton" parent="Menu/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-texture_normal = ExtResource("12_ydbc3")
+texture_normal = ExtResource("65_orwbc")
 
 [node name="Label" type="Label" parent="Menu/VBoxContainer/HBoxContainer/Log"]
 layout_mode = 1
@@ -1147,7 +1142,7 @@ horizontal_alignment = 1
 
 [node name="CloseButton" type="TextureButton" parent="Menu/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-texture_normal = ExtResource("12_ydbc3")
+texture_normal = ExtResource("65_orwbc")
 
 [node name="Label" type="Label" parent="Menu/VBoxContainer/HBoxContainer/CloseButton"]
 layout_mode = 1
@@ -1193,7 +1188,7 @@ offset_right = 643.0
 offset_bottom = 291.5
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("14_aj1ai")
+texture = ExtResource("66_jnjxo")
 region_rect = Rect2(0, 0, 60, 60)
 patch_margin_left = 10
 patch_margin_top = 12
@@ -1232,7 +1227,7 @@ offset_right = 913.0
 offset_bottom = 330.0
 grow_horizontal = 0
 grow_vertical = 0
-texture_normal = ExtResource("14_aj1ai")
+texture_normal = ExtResource("66_jnjxo")
 stretch_mode = 0
 
 [node name="Label" type="Label" parent="MenuButton"]
@@ -1253,7 +1248,7 @@ process_mode = 1
 visible = false
 material = SubResource("ShaderMaterial_olhe2")
 color = Color(0, 0, 0, 1)
-script = ExtResource("52_olhe2")
+script = ExtResource("68_t2bui")
 dawn_color = Color(0.769891, 0.43706, 0.418844, 1)
 sunset_color = Color(1, 0.437426, 0.342712, 1)
 
@@ -1264,14 +1259,14 @@ position = Vector2(-856, 48)
 scale = Vector2(1.2, 1.2)
 enabled = false
 color = Color(1, 0.623529, 0.298039, 1)
-texture = ExtResource("53_ybp5j")
+texture = ExtResource("69_uowaf")
 
 [node name="PointLight2D2" type="PointLight2D" parent="DayNightCycle"]
 position = Vector2(842, 49)
 scale = Vector2(1.2, 1.2)
 enabled = false
 color = Color(1, 0.623529, 0.298039, 1)
-texture = ExtResource("53_ybp5j")
+texture = ExtResource("69_uowaf")
 
 [node name="Log" type="ColorRect" parent="."]
 unique_name_in_owner = true
@@ -1290,7 +1285,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 color = Color(0.0923971, 0.0923971, 0.0923971, 1)
-script = ExtResource("65_g4y68")
+script = ExtResource("70_dmj13")
 
 [node name="MarginContainer" type="MarginContainer" parent="Log"]
 layout_mode = 1
@@ -1374,6 +1369,7 @@ vertical_alignment = 1
 [connection signal="body_entered" from="Background/DestroyThrowableArea" to="." method="_on_destroy_throwable_area_body_entered"]
 [connection signal="body_entered" from="Background/OffScreenIcon" to="." method="_on_off_screen_icon_body_entered"]
 [connection signal="finished" from="AudioManager/Music/MusicPlayer" to="AudioManager" method="_on_music_player_finished"]
+[connection signal="timeout" from="Brawl/PunchTimer" to="Brawl" method="_on_punch_timer_timeout"]
 [connection signal="gui_input" from="UI" to="UI" method="_on_gui_input"]
 [connection signal="button_down" from="UI/Stealth" to="UI" method="_on_stealth_button_down"]
 [connection signal="button_up" from="UI/Stealth" to="UI" method="_on_stealth_button_up"]

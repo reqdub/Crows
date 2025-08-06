@@ -12,14 +12,10 @@ var statemachine_node : StateMachine
 var health_component : NPC_Health
 var reactions_component : NPC_Reactions
 var movement_component : NPC_Movement
-# Combat specific variables
-@export var base_karma_damage : int = 10 # Example default, adjust as needed
-@export var damage_taking_karma_factor : float = 2.0
-@export var panic_karma_factor : float = 1.0
 
 @export var delay_before_start_fight : float = 0.5
-@export var attack_damage : int = 10 # Damage this NPC deals
-@export var attack_cooldown : float = 1.0 # How often this NPC can attack
+@export var attack_damage : int = randi_range(2, 8)
+var can_attack : bool = true
 
 var target_enemy : Node2D = null
 var is_in_fight : bool = false
@@ -58,54 +54,50 @@ func start_combat():
 
 func end_combat(won: bool) -> void:
 	if not is_in_fight: return
+	combat_ended.emit(won)
 	is_in_fight = false
 	target_enemy = null
 	Logger.log(parent_npc.name, str("Бой завершился, я победил? ", won))
 	if won:
+		if reactions_component.check_terminal_statuses(): return
 		parent_npc.is_angry = false
 		parent_npc.say("taunt")
 		statemachine_node.change_state(statemachine_node.state.WALK)
-	else:
-		pass 
-	combat_ended.emit(won)
 
 func start_brawl():
 	await brawl_node.start_brawl(parent_npc, target_enemy)
 # Function called when NPC decides to attack
 
-func perform_attack() -> void:
-	if not is_in_fight or not target_enemy: return
-	#if Engine.get_process_time() - last_attack_time < attack_cooldown: return
-	#last_attack_time = Engine.get_process_time()
+func take_hit(source, amount, is_headshot : bool):
+	health_component.take_damage(source, amount, is_headshot)
+
+func deal_damage(target) -> void:
+	if not can_attack: return
+	if reactions_component.check_terminal_statuses(): return
 	Logger.log(parent_npc.name, str("Атакую ", target_enemy.name))
-	parent_npc.visuals_component.animation_player.play("Attack") 
-	# This assumes the target_enemy has a 'take_damage' method
-	if target_enemy.has_method("take_damage"):
-		target_enemy.take_damage(parent_npc, attack_damage)
-		attacked_target.emit(target_enemy, attack_damage)
-	else:
-		Logger.warn(str("Target enemy ", target_enemy.name, " does not have a 'take_damage' method."))
-	# Wait for animation to finish before potentially moving or another action
-	await parent_npc.visuals_component.animation_player.animation_finished
-	# After attacking, NPC might go back to a combat idle or pursue
-	statemachine_node.change_state(statemachine_node.state.IDLE) # Or whatever state after attack
+	var damage = attack_damage
+	var is_headshot : bool = false
+	if randi_range(0, 100) < 20:
+		is_headshot = true
+	target.combat_component.take_hit(target, damage, is_headshot)
+	can_attack = false
+	var attack_cooldown : float = randf_range(0.8, 1.2)
+	$AttackCooldown.start(attack_cooldown)
 
 func _on_health_knocked_out(is_knocked_out : bool) -> void:
-	# When NPC is knocked out, combat naturally ends.
 	if is_knocked_out:
 		if brawl_node.is_brawl_running:
 			brawl_node.stop_brawl()
-		end_combat(false) # NPC lost the fight
-	# Drop loot and handle collision cleanup (gameplay concern, not purely combat but often tied to it)
-	#parent_npc.drop_ammunition(true)
-	# These collision shape removals are critical for gameplay (no longer interactable)
-	# They are part of the "knockout" process, which is a result of combat (or severe damage).
-	# Keep them here for now, or move to a dedicated "NPC_State_Cleanup" component if it gets larger.
-	else:
-		if parent_npc.get_node_or_null("Visual/Body/BodyArea"):
-			parent_npc.get_node("Visual/Body/BodyArea").queue_free()
-		if parent_npc.get_node_or_null("Visual/Head/HeadCollision"):
-			parent_npc.get_node("Visual/Head/HeadCollision").queue_free()
-	# The actual state change to KNOCKDOWN will be handled by the StateMachine,
-	# which is already connected to health_component.knocked_out in npc.gd.
-	# So, no need to `change_state` here.
+
+func _on_head_collision_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Throwable"):
+		take_hit(body, body.deal_damage(), true)
+		body.destroy()
+
+func _on_body_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Throwable"):
+		take_hit(body, body.deal_damage(), true)
+		body.destroy()
+
+func _on_attack_cooldown_timeout() -> void:
+	can_attack = true
