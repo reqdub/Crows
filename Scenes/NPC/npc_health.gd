@@ -108,11 +108,13 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 		elif current_health <= 3:
 			critical_health.emit()
 		damaged_by_hit.emit(source_node, is_headshot)
-		karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken, current_health, max_total_health)
+		if source_node.is_in_group("Player") or source_node.is_in_group("Throwable"):
+			karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken, current_health, max_total_health)
 	else:
 		reactions_component._react_to_zero_damage()
-		karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken,  current_health, max_total_health)
 		add_damage_indicator(0)
+		if source_node.is_in_group("Player") or source_node.is_in_group("Throwable"):
+			karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken,  current_health, max_total_health)
 
 func knock_out() -> void:
 	is_knockdown = true
@@ -140,9 +142,9 @@ func add_damage_indicator(amount: int) -> void:
 		damage_indicator_instance.global_position = get_parent().global_position
 		get_tree().get_root().add_child(damage_indicator_instance) # Add to root if no specific UI parent
 
-func _on_npc_combat_started(_with_target : Node2D):
+func _on_npc_combat_started():
 	health_bar.visible = false
 
-func _on_npc_combat_ended(_winner : bool):
+func _on_npc_combat_ended():
 	if current_health < max_total_health:
 		health_bar.visible = true

@@ -9,7 +9,6 @@ class_name NPC_Visuals
 @onready var animation_player = $"../AnimationPlayer"
 # Reference to the parent NPC script to get state information if needed
 var parent_npc
-var npc_type
 var health_component : NPC_Health
 
 # Internal state for visuals
@@ -20,23 +19,17 @@ signal knockdown_animation_finished
 
 func setup_component(_parent_npc, _health_component) -> void:
 	parent_npc = _parent_npc
-	npc_type = parent_npc.current_npc_type
 	randomize_visual()
 	health_component = _health_component
 	health_component.damaged_by_hit.connect(_on_health_damaged_by_hit)
 	health_component.knocked_out.connect(_on_health_knocked_out)
 
 func randomize_visual() -> void:
-	var head_texture_path
-	match npc_type:
-		0: #PEASANT
-			var random_head = randi_range(1, 3)
-			head_texture_path = "res://Sprites/NPC/Heads/Male/Head" + str(random_head) + ".png"
-			head_sprite.texture = load(head_texture_path)
-			head_sprite.frame = 0
-			current_head_frame = 0 # Reset for future use if needed
-		1: #GUARD
-			pass
+	var random_head = randi_range(1, 3)
+	var head_texture_path = "res://Sprites/NPC/Heads/Male/Head" + str(random_head) + ".png"
+	head_sprite.texture = load(head_texture_path)
+	head_sprite.frame = 0
+	current_head_frame = 0
 
 # --- Animation Playback Functions ---
 func play_walk_animation() -> void:

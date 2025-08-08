@@ -32,6 +32,14 @@ gdscript/warnings/unused_signal=0
 
 window/stretch/mode="canvas_items"
 
+[file_customization]
+
+folder_colors={
+"res://Scenes/": "yellow",
+"res://Sprites/": "green",
+"res://Sprites/UI/": "purple"
+}
+
 [global_group]
 
 Floor=""
@@ -40,6 +48,8 @@ Character=""
 Guard=""
 Player=""
 Empty_Space="Игрок покинул данную зону и не был обнаружен"
+Bandit=""
+Peasant=""
 
 [input]
 

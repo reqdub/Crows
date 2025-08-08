@@ -28,7 +28,7 @@ var weapon_damage : Dictionary = {
 var can_attack : bool = true
 var base_damage : int = 2
 var damage : int = 0
-var is_in_battle : bool = false
+var is_in_fight : bool = false
 
 func setup_component(_parent, _health_component, _visual_component, _statemachine):
 	parent = _parent
@@ -36,21 +36,24 @@ func setup_component(_parent, _health_component, _visual_component, _statemachin
 	visual_component = _visual_component
 	statemachine = _statemachine
 
-func start_combat():
+func start_combat(with_target):
 	if visual_component.is_praying:
 		visual_component.stop_praying()
-	Logger.log("Player ", "начинает бой")
-	is_in_battle = true
+	Logger.log("Player начинает бой c", with_target.npc_name)
+	is_in_fight = true
 	statemachine.change_state(statemachine.state.FIGHT)
 
 func end_combat(win : bool, winner = null):
 	if not win:
-		if winner != null and winner.is_in_group("Guard"):
-			parent.is_criminal_scum = false
-			parent.criminal.emit(false)
-			parent.drop_loot(winner)
+		if winner != null:
+			if winner.is_in_group("Guard"):
+				parent.is_criminal_scum = false
+				parent.criminal.emit(false)
+				parent.drop_loot(winner)
+			elif winner.is_in_group("Bandit"):
+				parent.drop_loot(winner)
 	Logger.log("Player ", "заканчивает бой")
-	is_in_battle = false
+	is_in_fight = false
 	if win: statemachine.change_state(statemachine.state.IDLE)
 	else:
 		audioplayer.stream = hit_sound
@@ -76,11 +79,11 @@ func deal_damage(target):
 	audioplayer.pitch_scale = randf_range(0.9, 1.1)
 	audioplayer.play()
 	var random_damage : Array = calculate_damage()
-	var damage = randi_range(random_damage[0], random_damage[1])
+	var damage_to_deal = randi_range(random_damage[0], random_damage[1])
 	var is_headshot : bool = false
 	if randi_range(0, 100) < 20:
 		is_headshot = true
-	target.combat_component.take_hit(target, damage, is_headshot)
+	target.combat_component.take_hit(target, damage_to_deal, is_headshot)
 	can_attack = false
 	var attack_cooldown : float = randf_range(0.8, 1.4)
 	$AttackCooldown.start(attack_cooldown)

@@ -8,7 +8,7 @@ var is_debug_enabled : bool = false
 var temp_npc_count : int = 0
 
 func _ready() -> void:
-	temp_npc_count = %Spawner.max_entities
+	temp_npc_count = %Spawner.max_number_of_npc
 	is_debug_enabled = Logger.is_log_enabled
 	if is_debug_enabled == true:
 		$VBoxContainer/MarginContainer/HBoxContainer/Value/Debug/Label.set_text("Вкл")

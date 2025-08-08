@@ -23,7 +23,7 @@ signal brawl_ended
 func set_brawl_start_point():
 	global_position = fighter_2.global_position
 
-func start_brawl(fighter, target: player = player_node) -> void:
+func start_brawl(fighter, target) -> void:
 	if is_brawl_running:
 		return
 	# Инициализация боя
@@ -34,23 +34,21 @@ func start_brawl(fighter, target: player = player_node) -> void:
 	set_brawl_start_point()
 	log_brawl_start()
 	
-	fighter.combat_component.start_combat()
-	target.combat_component.start_combat()
+	fighter.combat_component.start_combat(fighter_2)
+	target.combat_component.start_combat(fighter_1)
 	cache_origin_position(fighter)
 	
 	play_brawl_effects()
-	Logger.log("Start brawl visual")
 	await animate_fighter_approach()
 	await wait_during_brawl()
 	await animate_fighter_return()
-	Logger.log("End brawl visual")
 	finalize_brawl_result(brawl_winner)
 
 func stop_brawl() -> void:
 	if not is_brawl_running:
 		return
 	cancel_tween()
-	Logger.log(get_name(), " Бой экстренно закончился нокаутом")
+	Logger.log(fighter_1.npc_name, " нокаутирован, бой завершен")
 	is_brawl_running = false
 	is_brawl_cancelled = true
 	stop_brawl_effects()
@@ -58,16 +56,16 @@ func stop_brawl() -> void:
 	stop_battle_tween.tween_property(fighter_1, "global_position", fighter_1_origin_position, 0.3)
 	stop_battle_tween.tween_property(fighter_1, "rotation", 0, 0.3)
 	if brawl_winner == fighter_1:
-		fighter_1.combat_component.end_combat(true)
+		fighter_1.combat_component.end_combat(true, fighter_1)
 		fighter_2.combat_component.end_combat(false, fighter_1)
 		is_brawl_running = false
 	else:
-		fighter_1.combat_component.end_combat(false)
+		fighter_1.combat_component.end_combat(false, fighter_2)
 		fighter_2.combat_component.end_combat(true, fighter_2)
 		is_brawl_running = false
 
 func log_brawl_start():
-	Logger.log(fighter_1.npc_name, " Начался бой")
+	Logger.log(fighter_1.npc_name, " начал бой")
 
 func cache_origin_position(fighter):
 	origin_positions[fighter] = fighter.global_position
@@ -101,6 +99,7 @@ func wait_during_brawl() -> void:
 	await brawl_ended
 
 func animate_fighter_return() -> void:
+	await get_tree().create_timer(randf_range(0.5, 1.0)).timeout
 	if not is_brawl_running or is_brawl_cancelled:
 		return
 	var origin_position = origin_positions.get(fighter_1, fighter_1_origin_position)
@@ -113,12 +112,11 @@ func finalize_brawl_result(winner):
 	if not is_brawl_running or is_brawl_cancelled:
 		return
 	if winner == fighter_1:
-		fighter_1.combat_component.end_combat(true)
+		fighter_1.combat_component.end_combat(true, fighter_1)
 		fighter_2.combat_component.end_combat(false, fighter_1)
 	else:
-		fighter_1.combat_component.end_combat(false)
+		fighter_1.combat_component.end_combat(false, fighter_2)
 		fighter_2.combat_component.end_combat(true, fighter_2)
-	Logger.log(get_name(), " Бой закончился")
 	is_brawl_running = false
 	is_brawl_cancelled = false
 

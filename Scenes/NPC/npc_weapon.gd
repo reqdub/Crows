@@ -13,7 +13,7 @@ func drop():
 
 func drop_weapon():
 	is_weapon_dropped = true
-	var weapon = load("res://Scenes/Items/Weapon.tscn").instantiate()
+	var weapon = load("res://Scenes/Items/Knife.tscn").instantiate()
 	weapon.global_position = self.global_position
 	self.queue_free()
 	drop_area.call_deferred('add_child', weapon)

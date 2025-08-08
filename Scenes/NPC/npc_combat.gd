@@ -27,8 +27,8 @@ var is_enemy_been_seeing: bool = false
 var last_attack_time : float = 0.0
 
 # Signals for other components/systems to react to combat events
-signal combat_started(with : Node2D)
-signal combat_ended(winner : bool)
+signal combat_started()
+signal combat_ended()
 signal attacked_target(target: Node2D, damage_dealt: int)
 
 func setup_component(_parent_npc, _statemachine_node, _movement_component, _health_component, _reactions_component, _vision_component):
@@ -42,33 +42,39 @@ func setup_component(_parent_npc, _statemachine_node, _movement_component, _heal
 	health_component.knocked_out.connect(_on_health_knocked_out)
 # Helper for reaction component to request state change, now goes through combat
 
-func initiate_combat(enemy_node: Node2D) -> void:
+func initiate_combat(target: Node2D) -> void:
 	if is_in_fight or health_component.is_dead or health_component.is_knockdown: return
-	target_enemy = enemy_node
+	target_enemy = target
+	Logger.log(parent_npc.npc_name, str("Начинаю бой с ", target_enemy.npc_name))
+	combat_started.emit()
+	statemachine_node.change_state(statemachine_node.state.BATTLE)
+
+func start_combat(with_target):
 	is_in_fight = true
-	Logger.log(parent_npc.name, str("Начинаю бой с ", target_enemy.name))
-	vision_component.set_vision(false)
+	if not statemachine_node.check_is_current_state(statemachine_node.state.BATTLE):
+		movement_component.stop_moving()
+		statemachine_node.change_state(statemachine_node.state.BATTLE)
 	parent_npc.dialogue_component.visible = false
 	health_component.health_bar.visible = false
 
-func start_combat():
-	combat_started.emit(target_enemy)
-
-func end_combat(won: bool) -> void:
+func end_combat(win: bool, winner) -> void:
 	if not is_in_fight: return
-	combat_ended.emit(won)
 	is_in_fight = false
+	if reactions_component.check_terminal_statuses(): return
 	target_enemy = null
-	Logger.log(parent_npc.name, str("Бой завершился, я победил? ", won))
-	if won:
-		if reactions_component.check_terminal_statuses(): return
+	Logger.log(parent_npc.npc_name, str("Бой завершился, я победил? ", win))
+	if win:
 		parent_npc.is_angry = false
 		parent_npc.say("taunt")
+		Karma.remove_all_karma()
 		statemachine_node.change_state(statemachine_node.state.WALK)
+	else:
+		statemachine_node.change_state(statemachine_node.state.WALK)
+	combat_ended.emit()
 
 func start_brawl():
+	if is_in_fight: return
 	await brawl_node.start_brawl(parent_npc, target_enemy)
-# Function called when NPC decides to attack
 
 func take_hit(source, amount, is_headshot : bool):
 	health_component.take_damage(source, amount, is_headshot)

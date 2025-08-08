@@ -3,7 +3,6 @@ extends Node
 var character
 var statemachine_node : StateMachine
 var movement_node : NPC_Movement
-var actions_node : Actions
 
 func panic():
 	var distance_to_despawn_point = character.global_position.distance_to(character.despawn_position.global_position)

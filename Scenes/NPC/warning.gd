@@ -3,7 +3,6 @@ extends Node
 var character
 var statemachine_node : StateMachine
 var movement_node : NPC_Movement
-var actions_node : Actions
 var delay_timer : SceneTreeTimer
 var warning_timer : SceneTreeTimer
 var warning_time : float = randf_range(0.4, 1.0)

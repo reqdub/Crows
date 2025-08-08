@@ -3,7 +3,7 @@ extends Node
 var character
 var statemachine_node : StateMachine
 var movement_node : NPC_Movement
-var actions_node : Actions
+
 #Заметив что-то подозрительное, NPC пройдет еще пару шагов
 var delay_before_stop : float = randf_range(0.1, 0.3)
 #Сколько времени NPC будет стоять на одном месте

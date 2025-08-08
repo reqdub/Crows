@@ -58,7 +58,7 @@ func _on_regen_timer_timeout() -> void:
 	$RegenTimer.start(regen_timeout)
 
 func regenerate_health():
-	if combat_component.is_in_battle: return
+	if combat_component.is_in_fight: return
 	if current_health >= max_total_health: return
 	current_health += regen_amount
 	update_health_bar()

@@ -5,7 +5,6 @@ class_name battle_state
 var character
 var statemachine_node : StateMachine
 var movement_node : NPC_Movement
-var actions_node : Actions
 
 func battle():
 	movement_node.stop_moving()

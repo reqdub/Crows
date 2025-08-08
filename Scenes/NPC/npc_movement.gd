@@ -2,6 +2,7 @@
 extends Node
 class_name NPC_Movement
 
+@onready var view_area = %ViewArea
 # References to other components and nodes
 var parent_npc
 var statemachine_node : StateMachine
@@ -51,7 +52,8 @@ func set_move_speed(speed: float) -> void:
 	speed = speed
 
 func look_at_direction(target : Vector2):
-	%ViewArea.rotation = parent_npc.global_position.angle_to_point(target)
+	if view_area != null:
+		view_area.rotation = parent_npc.global_position.angle_to_point(target)
 	if parent_npc.global_position.x < target.x:
 		%Visual.scale = Vector2(1,1)
 		%Dialogue/Background.global_position = %Dialogue/LeftSide.global_position

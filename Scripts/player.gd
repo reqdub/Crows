@@ -26,6 +26,7 @@ enum look_side {
 	LEFT,
 	RIGHT
 }
+var npc_name = "Игрок"
 var looking_at = look_side.LEFT
 var switch_look_direction_cooldown : float = 2.0
 
@@ -112,7 +113,7 @@ func remove_stealth():
 	$CollisionShape2D.set_deferred("disabled", true)
 	$CollisionShape2D.set_deferred("disabled", false)
 	if health_component.is_knockdown: return
-	if combat_component.is_in_battle: return
+	if combat_component.is_in_fight: return
 	statemachine_component.change_state(statemachine_component.state.IDLE)
 
 func cancel_all_actions():

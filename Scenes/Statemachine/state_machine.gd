@@ -10,7 +10,8 @@ enum state {
 	KNOCKDOWN,
 	CAUTION,
 	WARNING,
-	SPAWNED
+	SPAWNED,
+	STEALTH
 }
 
 @onready var states = {
@@ -21,7 +22,8 @@ enum state {
 	state.BATTLE: $Battle,
 	state.KNOCKDOWN: $Knockdown,
 	state.CAUTION: $Caution,
-	state.WARNING: $Warning
+	state.WARNING: $Warning,
+	state.STEALTH: $Stealth
 }
 
 var parent
@@ -33,9 +35,8 @@ var movement_component : NPC_Movement
 var current_state := state.SPAWNED
 var previous_state := state.IDLE
 
-func setup_component(_parent, _actions, _health_component, _combat_component, _movement_component):
+func setup_component(_parent, _health_component, _combat_component, _movement_component):
 	parent = _parent
-	actions_node = _actions
 	health_component = _health_component
 	combat_component = _combat_component
 	movement_component = _movement_component
@@ -44,20 +45,22 @@ func setup_component(_parent, _actions, _health_component, _combat_component, _m
 		state_node.statemachine_node = self
 		state_node.character = parent
 		state_node.movement_node = movement_component
-		state_node.actions_node = actions_node
 	parent.reactions_component.connect("state_change_requested", change_state)
 
 func change_state(new_state: state) -> void:
 	if health_component.is_knockdown and current_state != state.KNOCKDOWN:
 		if new_state == current_state:
-			Logger.log(parent.npc_name, " Игнорирую переход: %s" % state.keys()[new_state])
-			return
-
+			if new_state == state.WALK:
+				states[state.WALK].walk()
+			else:
+				Logger.log(parent.npc_name, " Игнорирую переход: %s" % state.keys()[new_state])
+				return
+	if parent.combat_component.is_in_fight and new_state != state.KNOCKDOWN:
+		return
 	Logger.log(parent.npc_name, " Перехожу из %s в %s" % [
 		state.keys()[current_state],
 		state.keys()[new_state]
 	])
-
 	_exit_state(current_state)
 	previous_state = current_state
 	current_state = new_state
@@ -78,6 +81,8 @@ func _exit_state(state_to_exit: state) -> void:
 			Logger.log(parent.npc_name, " выходя из CAUTION останавливаю предупреждения WARRNINGS")
 			if current_state == state.WARNING:
 				states[state.WARNING].stop_warnings()
+		state.STEALTH:
+			states[state.STEALTH].remove_stealth()
 		_:
 			pass
 
@@ -102,6 +107,8 @@ func _enter_state(state_to_enter: state) -> void:
 				states[state.WARNING].warning()
 		state.SPAWNED:
 			pass
+		state.STEALTH:
+			states[state.STEALTH].stealth()
 
 func _stop_alert_states() -> void:
 	Logger.log(parent.npc_name, " остановка всех предупреждений")

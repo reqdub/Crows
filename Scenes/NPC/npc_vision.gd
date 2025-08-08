@@ -8,6 +8,8 @@ var health_component : NPC_Health
 var combat_component : NPC_Combat
 var reaction_component : NPC_Reactions
 
+var ignore_reaction_list : Array[Node2D] = []
+
 func setup_component(_parent_npc, _health_component, _combat_component, _reaction_component):
 	parent_npc = _parent_npc
 	health_component = _health_component
@@ -32,11 +34,14 @@ func _on_view_area_body_entered(body: Node2D) -> void:
 		combat_component.is_enemy_in_sight = true
 		combat_component.potential_enemy = body
 		reaction_component._react_to_player(body)
-	elif body.is_in_group("Character"): # Assuming 'character' is a main NPC script/node with an 'is_damaged' property
+	elif body.is_in_group("Character") and not body.is_in_group("Bandit"): # Assuming 'character' is a main NPC script/node with an 'is_damaged' property
 		# You need to ensure 'body.character' correctly points to the NPC script itself
 		if body.has_method("get_health_component") and body.get_health_component().is_damaged:
 			reaction_component._react_to_damaged_character(body)
 			Logger.log(parent_npc.name, "Реагирую на раненого персонажа")
+	elif body.is_in_group("Bandit"):
+		Logger.log(parent_npc.npc_name, " реагирую на бандита")
+		#reaction_component._react_to_bandit(body)
 
 func _on_view_area_body_exited(body: Node2D) -> void:
 	if body.is_in_group("Player"):
@@ -51,8 +56,8 @@ func set_vision(can_see : bool):
 		%ViewArea.set_deferred("monitorable", false)
 		%ViewArea.set_deferred("monitoring", false)
 
-func _on_npc_combat_started(_with : Node2D):
+func _on_npc_combat_started():
 	set_vision(false)
 
-func _on_npc_combat_ended(_winner : bool):
+func _on_npc_combat_ended():
 	set_vision(true)

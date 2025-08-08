@@ -1,0 +1,6 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://7vkgcnvj2tbm"]
+
+[ext_resource type="Script" uid="uid://db5d3hrpnl77x" path="res://Resources/npc_names.gd" id="1_tkemt"]
+
+[resource]
+script = ExtResource("1_tkemt")

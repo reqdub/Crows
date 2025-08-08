@@ -105,22 +105,22 @@ func _react_to_player(player_node: Node2D) -> void:
 	player_node.look_at_target(parent_npc) # Player script should have this method
 	potential_enemy = player_node
 	Logger.log(parent_npc.name, "Реагирую на игрока")
-
 	if player_node.check_stealth(stealth_detection_multiplier): # Player script method
 		Logger.log(parent_npc.name, "Игрок спрятался")
 		potential_enemy = null
-		movement_component.stop_moving()
 		if combat_component.is_enemy_been_seeing:
-			parent_npc.say("it_seemed")
-		else:
 			parent_npc.say("where_are_you")
-		await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(1.0).timeout
+		else:
+			if randi_range(0, 100) < 33:
+				parent_npc.say("it_seemed")
+				await get_tree().create_timer(1.0).timeout
 		if check_terminal_statuses(): return
 		if statemachine_node.check_is_current_state(statemachine_node.state.WALK) \
 		or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
 			movement_component.movement_target = Vector2.ZERO
 			movement_component.move_to_point() # This call assumes walker handles moving to null target as stopping
-	elif player_node.combat_component.is_in_battle: # Player script property
+	elif player_node.combat_component.is_in_fight: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
 		Logger.log(player_node.name, "Игрок в бою")

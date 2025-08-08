@@ -25,6 +25,8 @@ var karma_component : NPC_Karma
 var current_health : int
 var max_total_health : int
 var knock_out_hp_treshhold : int
+
+var damage_source_list : Array = []
 # Status flags related to health
 var is_damaged : bool = false
 var is_head_damaged : bool = false
@@ -73,10 +75,16 @@ func randomize_vitality() -> void:
 		Vitality.TOUGH:
 			max_total_health = max_health_tough
 
+func is_in_damager_list(damage_source) -> bool:
+	if damage_source_list.has(damage_source): return true
+	return false
+
 func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = false) -> void:
 	if is_dead or is_knockdown:
 		return
 	if damage_amount == -1: return
+	if not damage_source_list.has(source_node):
+		damage_source_list.append(source_node)
 	else:
 		if source_node.is_in_group("Throwable"):
 			source_node.disable()
@@ -91,13 +99,12 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 			health_bar.value = current_health
 			if health_bar_label:
 				health_bar_label.text = str(current_health, " / ", max_total_health)
-		var parent_name = get_parent().name
 		if is_headshot:
 			is_head_damaged = true
-			Logger.log(parent_name, str("Получено урона в голову ", damage_amount))
+			Logger.log(parent_npc.npc_name, str("Получено урона в голову ", damage_amount))
 		else:
 			is_body_damaged = true
-			Logger.log(parent_name, str("Получено урона в туловище ", damage_amount))
+			Logger.log(parent_npc.npc_name, str("Получено урона в туловище ", damage_amount))
 		if health_bar:
 			var health_tween = get_tree().create_tween()
 			health_tween.tween_property(health_bar, "value", current_health, 0.3)
@@ -125,19 +132,10 @@ func _on_knockdown_animation_finished():
 	knocked_out.emit(false)
 
 func add_damage_indicator(amount: int) -> void:
-	if not damage_indicator_prefab:
-		Logger.error("Damage indicator prefab not loaded!")
-		return
 	var damage_indicator_instance = damage_indicator_prefab.instantiate()
 	damage_indicator_instance.setup(amount, Color.RED)
-	if on_screen_text_node and get_node_or_null("%OnScreenIndicators"):
-		damage_indicator_instance.global_position = get_node("%OnScreenIndicators").global_position
-		on_screen_text_node.call_deferred("add_child", damage_indicator_instance)
-	else:
-		Logger.warn("OnScreenText node or %OnScreenIndicators not found for damage indicator. Placing at NPC position.")
-		# Fallback if the target UI nodes aren't found
-		damage_indicator_instance.global_position = get_parent().global_position
-		get_tree().get_root().add_child(damage_indicator_instance) # Add to root if no specific UI parent
+	damage_indicator_instance.global_position = get_node("%OnScreenIndicators").global_position
+	on_screen_text_node.call_deferred("add_child", damage_indicator_instance)
 
 func _on_head_collision_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Throwable"):
@@ -149,9 +147,9 @@ func _on_body_area_body_entered(body: Node2D) -> void:
 		take_damage(body, body.deal_damage(), true)
 		body.destroy()
 
-func _on_npc_combat_started(with_target : Node2D):
+func _on_npc_combat_started():
 	health_bar.visible = false
 
-func _on_npc_combat_ended(winner : bool):
+func _on_npc_combat_ended():
 	if current_health < max_total_health:
 		health_bar.visible = true

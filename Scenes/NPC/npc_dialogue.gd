@@ -36,7 +36,7 @@ func _on_display_speech_requested(npc_name, type: String):
 	$Background/Label.set_text(random_text)
 	$Background/Label.visible_ratio = 0.0 # Start from 0 for the tween
 
-	speech_tween = get_tree().create_tween()
+	speech_tween = create_tween()
 	speech_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT) # Add some easing
 	speech_tween.tween_property($Background/Label, "visible_ratio", 1.0, bubble_show_time)
 	
@@ -48,8 +48,8 @@ func _on_display_speech_requested(npc_name, type: String):
 	$Background/Label.set_text("") # Clear text
 	visible = false # Hide the bubble
 
-func _on_npc_combat_started(_with_target : Node2D):
+func _on_npc_combat_started():
 	is_dialogues_blocked = true
 	visible = false
-func _on_npc_combat_ended(_winner : bool):
+func _on_npc_combat_ended():
 	is_dialogues_blocked = false
