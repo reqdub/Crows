@@ -32,6 +32,8 @@ func _on_guard_sense_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Guard"):
 		guard_list.append(body)
 		parent_npc.combat_component.target_enemy = body
+		if parent_npc.reactions_component.check_terminal_statuses(): return
+		if parent_npc.combat_component.is_in_fight: return
 		statemahine.change_state(statemahine.state.STEALTH)
 
 func _on_guard_sense_area_body_exited(body: Node2D) -> void:

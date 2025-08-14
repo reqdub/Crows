@@ -5,8 +5,9 @@ class_name player
 @onready var throwable_item = preload("res://Scenes/Items/Throwable_Item.tscn")
 @onready var throwable_area = get_node("/root/World/Background/Walk_Area")
 
-@onready var drop_area = get_node("/root/World/Background/Walk_Area")
-@onready var drop = preload("res://Scenes/item.tscn")
+@onready var drop_area = get_node("/root/World/Background/Drops")
+@onready var collectable_drop = preload("res://Scenes/Droppable/collectable_item.tscn")
+@onready var non_collectable_drop = preload("res://Scenes/Droppable/non_collectable_item.tscn")
 
 @onready var throw_sound = load("res://Sounds/SFX/throw.wav")
 
@@ -21,6 +22,10 @@ signal block_player_control(blocked : bool)
 signal pray_finished
 signal item_dropped(item_name, item_amount)
 signal criminal(is_scum : bool)
+
+signal add_weapon(weapon_name, weapon_count)
+signal weapon_count_changed(weapon_name)
+signal change_money_count(amount)
 
 enum look_side {
 	LEFT,
@@ -73,10 +78,19 @@ func blink():
 
 func throw_item():
 	var throwable_instance = throwable_item.instantiate()
-	throwable_instance.set_item(combat_component.current_weapon_type, combat_component.base_damage)
+	throwable_instance.set_item(
+		combat_component.current_weapon.min_weapon_damage,
+		combat_component.current_weapon.max_weapon_damage,
+		combat_component.base_damage, 
+		self,
+		combat_component.current_weapon.sprite_path,
+		combat_component.current_weapon.get_scale()
+		)
 	throwable_instance.global_position = %ThrowPosition.global_position
 	throwable_instance.throw_strength = self.throw_strength
 	throwable_area.add_child(throwable_instance)
+	Inventory.player_inventory["Weapons"][combat_component.current_weapon.get_weapon_name()]["amount"] -= 1
+	weapon_count_changed.emit(combat_component.current_weapon.get_weapon_name())
 	
 func throw(strength : float, angle: float):
 	if is_throw_on_cooldown : return
@@ -90,6 +104,8 @@ func throw(strength : float, angle: float):
 	$Timer.start(throw_cooldown)
 	is_throw_on_cooldown = true
 	await $AnimationPlayer.animation_finished
+	if statemachine_component.current_state != statemachine_component.state.IDLE: return
+	$AnimationPlayer.play("Idle")
 	
 func _on_timer_timeout() -> void:
 	$Visual/RightHand/Weapon.visible = true
@@ -136,17 +152,40 @@ func become_criminal():
 	is_criminal_scum = true
 	criminal.emit(true)
 
+func change_weapon(weapon):
+	combat_component.change_weapon(weapon)
+
 func drop_loot(loot_collector):
-	var player_inventory = Inventory.player_inventory
-	for item in player_inventory:
-		var item_name = item
-		var item_amount = player_inventory[item]
-		item_dropped.emit(item_name, -item_amount)
-		for i in item_amount:
-			var droppable_item_instance : droppable_item = drop.instantiate()
-			droppable_item_instance.set_item(item_name, loot_collector)
-			droppable_item_instance.global_position = self.global_position
-			drop_area.call_deferred("add_child", droppable_item_instance)
+	drop_items("coin", loot_collector)
+	
+func drop_items(item_category, loot_collector):
+	match item_category:
+		"coin" : 
+			var amount = Inventory.player_inventory["coin"]
+			item_dropped.emit("coin", amount)
+			for i in amount:
+				var droppable_item_instance = collectable_drop.instantiate()
+				droppable_item_instance.set_item("coin", loot_collector, "",)
+				droppable_item_instance.global_position = self.global_position
+				drop_area.call_deferred("add_child", droppable_item_instance)
+		"Collectable" :
+			var items_list : Array = Inventory.player_inventory["Collectable"]
+			for item in items_list:
+				var item_amount = Inventory.player_inventory["Collectable"][item]
+				var droppable_item_instance = collectable_drop.instantiate()
+				droppable_item_instance.set_item(item, loot_collector, "Collectable")
+				droppable_item_instance.global_position = self.global_position
+				drop_area.call_deferred("add_child", droppable_item_instance)
+		"Non-Collectable" : 
+			var items_list : Array = Inventory.player_inventory["Non-Collectable"]
+			for item in items_list:
+				var item_amount = Inventory.player_inventory["Non-Collectable"][item]
+				var droppable_item_instance = collectable_drop.instantiate()
+				droppable_item_instance.set_item(item, loot_collector, "Non-Collectable")
+				droppable_item_instance.global_position = self.global_position
+				drop_area.call_deferred("add_child", droppable_item_instance)
+		"Weapons" : 
+			var amount = Inventory.player_inventory["Weapons"]
 
 func look_left():
 	looking_at = look_side.LEFT
@@ -186,11 +225,18 @@ func _process(_delta: float) -> void:
 	$Label.set_text(str(statemachine_component.state.keys()[statemachine_component.current_state]))
 
 func _on_prescence_area_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Empty_Space"):
-		await get_tree().create_timer(0.5).timeout
-		is_player_in_initial_position = true
+	if body.is_in_group("Weapon"):
+		var weapon_name = body.item_name
+		var weapon_amount = body.item_amount
+		add_equipment("Weapons", weapon_name, weapon_amount)
+		body.queue_free()
 
-func _on_prescence_area_body_exited(body: Node2D) -> void:
-	if body.is_in_group("Empty_Space"):
-		await get_tree().create_timer(0.5).timeout
-		is_player_in_initial_position = false
+func add_equipment(item_category, item_name, item_amount):
+	if Inventory.player_inventory[item_category].has(item_name):
+		Inventory.player_inventory[item_category][item_name]["amount"] += item_amount
+	else:
+		Inventory.player_inventory[item_category][item_name] = {"amount" : item_amount}
+	add_weapon.emit(item_name)
+
+func change_money(amount):
+	change_money_count.emit(amount)

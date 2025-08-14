@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dnnvev3odjfb3"]
+
+[ext_resource type="Script" uid="uid://dq5kr74pkedc3" path="res://Resources/Weapons/weapon.gd" id="1_bhk2r"]
+
+[resource]
+script = ExtResource("1_bhk2r")
+weapon_type = 0
+min_weapon_damage = 2
+max_weapon_damage = 8
+sprite_path = "res://Sprites/Weapon/Rock.png"

@@ -11,7 +11,8 @@ enum state {
 	CAUTION,
 	WARNING,
 	SPAWNED,
-	STEALTH
+	STEALTH,
+	TRADE
 }
 
 @onready var states = {
@@ -23,7 +24,8 @@ enum state {
 	state.KNOCKDOWN: $Knockdown,
 	state.CAUTION: $Caution,
 	state.WARNING: $Warning,
-	state.STEALTH: $Stealth
+	state.STEALTH: $Stealth,
+	state.TRADE: $Trade
 }
 
 var parent
@@ -83,6 +85,8 @@ func _exit_state(state_to_exit: state) -> void:
 				states[state.WARNING].stop_warnings()
 		state.STEALTH:
 			states[state.STEALTH].remove_stealth()
+		state.TRADE:
+			parent.hide_trade_icon()
 		_:
 			pass
 
@@ -109,6 +113,8 @@ func _enter_state(state_to_enter: state) -> void:
 			pass
 		state.STEALTH:
 			states[state.STEALTH].stealth()
+		state.TRADE:
+			states[state.TRADE].trade()
 
 func _stop_alert_states() -> void:
 	Logger.log(parent.npc_name, " остановка всех предупреждений")

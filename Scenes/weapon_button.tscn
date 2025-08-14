@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://bg3gpaqxgajqb"]
+
+[ext_resource type="Texture2D" uid="uid://so3asmpeyfr5" path="res://Sprites/UI/Weapon_Icons/Weapon_Cell.png" id="1_mpv2h"]
+[ext_resource type="Texture2D" uid="uid://dlg5mffjtwt78" path="res://Sprites/UI/Weapon_Icons/knife.png" id="2_nxhg3"]
+
+[node name="Weapon" type="VBoxContainer"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+color = Color(0.548963, 0.548963, 0.548963, 1)
+
+[node name="Label" type="Label" parent="ColorRect"]
+layout_mode = 2
+offset_right = 128.0
+offset_bottom = 34.0
+theme_override_font_sizes/font_size = 24
+text = "99999"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WeaponUnder" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_mpv2h")
+
+[node name="WeaponIcon" type="TextureRect" parent="WeaponUnder"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_nxhg3")
+
+[node name="Button" type="Button" parent="WeaponUnder/WeaponIcon"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

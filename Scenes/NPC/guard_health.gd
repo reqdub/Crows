@@ -83,13 +83,18 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 	if is_dead or is_knockdown:
 		return
 	if damage_amount == -1: return
-	if not damage_source_list.has(source_node):
-		damage_source_list.append(source_node)
+	if source_node.is_in_group("Throwable"):
+		source_node.disable()
+		var thrower = source_node.thrower
+		source_node = source_node.thrower
+		if not damage_source_list.has(thrower):
+			damage_source_list.append(thrower)
 	else:
-		if source_node.is_in_group("Throwable"):
-			source_node.disable()
+		if not damage_source_list.has(source_node):
+			damage_source_list.append(source_node)
 	var health_before_damage_taken : int = current_health
 	if damage_amount > 0:
+		AudioManager.play_sound(SoundCache.hit_sound)
 		add_damage_indicator(damage_amount)
 		current_health -= damage_amount
 		if current_health < 0: current_health = 1
@@ -114,10 +119,12 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 		elif current_health <= 3:
 			critical_health.emit()
 		damaged_by_hit.emit(source_node, is_headshot)
-		karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken, current_health, max_total_health)
+		if source_node.is_in_group("Player"):
+			karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken, current_health, max_total_health)
 	else:
 		reactions_component._react_to_zero_damage()
-		karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken,  current_health, max_total_health)
+		if source_node.is_in_group("Player"):
+			karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken,  current_health, max_total_health)
 		add_damage_indicator(0)
 
 func knock_out() -> void:

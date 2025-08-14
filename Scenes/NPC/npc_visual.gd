@@ -26,45 +26,38 @@ func setup_component(_parent_npc, _health_component) -> void:
 
 func randomize_visual() -> void:
 	var random_head = randi_range(1, 3)
-	var head_texture_path = "res://Sprites/NPC/Heads/Male/Head" + str(random_head) + ".png"
-	head_sprite.texture = load(head_texture_path)
+	#var head_texture_path = "res://Sprites/NPC/Heads/Male/Head" + str(random_head) + ".png"
+	#head_sprite.texture = load(head_texture_path)
 	head_sprite.frame = 0
 	current_head_frame = 0
 
 # --- Animation Playback Functions ---
 func play_walk_animation() -> void:
-	if animation_player:
-		if parent_npc.is_panic:
-			play_panic_animation()
-		else:
-			animation_player.play("Walk")
+	if parent_npc.is_panic:
+		play_panic_animation()
+	else:
+		animation_player.play("Walk")
 
 func play_chase_animation() -> void:
-	# Often same as walk, but could be different if you have a distinct chase animation
-	if animation_player:
-		animation_player.play("Walk") # Or "Chase" if you create one
+	animation_player.play("Walk") # Or "Chase" if you create one
 
 func play_idle_animation() -> void:
-	if animation_player:
-		animation_player.stop() # Or play "Idle" if you have one
+	animation_player.stop()
 
 func play_panic_animation() -> void:
-	if animation_player:
-		animation_player.play("Panic")
+	animation_player.play("Panic")
 
 func play_caution_animation() -> void:
-	if animation_player:
-		animation_player.stop() # Or play "Caution" if you have one
+	animation_player.stop()
 
 func play_knockdown_animation() -> void:
-	if animation_player:
-		animation_player.play("Knockdown")
-		await animation_player.animation_finished
-		Logger.log(parent_npc.npc_name, " анимация нокдауна окончена")
-		knockdown_animation_finished.emit()
+	animation_player.play("Knockdown")
+	await animation_player.animation_finished
+	Logger.log(parent_npc.npc_name, " анимация нокдауна окончена")
+	knockdown_animation_finished.emit()
 
-func stop_all_animations() -> void:
-	if animation_player:
+func stop_movement_animation() -> void:
+	if animation_player.current_animation == "Walk" or animation_player.current_animation == "Panic":
 		animation_player.stop()
 
 # --- Damage Visuals ---

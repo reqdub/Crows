@@ -49,6 +49,7 @@ func setup_component(_parent_npc, _statemachine_node, _health_component, _moveme
 
 func _react_to_weapon(_weapon_node: Node2D) -> void:
 	if chech_is_feared(): # This function needs to be in this component
+		health_component.damage_source_list.append(_weapon_node.thrower)
 		request_state_change(statemachine_node.state.PANIC)
 		parent_npc.say("panic")
 	elif health_component.is_damaged: # Check health component's state
@@ -58,13 +59,13 @@ func _react_to_weapon(_weapon_node: Node2D) -> void:
 		if is_guard_been_seen : return
 		number_of_warnings -= 1
 		if number_of_warnings <= 0:
-			parent_npc.say("criminal_scum")
+			parent_npc.say("bandit_swearing")
 			await get_tree().create_timer(delay_before_start_fight).timeout
 			if check_terminal_statuses(): return
 			Logger.log(parent_npc.name, "Игрок рядом бросил камень, хватит предупреждать, бой!")
 			combat_component.initiate_combat(potential_enemy)
 		else:
-			parent_npc.say("criminal_scum")
+			parent_npc.say("bandit_swearing")
 			Logger.log(parent_npc.name, "Игрок рядом бросил камень, я не ранен, предупреждаю!")
 			request_state_change(statemachine_node.state.WARNING)
 	elif combat_component.is_enemy_in_sight and health_component.is_damaged:
@@ -129,28 +130,19 @@ func _react_to_player(player_node: Node2D) -> void:
 				parent_npc.say("it_seemed")
 				await get_tree().create_timer(1.0).timeout
 		if check_terminal_statuses(): return
-		if statemachine_node.check_is_current_state(statemachine_node.state.WALK) \
-		or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
-			movement_component.movement_target = Vector2.ZERO
-			movement_component.move_to_point() # This call assumes walker handles moving to null target as stopping
+		check_if_walking_or_chasing()
 	elif player_node.combat_component.is_in_fight: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
 		Logger.log(player_node.name, "Игрок в бою")
 		parent_npc.say("taunt")
-		if statemachine_node.check_is_current_state(statemachine_node.state.WALK) \
-		or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
-			movement_component.movement_target = Vector2.ZERO
-			movement_component.move_to_point()
+		check_if_walking_or_chasing()
 	elif player_node.health_component.is_knockdown: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
 		Logger.log(parent_npc.name, "Игрок без сознания")
 		parent_npc.say("taunt")
-		if statemachine_node.check_is_current_state(statemachine_node.state.WALK) \
-		or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
-			movement_component.movement_target = Vector2.ZERO
-			movement_component.move_to_point()
+		check_if_walking_or_chasing()
 	elif player_node.visual_component.is_praying and not health_component.is_damaged: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
@@ -159,10 +151,7 @@ func _react_to_player(player_node: Node2D) -> void:
 		if dice_roll() < 50:
 			parent_npc.say("pray")
 		await get_tree().create_timer(1.0).timeout
-		if statemachine_node.check_is_current_state(statemachine_node.state.WALK) \
-		 or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
-			movement_component.movement_target = Vector2.ZERO
-			movement_component.move_to_point()
+		check_if_walking_or_chasing()
 	else: # Player is doing nothing specific
 		if is_guard_been_seen: return
 		combat_component.is_enemy_been_seeing = true
@@ -171,8 +160,6 @@ func _react_to_player(player_node: Node2D) -> void:
 		Logger.log(parent_npc.name, "Я ранен игроком, угрожаю и вступаю в бой")
 		parent_npc.say("bandit_taunt")
 		await get_tree().create_timer(delay_before_start_fight).timeout
-		if check_terminal_statuses(): return
-		if combat_component.is_in_fight: return
 		combat_component.initiate_combat(player_node)
 
 func _react_to_player_exit(_player_node: Node2D) -> void:
@@ -188,11 +175,14 @@ func _on_health_damaged_by_hit(_source_node: Node2D, _is_headshot: bool) -> void
 	if health_component.is_dead or health_component.is_knockdown or parent_npc.is_panic: return
 	if combat_component.is_in_fight: return # Already in combat, just keep fighting
 	if combat_component.is_enemy_in_sight:
-		combat_component.initiate_combat(potential_enemy)
+		if _source_node.is_in_group("Throwable"):
+			combat_component.initiate_combat(_source_node.thrower)
+		else:
+			combat_component.initiate_combat(_source_node)
 	else:
 		parent_npc.is_angry = true # Still directly referencing NPC's is_angry
 		Logger.log(parent_npc.name, "Игрок рядом бросил камень, я был далеко, но всё равно зол и иду проверять")
-		parent_npc.say("criminal_scum")
+		parent_npc.say("bandit_taunt")
 		number_of_cautions -= 0
 		movement_component.movement_target = parent_npc.danger_point.global_position
 		request_state_change(statemachine_node.state.CHASE)
@@ -223,3 +213,9 @@ func check_terminal_statuses() -> bool:
 	if health_component.is_knockdown: return true
 	if parent_npc.is_panic: return true
 	return false
+
+func check_if_walking_or_chasing():
+	if statemachine_node.check_is_current_state(statemachine_node.state.WALK) \
+	or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
+		movement_component.movement_target = Vector2.ZERO
+		movement_component.move_to_point()

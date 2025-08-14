@@ -12,7 +12,7 @@ var parent_npc
 var vision_component : NPC_Vision
 var statemachine_node : StateMachine
 var health_component : NPC_Health
-var reactions_component : NPC_Reactions
+var reactions_component
 var movement_component : NPC_Movement
 
 @export var delay_before_start_fight : float = 0.5
@@ -57,20 +57,22 @@ func start_combat(with_target):
 	parent_npc.dialogue_component.visible = false
 	health_component.health_bar.visible = false
 
-func end_combat(win: bool, winner) -> void:
+func end_combat(win: bool, _winner) -> void:
 	if not is_in_fight: return
 	is_in_fight = false
 	if reactions_component.check_terminal_statuses(): return
 	target_enemy = null
 	Logger.log(parent_npc.npc_name, str("Бой завершился, я победил? ", win))
 	if win:
+		combat_ended.emit()
 		parent_npc.is_angry = false
 		parent_npc.say("taunt")
-		Karma.remove_all_karma()
+		await get_tree().create_timer(1.0).timeout
 		statemachine_node.change_state(statemachine_node.state.WALK)
 	else:
+		combat_ended.emit()
 		statemachine_node.change_state(statemachine_node.state.WALK)
-	combat_ended.emit()
+	
 
 func start_brawl():
 	if is_in_fight: return
@@ -85,7 +87,7 @@ func deal_damage(target) -> void:
 	audio_stream_player.stream = hit_sound
 	audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
 	audio_stream_player.play()
-	Logger.log(parent_npc.name, str("Атакую ", target_enemy.name))
+	Logger.log(parent_npc.npc_name, str("Атакую ", target.npc_name))
 	var damage = attack_damage
 	var is_headshot : bool = false
 	if randi_range(0, 100) < 20:

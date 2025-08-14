@@ -1,12 +1,12 @@
-[gd_scene load_steps=49 format=3 uid="uid://dtpfmv5cfd781"]
+[gd_scene load_steps=50 format=3 uid="uid://dtpfmv5cfd781"]
 
 [ext_resource type="Script" uid="uid://c8udagiapql22" path="res://Scenes/NPC/bandit.gd" id="1_1a065"]
-[ext_resource type="Resource" uid="uid://7vkgcnvj2tbm" path="res://Resources/npc_names.tres" id="2_fqll3"]
+[ext_resource type="Resource" uid="uid://7vkgcnvj2tbm" path="res://Resources/npc_names.tres" id="2_4tmee"]
 [ext_resource type="AudioStream" uid="uid://c3a0m678i2l7a" path="res://Sounds/Footsteps/footstep_1.wav" id="3_diklf"]
 [ext_resource type="Texture2D" uid="uid://sgsnbyywla03" path="res://Sprites/Effects/stun.png" id="4_4tmee"]
 [ext_resource type="Texture2D" uid="uid://ck2bo7ml7kgbj" path="res://Sprites/NPC/Bandit/Arms.png" id="5_gwr7r"]
 [ext_resource type="Texture2D" uid="uid://cck1ksu6biin4" path="res://Sprites/NPC/Bandit/Body1.png" id="6_fqll3"]
-[ext_resource type="Texture2D" uid="uid://dcix3u41p74yp" path="res://Sprites/NPC/Bandit/Head2.png" id="7_diklf"]
+[ext_resource type="Texture2D" uid="uid://d22a2xmfj3bs5" path="res://Sprites/NPC/Bandit/Head1.png" id="7_4tmee"]
 [ext_resource type="Script" uid="uid://7rswylroocqt" path="res://Scenes/NPC/npc_weapon.gd" id="8_u6vlq"]
 [ext_resource type="Texture2D" uid="uid://b8cr0fwmpg2q1" path="res://Sprites/Weapon/Knife.png" id="9_gwr7r"]
 [ext_resource type="Texture2D" uid="uid://5vypnwsbqpia" path="res://Sprites/Background/Bushes/s_bush_blueberry_1.png" id="10_4tmee"]
@@ -36,6 +36,7 @@
 [ext_resource type="Script" uid="uid://bkafk8c6pv8na" path="res://Scenes/NPC/actions.gd" id="32_whxn7"]
 [ext_resource type="Texture2D" uid="uid://b60ctx7f77gus" path="res://Sprites/Character/Player/Shadow.png" id="33_634pr"]
 [ext_resource type="Script" uid="uid://dq07w73xntxge" path="res://Scenes/Statemachine/stealth_state.gd" id="33_diklf"]
+[ext_resource type="Script" uid="uid://iaispv82jfcv" path="res://Scenes/NPC/trade.gd" id="35_68m8s"]
 
 [sub_resource type="Animation" id="Animation_gc6e7"]
 resource_name = "Knockdown"
@@ -644,30 +645,6 @@ tracks/17/keys = {
 "update": 1,
 "values": [true]
 }
-tracks/18/type = "value"
-tracks/18/imported = false
-tracks/18/enabled = true
-tracks/18/path = NodePath("Knife:position")
-tracks/18/interp = 1
-tracks/18/loop_wrap = true
-tracks/18/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-8, 11)]
-}
-tracks/19/type = "value"
-tracks/19/imported = false
-tracks/19/enabled = true
-tracks/19/path = NodePath("Knife:rotation")
-tracks/19/interp = 1
-tracks/19/loop_wrap = true
-tracks/19/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [3.57618]
-}
 
 [sub_resource type="Animation" id="Animation_cy40q"]
 resource_name = "Walk"
@@ -848,29 +825,25 @@ tracks/13/keys = {
 "update": 0,
 "values": [Vector2(-3, -83), Vector2(2, -81), Vector2(-3, -83), Vector2(2, -81), Vector2(-3, -83)]
 }
-tracks/14/type = "value"
+tracks/14/type = "method"
 tracks/14/imported = false
 tracks/14/enabled = true
-tracks/14/path = NodePath("Knife:position")
+tracks/14/path = NodePath("%Visuals")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
-"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(-8, 11), Vector2(9, 0), Vector2(23, -15), Vector2(9, 0), Vector2(-8, 11)]
-}
-tracks/15/type = "value"
-tracks/15/imported = false
-tracks/15/enabled = true
-tracks/15/path = NodePath("Knife:rotation")
-tracks/15/interp = 1
-tracks/15/loop_wrap = true
-tracks/15/keys = {
-"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [3.57618, 3.14159, 2.79253, 3.14159, 3.57618]
+"times": PackedFloat32Array(0.25, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": [],
+"method": &"blink"
+}, {
+"args": [],
+"method": &"blink"
+}, {
+"args": [],
+"method": &"blink"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_n5kyw"]
@@ -909,7 +882,7 @@ size = Vector2(1024, 304)
 y_sort_enabled = true
 collision_mask = 0
 script = ExtResource("1_1a065")
-name_list = ExtResource("2_fqll3")
+name_list = ExtResource("2_4tmee")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Visual")
@@ -977,7 +950,7 @@ shape = SubResource("CapsuleShape2D_nyftf")
 [node name="Head" type="Sprite2D" parent="Visual"]
 position = Vector2(0, -78)
 scale = Vector2(3.5, 3.5)
-texture = ExtResource("7_diklf")
+texture = ExtResource("7_4tmee")
 flip_h = true
 hframes = 2
 vframes = 2
@@ -990,15 +963,6 @@ collision_mask = 64
 position = Vector2(0.25, -1.75)
 shape = SubResource("CircleShape2D_gc6e7")
 
-[node name="Knife" type="Node2D" parent="Visual"]
-position = Vector2(-8, 11)
-rotation = 3.57618
-script = ExtResource("8_u6vlq")
-
-[node name="Knife" type="Sprite2D" parent="Visual/Knife"]
-scale = Vector2(3, 3)
-texture = ExtResource("9_gwr7r")
-
 [node name="RightHand" type="Sprite2D" parent="Visual"]
 position = Vector2(-36, -36)
 rotation = 2.23402
@@ -1007,6 +971,19 @@ texture = ExtResource("5_gwr7r")
 flip_h = true
 hframes = 2
 vframes = 2
+
+[node name="Knife" type="Node2D" parent="Visual/RightHand"]
+show_behind_parent = true
+position = Vector2(1.32324, 7.38375)
+rotation = 3.57618
+scale = Vector2(0.25, 0.25)
+script = ExtResource("8_u6vlq")
+weapon_type = "knife"
+weapon_name = "knife"
+
+[node name="Knife" type="Sprite2D" parent="Visual/RightHand/Knife"]
+scale = Vector2(3, 3)
+texture = ExtResource("9_gwr7r")
 
 [node name="Inventory" type="Node" parent="."]
 unique_name_in_owner = true
@@ -1038,9 +1015,9 @@ script = ExtResource("14_1a065")
 unique_name_in_owner = true
 visible = false
 offset_left = -68.0
-offset_top = -168.0
+offset_top = -152.0
 offset_right = 66.0
-offset_bottom = -141.0
+offset_bottom = -125.0
 theme_override_styles/background = SubResource("StyleBoxFlat_nyftf")
 theme_override_styles/fill = SubResource("StyleBoxFlat_7mr8v")
 show_percentage = false
@@ -1150,11 +1127,11 @@ unique_name_in_owner = true
 position = Vector2(-1, 3)
 
 [node name="DebugLabel" type="Label" parent="."]
-offset_left = -81.0
-offset_top = -228.0
-offset_right = 87.0
-offset_bottom = -173.0
-theme_override_font_sizes/font_size = 40
+offset_left = -153.0
+offset_top = -193.0
+offset_right = 160.0
+offset_bottom = -159.0
+theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
@@ -1189,6 +1166,9 @@ script = ExtResource("31_es8e6")
 
 [node name="Stealth" type="Node" parent="StateMachine"]
 script = ExtResource("33_diklf")
+
+[node name="Trade" type="Node" parent="StateMachine"]
+script = ExtResource("35_68m8s")
 
 [node name="Actions" type="Node" parent="."]
 unique_name_in_owner = true

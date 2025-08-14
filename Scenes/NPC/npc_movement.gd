@@ -46,7 +46,7 @@ func move_to_point(target_point: Vector2 = Vector2.ZERO) -> void:
 func stop_moving() -> void:
 	parent_npc.set_movement(Vector2.ZERO, 0)
 	Logger.log(parent_npc.npc_name, " движение остановлено")
-	visual_component.stop_all_animations()
+	visual_component.stop_movement_animation()
 
 func set_move_speed(speed: float) -> void:
 	speed = speed
@@ -64,8 +64,7 @@ func look_at_direction(target : Vector2):
 func move_away_from_target(target_position: Vector2) -> void:
 	var current_pos = parent_npc.global_position
 	var direction_away = (current_pos - target_position).normalized()
-	# Move a certain distance away, or to a safe point
-	movement_target = current_pos + direction_away * 500 # Move 500 units away
+	movement_target = current_pos + direction_away * 500
 	move_to_point(movement_target)
 
 # --- Reactions to external events that affect movement ---

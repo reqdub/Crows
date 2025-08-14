@@ -1,12 +1,12 @@
-[gd_scene load_steps=28 format=4 uid="uid://bn4obgm0ayvbk"]
+[gd_scene load_steps=29 format=4 uid="uid://bn4obgm0ayvbk"]
 
 [ext_resource type="Script" uid="uid://dg2miea545ihh" path="res://Scripts/player.gd" id="1_o3h8g"]
 [ext_resource type="Texture2D" uid="uid://b60ctx7f77gus" path="res://Sprites/Character/Player/Shadow.png" id="2_1e7my"]
-[ext_resource type="Texture2D" uid="uid://85ugwvmvmvh6" path="res://Sprites/Character/Player/Right Hand.png" id="3_arntx"]
+[ext_resource type="Texture2D" uid="uid://dnald88jca2lk" path="res://Sprites/Character/Player/Right Hand_Naked.png" id="3_ulo2v"]
 [ext_resource type="Texture2D" uid="uid://c27bajlcpn8rr" path="res://Sprites/Character/Player/Head.png" id="4_lslt6"]
-[ext_resource type="Texture2D" uid="uid://dinvaumcbnyca" path="res://Sprites/Character/Player/Body.png" id="5_ulo2v"]
-[ext_resource type="Texture2D" uid="uid://dxndqwubg04js" path="res://Sprites/Character/Player/Left Hand.png" id="6_1iu4k"]
-[ext_resource type="Texture2D" uid="uid://bplt3t4varl1b" path="res://Sprites/Items/Rock1.png" id="7_m0x7a"]
+[ext_resource type="Texture2D" uid="uid://cjwwd6v3k2o3b" path="res://Sprites/Character/Player/Body_Naked.png" id="5_1iu4k"]
+[ext_resource type="Texture2D" uid="uid://b5nuws4r5i4dq" path="res://Sprites/Character/Player/Left Hand_Naked.png" id="6_m0x7a"]
+[ext_resource type="Texture2D" uid="uid://bplt3t4varl1b" path="res://Sprites/Weapon/Rock.png" id="7_m0x7a"]
 [ext_resource type="Texture2D" uid="uid://sgsnbyywla03" path="res://Sprites/Effects/stun.png" id="8_5v66d"]
 [ext_resource type="Texture2D" uid="uid://sjs8d77e5tns" path="res://Sprites/Background/Bushes/s_bush_gooseberry_0.png" id="9_x63xi"]
 [ext_resource type="Script" uid="uid://bo26p3jb6muue" path="res://Scripts/player_health_component.gd" id="10_i2e8t"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://cf1its45nd5by" path="res://Scripts/player_statemachine.gd" id="13_8flut"]
 [ext_resource type="AudioStream" uid="uid://drvjwk807lcxq" path="res://Sounds/SFX/stun.ogg" id="14_1e7my"]
 [ext_resource type="AudioStream" uid="uid://cwrtx0oax0rm7" path="res://Sounds/SFX/pray.wav" id="14_u7x0b"]
+[ext_resource type="Resource" uid="uid://dnnvev3odjfb3" path="res://Resources/Weapons/rock.tres" id="14_ulo2v"]
 [ext_resource type="Texture2D" uid="uid://konii3i1fnj5" path="res://Sprites/UI/Guard_Progress_Border.png" id="16_arntx"]
 [ext_resource type="Texture2D" uid="uid://dekupfb32trtd" path="res://Sprites/UI/HealthBar.png" id="17_lslt6"]
 
@@ -883,7 +884,6 @@ radius = 21.0
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 modulate = Color(0.792157, 0.792157, 0.792157, 1)
-collision_layer = 0
 collision_mask = 0
 slide_on_ceiling = false
 script = ExtResource("1_o3h8g")
@@ -899,7 +899,7 @@ rotation = 1.5708
 
 [node name="LeftHand" type="Sprite2D" parent="Visual"]
 position = Vector2(10, -4)
-texture = ExtResource("3_arntx")
+texture = ExtResource("3_ulo2v")
 offset = Vector2(0, 5)
 flip_h = true
 
@@ -911,18 +911,18 @@ hframes = 2
 vframes = 2
 
 [node name="Body" type="Sprite2D" parent="Visual"]
-texture = ExtResource("5_ulo2v")
+texture = ExtResource("5_1iu4k")
 flip_h = true
 
 [node name="RightHand" type="Sprite2D" parent="Visual"]
 position = Vector2(-7, -7)
-texture = ExtResource("6_1iu4k")
+texture = ExtResource("6_m0x7a")
 offset = Vector2(-2.35427, 2.999)
 flip_h = true
 
 [node name="Weapon" type="Sprite2D" parent="Visual/RightHand"]
+unique_name_in_owner = true
 position = Vector2(-5.5, 10.5)
-scale = Vector2(0.5, 0.5)
 texture = ExtResource("7_m0x7a")
 
 [node name="Stars" type="Sprite2D" parent="."]
@@ -936,12 +936,13 @@ visible = false
 position = Vector2(0, -1)
 texture = ExtResource("9_x63xi")
 
+[node name="IndicatorPosition" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -48)
+
 [node name="Health_Component" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("10_i2e8t")
-
-[node name="IndicatorPosition" type="Marker2D" parent="Health_Component"]
-position = Vector2(0, -48)
 
 [node name="HealthBar" type="TextureProgressBar" parent="Health_Component"]
 visible = false
@@ -974,6 +975,7 @@ autostart = true
 [node name="Combat_Component" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("11_qidb7")
+current_weapon = ExtResource("14_ulo2v")
 
 [node name="AttackCooldown" type="Timer" parent="Combat_Component"]
 
@@ -1000,6 +1002,7 @@ position = Vector2(-2, -18)
 [node name="Timer" type="Timer" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -2)
 shape = SubResource("CapsuleShape2D_wi0c6")
 
@@ -1012,6 +1015,9 @@ offset_bottom = -31.0
 theme_override_font_sizes/font_size = 24
 
 [node name="PrescenceArea" type="Area2D" parent="."]
+visible = false
+collision_layer = 16
+collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PrescenceArea"]
 shape = SubResource("CircleShape2D_3tkgg")
@@ -1020,4 +1026,3 @@ shape = SubResource("CircleShape2D_3tkgg")
 [connection signal="timeout" from="Combat_Component/AttackCooldown" to="Combat_Component" method="_on_attack_cooldown_timeout"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="PrescenceArea" to="." method="_on_prescence_area_body_entered"]
-[connection signal="body_exited" from="PrescenceArea" to="." method="_on_prescence_area_body_exited"]

@@ -48,6 +48,7 @@ func setup_component(_parent_npc, _statemachine_node, _health_component, _moveme
 
 func _react_to_weapon(_weapon_node: Node2D) -> void:
 	if chech_is_feared(): # This function needs to be in this component
+		health_component.damage_source_list.append(_weapon_node.thrower)
 		request_state_change(statemachine_node.state.PANIC)
 		parent_npc.say("panic")
 	elif health_component.is_damaged: # Check health component's state
@@ -55,36 +56,34 @@ func _react_to_weapon(_weapon_node: Node2D) -> void:
 		return # Do nothing else if damaged
 	elif combat_component.is_enemy_in_sight and not health_component.is_damaged:
 		number_of_warnings -= 1
-		parent_npc.say("warning")
-		Logger.log(parent_npc.name, "Игрок рядом бросил камень, я не ранен, но предупреждаю его")
-		request_state_change(statemachine_node.state.WARNING)
 		if number_of_warnings <= 0:
 			await get_tree().create_timer(delay_before_start_fight).timeout
 			if check_terminal_statuses(): return
+			Logger.log(parent_npc.npc_name, "Игрок рядом бросил камень, хватит предупреждать, бой!")
 			combat_component.initiate_combat(potential_enemy)
-			Logger.log(parent_npc.name, "Игрок рядом бросил камень, хватит предупреждать, бой!")
-			combat_component.initiate_combat(potential_enemy)
-			request_state_change(statemachine_node.state.BATTLE)
+		else:
+			parent_npc.say("warning")
+			Logger.log(parent_npc.npc_name, "Игрок рядом бросил камень, я не ранен, но предупреждаю его")
+			request_state_change(statemachine_node.state.WARNING)
 	elif combat_component.is_enemy_in_sight and health_component.is_damaged:
-		Logger.log(parent_npc.name, "Игрок рядом бросил камень, я был ранен, начинаю бой")
+		Logger.log(parent_npc.npc_name, "Игрок рядом бросил камень, я был ранен, начинаю бой")
 		await get_tree().create_timer(npc_reaction_time).timeout
 		if check_terminal_statuses(): return
 		combat_component.initiate_combat(potential_enemy)
-		request_state_change(statemachine_node.state.BATTLE)
 	else: # Player is far
-		if dice_roll() <= caution_chance: 
+		if dice_roll() <= caution_chance:
 			await get_tree().create_timer(npc_reaction_time).timeout
 			if check_terminal_statuses(): return
-			movement_component.movement_target = parent_npc.danger_point.global_position # Still directly referencing NPC's danger_point
-			movement_component.point_before_chase = parent_npc.global_position
-			Logger.log(parent_npc.name, "Игрок рядом бросил камень, но проверять я не буду, лучше быстрее уйду")
-			movement_component.walk_speed /= 1.2 # Adjusting parent's speed directly for now
+			#movement_component.movement_target = parent_npc.danger_point.global_position
+			#movement_component.point_before_chase = parent_npc.global_position
+			Logger.log(parent_npc.npc_name, "Игрок рядом бросил камень, но проверять я не буду, лучше быстрее уйду")
+			movement_component.walk_speed *= 1.2
 			parent_npc.say("what")
 			number_of_cautions -= 1
 			request_state_change(statemachine_node.state.CAUTION)
 		else:
-			parent_npc.is_angry = true # Still directly referencing NPC's is_angry
-			Logger.log(parent_npc.name, "Игрок рядом бросил камень, я был далеко, но всё равно зол и иду проверять")
+			parent_npc.is_angry = true
+			Logger.log(parent_npc.npc_name, "Игрок рядом бросил камень, я был далеко, но всё равно зол и иду проверять")
 			parent_npc.say("swearing")
 			number_of_cautions -= 1
 			movement_component.movement_target = parent_npc.danger_point.global_position
@@ -104,9 +103,9 @@ func _react_to_damaged_character(char_node: Node2D) -> void:
 func _react_to_player(player_node: Node2D) -> void:
 	player_node.look_at_target(parent_npc) # Player script should have this method
 	potential_enemy = player_node
-	Logger.log(parent_npc.name, "Реагирую на игрока")
+	Logger.log(parent_npc.npc_name, "Реагирую на игрока")
 	if player_node.check_stealth(stealth_detection_multiplier): # Player script method
-		Logger.log(parent_npc.name, "Игрок спрятался")
+		Logger.log(parent_npc.npc_name, "Игрок спрятался")
 		potential_enemy = null
 		if combat_component.is_enemy_been_seeing:
 			parent_npc.say("where_are_you")
@@ -123,7 +122,7 @@ func _react_to_player(player_node: Node2D) -> void:
 	elif player_node.combat_component.is_in_fight: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
-		Logger.log(player_node.name, "Игрок в бою")
+		Logger.log(player_node.npc_name, "Игрок в бою")
 		parent_npc.say("taunt")
 		if statemachine_node.check_is_current_state(statemachine_node.state.WALK) \
 		or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
@@ -132,7 +131,7 @@ func _react_to_player(player_node: Node2D) -> void:
 	elif player_node.health_component.is_knockdown: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
-		Logger.log(parent_npc.name, "Игрок без сознания")
+		Logger.log(parent_npc.npc_name, "Игрок без сознания")
 		parent_npc.say("taunt")
 		if statemachine_node.check_is_current_state(statemachine_node.state.WALK) \
 		or statemachine_node.check_is_current_state(statemachine_node.state.CHASE):
@@ -141,7 +140,7 @@ func _react_to_player(player_node: Node2D) -> void:
 	elif player_node.visual_component.is_praying and not health_component.is_damaged: # Player script property
 		combat_component.is_enemy_been_seeing = true
 		stealth_detection_multiplier = 2.0
-		Logger.log(parent_npc.name, "Игрок молится")
+		Logger.log(parent_npc.npc_name, "Игрок молится")
 		movement_component.stop_moving()
 		if dice_roll() < 50:
 			parent_npc.say("pray")
@@ -155,7 +154,7 @@ func _react_to_player(player_node: Node2D) -> void:
 		if health_component.is_damaged:
 			movement_component.stop_moving()
 			stealth_detection_multiplier = 3.0
-			Logger.log(parent_npc.name, "Я ранен игроком, угрожаю и вступаю в бой")
+			Logger.log(parent_npc.npc_name, "Я ранен игроком, угрожаю и вступаю в бой")
 			await get_tree().create_timer(delay_before_start_fight).timeout
 			if check_terminal_statuses(): return
 			if combat_component.is_in_fight: return
@@ -165,21 +164,21 @@ func _react_to_player(player_node: Node2D) -> void:
 		else:
 			stealth_detection_multiplier = 2.5
 			if parent_npc.is_angry:
-				Logger.log(parent_npc.name, "Я зол, предупреждаю игрока")
+				Logger.log(parent_npc.npc_name, "Я зол, предупреждаю игрока")
 				number_of_warnings -= 1
 				if number_of_warnings <= 0:
-					Logger.log(parent_npc.name, "Последнее предупреждение исчерпано, вступаю в бой")
+					Logger.log(parent_npc.npc_name, "Последнее предупреждение исчерпано, вступаю в бой")
 					await get_tree().create_timer(delay_before_start_fight).timeout
 					if check_terminal_statuses(): return
 					if combat_component.is_in_fight: return
 					combat_component.initiate_combat(player_node)
 					request_state_change(statemachine_node.state.BATTLE)
 				else:
-					Logger.log(parent_npc.name, "Предупреждаю игрока!")
+					Logger.log(parent_npc.npc_name, "Предупреждаю игрока!")
 					parent_npc.say("warning")
 					request_state_change(statemachine_node.state.WARNING)
 			else:
-				Logger.log(parent_npc.name, "Обнаружил игрока")
+				Logger.log(parent_npc.npc_name, "Обнаружил игрока")
 				request_state_change(statemachine_node.state.CAUTION)
 				parent_npc.say("find_you")
 
@@ -200,7 +199,7 @@ func _on_health_damaged_by_hit(_source_node: Node2D, _is_headshot: bool) -> void
 		request_state_change(statemachine_node.state.BATTLE)
 	else:
 		parent_npc.is_angry = true # Still directly referencing NPC's is_angry
-		Logger.log(parent_npc.name, "Игрок рядом бросил камень, я был далеко, но всё равно зол и иду проверять")
+		Logger.log(parent_npc.npc_name, "Игрок рядом бросил камень, я был далеко, но всё равно зол и иду проверять")
 		parent_npc.say("swearing")
 		number_of_cautions -= 0
 		movement_component.movement_target = parent_npc.danger_point.global_position
@@ -209,16 +208,16 @@ func _on_health_damaged_by_hit(_source_node: Node2D, _is_headshot: bool) -> void
 
 func _react_to_knock_out_exit(is_knoked_out : bool):
 	if not is_knoked_out:
-		parent_npc.say("call_for_help")
+		parent_npc.say("panic")
 		request_state_change(statemachine_node.state.PANIC)
 
 func chech_is_feared(fear_modifier = 1) -> bool:
 	if dice_roll() <= (fear_chance * fear_modifier):
-		Logger.log(parent_npc.name, "Испуган")
+		Logger.log(parent_npc.npc_name, "Испуган")
 		potential_enemy = null # Clearing potential enemy makes sense here
 		movement_component.movement_target = Vector2.ZERO # Direct reference for now
 		return true
-	Logger.log(parent_npc.name, "Прошёл проверку на испуг")
+	Logger.log(parent_npc.npc_name, "Прошёл проверку на испуг")
 	return false
 
 func dice_roll() -> int:

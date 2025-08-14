@@ -7,6 +7,8 @@ class_name Guard_Combat
 @onready var drop_position = %LootDropPosition # To drop loot on death/knockout
 @onready var audio_stream_player = %AudioStreamPlayer2D
 @onready var hit_sound = load("res://Sounds/SFX/sword_swing.wav")
+@onready var battle_text_prefab = preload("res://Scenes/battle_text_indicator.tscn")
+@onready var OnScreenText = get_node("/root/World/OnScreenText")
 
 var parent_npc : Guard
 var vision_component : Guard_Vision
@@ -14,6 +16,13 @@ var statemachine_node : StateMachine
 var health_component : Guard_Health
 var reactions_component : Guard_Reactions
 var movement_component : NPC_Movement
+
+var head_armour : int = 0
+var body_armour : int = 0
+var arms_armour : int = 0
+
+var block_chance : int = randi_range(0, 25)
+var dodge_chance : int = randi_range(0, 15)
 
 @export var delay_before_start_fight : float = 0.5
 @export var attack_damage : int = randi_range(20, 30)
@@ -43,7 +52,8 @@ func setup_component(_parent_npc, _statemachine_node, _movement_component, _heal
 # Helper for reaction component to request state change, now goes through combat
 
 func initiate_combat(target: Node2D) -> void:
-	if is_in_fight or health_component.is_dead or health_component.is_knockdown: return
+	if target.combat_component.is_in_fight: return
+	if is_in_fight or reactions_component.check_terminal_statuses(): return
 	target_enemy = target
 	Logger.log(parent_npc.npc_name, str("Начинаю бой с ", target_enemy.npc_name))
 	combat_started.emit()
@@ -54,32 +64,49 @@ func start_combat(with_target):
 	if not statemachine_node.check_is_current_state(statemachine_node.state.BATTLE):
 		movement_component.stop_moving()
 		statemachine_node.change_state(statemachine_node.state.BATTLE)
-	vision_component.add_to_ignore_list(with_target)
 	parent_npc.dialogue_component.visible = false
 	health_component.health_bar.visible = false
 
-func end_combat(win: bool, winner) -> void:
+func end_combat(win: bool, _winner) -> void:
 	if not is_in_fight: return
 	is_in_fight = false
 	if reactions_component.check_terminal_statuses(): return
 	target_enemy = null
 	Logger.log(parent_npc.npc_name, str("Бой завершился, я победил? ", win))
 	if win:
+		combat_ended.emit()
 		parent_npc.is_angry = false
 		parent_npc.say("taunt")
 		Karma.remove_all_karma()
+		await get_tree().create_timer(1.0).timeout
 		statemachine_node.change_state(statemachine_node.state.WALK)
 	else:
 		statemachine_node.change_state(statemachine_node.state.WALK)
-	combat_ended.emit()
 
 func start_brawl():
 	if is_in_fight: return
 	await brawl_node.start_brawl(parent_npc, target_enemy)
-# Function called when NPC decides to attack
 
-func take_hit(source, amount, is_headshot : bool):
-	health_component.take_damage(source, amount, is_headshot)
+func take_hit(source, amount, _is_headshot : bool):
+	if dice_roll() <= block_chance:
+		var battle_text_instance : battle_text_indicator = battle_text_prefab.instantiate()
+		battle_text_instance.global_position = %OnScreenIndicators.global_position
+		battle_text_instance.setup("Блок", Color.RED)
+		OnScreenText.call_deferred("add_child", battle_text_instance)
+	elif dice_roll() <= dodge_chance:
+		var battle_text_instance : battle_text_indicator = battle_text_prefab.instantiate()
+		battle_text_instance.global_position = %OnScreenIndicators.global_position
+		battle_text_instance.setup("Уклонение", Color.RED)
+		OnScreenText.call_deferred("add_child", battle_text_instance)
+	else: 
+		if _is_headshot:
+			var absorbed_damage_amount = amount - head_armour
+			if absorbed_damage_amount < 0: absorbed_damage_amount = 0
+			health_component.take_damage(source, absorbed_damage_amount, _is_headshot)
+		else:
+			var absorbed_damage_amount = amount - (body_armour + arms_armour)
+			if absorbed_damage_amount < 0: absorbed_damage_amount = 0
+			health_component.take_damage(source, absorbed_damage_amount, _is_headshot)
 
 func deal_damage(target) -> void:
 	if not can_attack: return
@@ -115,3 +142,6 @@ func _on_body_area_body_entered(body: Node2D) -> void:
 
 func _on_attack_cooldown_timeout() -> void:
 	can_attack = true
+
+func dice_roll() -> int:
+	return randi_range(0, 100)

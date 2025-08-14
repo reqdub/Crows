@@ -10,15 +10,14 @@ lock_rotation = true
 script = ExtResource("1_mbbgf")
 
 [node name="Label" type="Label" parent="."]
-offset_left = -55.0
+offset_left = -167.0
 offset_top = -33.0
-offset_right = 55.0
+offset_right = 166.0
 offset_bottom = 34.0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 48
-text = "3200"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_mbbgf")

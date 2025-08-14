@@ -2,25 +2,21 @@
 extends Node2D
 class_name NPC_Health
 
-# Exported variables for tweaking health values directly from the editor
+@onready var health_bar = %HealthBar
+@onready var health_bar_label = $HealthBar/Label
+@onready var on_screen_text_node = get_node("/root/World/OnScreenText")
+@onready var damage_indicator_prefab = preload("res://Scenes/damage_indicator.tscn")
+
 var max_health_weak = 10
 var max_health_normal = 15
 var max_health_tough = 25
 
-# Paths to nodes managed by this component (relative to its parent, the main NPC)
-@onready var health_bar = %HealthBar
-@onready var health_bar_label = $HealthBar/Label
-
-@onready var on_screen_text_node = get_node("/root/World/OnScreenText")
-
-# Resources
-@onready var damage_indicator_prefab = preload("res://Scenes/damage_indicator.tscn")
-
+var damage_source_list : Array = []
 
 var parent_npc
 var visual_component : NPC_Visuals
 var statemachine_component : StateMachine
-var reactions_component : NPC_Reactions
+var reactions_component
 var karma_component : NPC_Karma
 
 # Internal state variables for health
@@ -79,11 +75,18 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 	if is_dead or is_knockdown:
 		return
 	if damage_amount == -1: return
+	if source_node.is_in_group("Throwable"):
+		source_node.disable()
+		var thrower = source_node.thrower
+		source_node = source_node.thrower
+		if not damage_source_list.has(thrower):
+			damage_source_list.append(thrower)
 	else:
-		if source_node.is_in_group("Throwable"): 
-			source_node.disable()
+		if not damage_source_list.has(source_node):
+			damage_source_list.append(source_node)
 	var health_before_damage_taken : int = current_health
 	if damage_amount > 0:
+		AudioManager.play_sound(SoundCache.hit_sound)
 		add_damage_indicator(damage_amount)
 		current_health -= damage_amount
 		if current_health <= 0: current_health = 1
@@ -103,6 +106,7 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 		var health_tween = get_tree().create_tween()
 		health_tween.tween_property(health_bar, "value", current_health, 0.3)
 		if current_health <= knock_out_hp_treshhold:
+			karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken, current_health, max_total_health)
 			knock_out()
 			return
 		elif current_health <= 3:

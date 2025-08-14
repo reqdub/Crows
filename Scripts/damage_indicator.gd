@@ -1,5 +1,7 @@
 extends RigidBody2D
 
+class_name damage_indicator
+
 func _ready():
 	var random_x_impulse = randi_range(-400, 400)
 	var random_y_impulse = randi_range(-100, -300)

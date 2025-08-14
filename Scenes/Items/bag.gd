@@ -1,11 +1,24 @@
 extends RigidBody2D
 
-@onready var loot = preload("res://Scenes/item.tscn")
+@onready var collectable_loot = preload("res://Scenes/Droppable/collectable_item.tscn")
+@onready var non_collectable_loot = preload("res://Scenes/Droppable/non_collectable_item.tscn")
 @export var item_deletion_time : float = 3.0
 var timer
 var has_loot : bool = true
-var loot_in_bag : Dictionary = {
-	"Money" : randi_range(0, 10)
+
+var non_coollectable_drop_chance : int = 25
+
+var bag_inventory : Dictionary = {
+	"Collectable" : {
+		"coin" : randi_range(0, 5)
+	},
+	"Non-Collectable" :
+		{
+			"apple" : randi_range(0, 2),
+			"tomato" : randi_range(0, 2),
+			"rotten_tomato" : randi_range(0, 2),
+			"rotten_apple" : randi_range(0, 2)
+		}
 }
 
 func _ready() -> void:
@@ -15,20 +28,19 @@ func _ready() -> void:
 	self.queue_free()
 
 func drop_loot():
-	if loot_in_bag.is_empty(): return
-	var loot_dict_keys : Array = loot_in_bag.keys()
-	var random_item_in_bag = loot_dict_keys[randi_range(0, loot_dict_keys.size() - 1)]
-	var number_of_items = loot_in_bag[random_item_in_bag]
-	var random_number_of_items = randi_range(0, number_of_items)
-	loot_in_bag[random_item_in_bag] -= random_number_of_items
-	for i in random_number_of_items:
-		var loot_instance = loot.instantiate()
-		loot_instance.set_item(random_item_in_bag)
-		loot_instance.global_position = $DropPosition.global_position
-		get_node("/root/World/Background/Walk_Area").call_deferred("add_child", loot_instance)
-	if number_of_items == 0:
-		loot_in_bag.erase(random_item_in_bag)
-		return
+	for collectable_item : String in bag_inventory["Collectable"]:
+		for number_of_items in bag_inventory["Collectable"][collectable_item]:
+			var collectable_loot_instance = collectable_loot.instantiate()
+			collectable_loot_instance.set_item(collectable_item)
+			collectable_loot_instance.global_position = $DropPosition.global_position
+			get_node("/root/World/Background/Walk_Area").call_deferred("add_child", collectable_loot_instance)
+	for non_collectable_item : String in bag_inventory["Non-Collectable"]:
+		for number_of_items in bag_inventory["Non-Collectable"][non_collectable_item]:
+			if randi_range(0, 100) <= non_coollectable_drop_chance:
+				var collectable_loot_instance = non_collectable_loot.instantiate()
+				collectable_loot_instance.set_item(non_collectable_item)
+				collectable_loot_instance.global_position = $DropPosition.global_position
+				get_node("/root/World/Background/Drops").call_deferred("add_child", collectable_loot_instance)
 
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("Throwable"):

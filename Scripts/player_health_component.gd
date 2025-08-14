@@ -66,6 +66,6 @@ func regenerate_health():
 
 func add_damage_indicator(amount, color):
 	var damage_indicator_instance = damage_indicator.instantiate()
-	damage_indicator_instance.global_position = $IndicatorPosition.global_position
+	damage_indicator_instance.global_position = %IndicatorPosition.global_position
 	damage_indicator_instance.setup(amount, color)
 	on_screen_text_node.call_deferred("add_child", damage_indicator_instance)

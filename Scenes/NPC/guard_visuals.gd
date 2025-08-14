@@ -42,39 +42,26 @@ func play_walk_animation() -> void:
 			animation_player.play("Walk")
 
 func play_chase_animation() -> void:
-	# Often same as walk, but could be different if you have a distinct chase animation
 	if animation_player:
-		animation_player.play("Walk") # Or "Chase" if you create one
+		animation_player.play("Walk")
 
 func play_idle_animation() -> void:
-	if animation_player:
-		animation_player.stop() # Or play "Idle" if you have one
+	animation_player.stop()
 
 func play_panic_animation() -> void:
-	if animation_player:
-		animation_player.play("Panic")
+	animation_player.play("Panic")
 
 func play_caution_animation() -> void:
-	if animation_player:
-		animation_player.stop() # Or play "Caution" if you have one
+	animation_player.stop()
 
 func play_knockdown_animation() -> void:
-	if animation_player:
-		animation_player.play("Knockdown")
-		await animation_player.animation_finished
-		Logger.log(parent_npc.npc_name, " анимация нокдауна окончена")
-		knockdown_animation_finished.emit()
-		# In your original script, Knockdown also hid UI and freed collision shapes.
-		# Those actions should remain in the main NPC (or a dedicated cleanup component)
-		# as they are not purely visual but also gameplay-affecting.
-		# This component's job is just to play the animation.
-		
-		# Original: await $AnimationPlayer.animation_finished
-		# The main NPC (or StateMachine) should await this if needed for state transition.
-		# This component just plays the animation.
+	animation_player.play("Knockdown")
+	await animation_player.animation_finished
+	Logger.log(parent_npc.npc_name, " анимация нокдауна окончена")
+	knockdown_animation_finished.emit()
 
-func stop_all_animations() -> void:
-	if animation_player:
+func stop_movement_animation() -> void:
+	if animation_player.current_animation == "Walk" or animation_player.current_animation == "Panic":
 		animation_player.stop()
 
 # --- Damage Visuals ---
@@ -83,20 +70,20 @@ func _on_health_damaged_by_hit(_source_node: Node2D, _is_headshot: bool) -> void
 
 func update_damage_visuals() -> void:
 	if health_component.is_head_damaged and head_sprite:
-		head_sprite.frame = 3 # Damaged head frame
+		head_sprite.frame = 2
 	if health_component.is_body_damaged and body_sprite:
-		body_sprite.frame = 1 # Damaged body frame
+		body_sprite.frame = 1
 
 func _on_health_knocked_out(is_knocked__out : bool) -> void:
 	if is_knocked__out:
 		play_knockdown_animation()
-		head_sprite.frame = 3 # Head damaged on knockout (as per original)
-		body_sprite.frame = 1 # Body damaged on knockout (as per original)
+		head_sprite.frame = 3
+		body_sprite.frame = 1
 
 # --- Blink Animation (specific head frame change) ---
 func blink() -> void:
 	if is_blink_active: return # Prevent multiple blinks at once
-	var blink_chance = 50
+	var blink_chance = 35
 	if dice_roll() <= blink_chance:
 		is_blink_active = true
 		var timer = get_tree().create_timer(0.4)

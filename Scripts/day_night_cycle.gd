@@ -5,7 +5,7 @@ extends CanvasModulate
 @export var day_color: Color = Color.WHITE
 @export var sunset_color: Color = Color("ff7057")
 @export var night_color: Color = Color("#1a1a2a")
-@export var transition_speed: float = 10.0
+@export var transition_speed: float = 120.0
 
 @onready var left_lamp = $PointLight2D
 @onready var right_lamp = $PointLight2D2
@@ -13,12 +13,19 @@ extends CanvasModulate
 enum TimeState {
 	DAWN,   # 0
 	DAY,    # 1
-	SUNSET, # 2
+	DUSK, # 2
 	NIGHT   # 3
 }
 
 var current_time: TimeState = TimeState.DAY
 var is_cycling: bool = false
+
+signal new_day_started
+
+signal dawn
+signal day
+signal night
+signal dusk
 
 func _ready():
 	color = day_color
@@ -35,26 +42,31 @@ func cycle():
 			left_lamp.enabled = false
 			right_lamp.enabled = false
 			left_lamp.scale = Vector2(0.3, 0.3)
-			print("Рассвет -> День")
+			print("Начался рассвет")
+			dawn.emit()
+			new_day_started.emit()
 			await change_cycle_color(day_color, Vector2(0.3, 0.3), 0.1)
 			current_time = TimeState.DAY
 			
 		TimeState.DAY:
 			await get_tree().create_timer(transition_speed).timeout
-			print("День -> Закат")
+			print("Начался день")
+			day.emit()
 			await change_cycle_color(sunset_color, Vector2(0.4, 0.4), 0.2)
-			current_time = TimeState.SUNSET
+			current_time = TimeState.DUSK
 			
-		TimeState.SUNSET:
+		TimeState.DUSK:
 			left_lamp.enabled = true
 			right_lamp.enabled = true
-			print("Закат -> Ночь")
+			print("Начался закат")
+			dusk.emit()
 			await change_cycle_color(night_color, Vector2(1.0, 1.0), 0.8)
 			current_time = TimeState.NIGHT
 			
 		TimeState.NIGHT:
-			await get_tree().create_timer(transition_speed / 2.0).timeout
-			print("Ночь -> Рассвет")
+			await get_tree().create_timer(transition_speed / 4.0).timeout
+			print("Настала ночь")
+			night.emit()
 			await change_cycle_color(dawn_color, Vector2(1.2, 1.2), 1.0)
 			current_time = TimeState.DAWN
 	

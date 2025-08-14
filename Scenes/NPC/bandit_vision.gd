@@ -34,10 +34,9 @@ func _on_view_area_body_entered(body: Node2D) -> void:
 		combat_component.is_enemy_in_sight = true
 		combat_component.potential_enemy = body
 		reaction_component._react_to_player(body)
-	elif body.is_in_group("Character") and not body.is_in_group("Guard"):
-		if body.health_component.is_damaged:
-			reaction_component._react_to_peasant(body)
-			Logger.log(parent_npc.name, "Реагирую на раненого персонажа")
+	elif body.is_in_group("Peasant"):
+		reaction_component._react_to_peasant(body)
+		Logger.log(parent_npc.name, " реагирую на крестьянина")
 	elif body.is_in_group("Guard"):
 		Logger.log(parent_npc.npc_name, " реагирую на бандита")
 		reaction_component._react_to_guard(body)

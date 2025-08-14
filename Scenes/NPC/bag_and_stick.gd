@@ -1,8 +1,7 @@
 extends Node2D
 
-@onready var hit_sound = load("res://Sounds/SFX/hit.wav")
-@onready var audio = $"../../AudioStreamPlayer2D"
 @onready var drop_area = get_node("/root/World/Background/Drops")
+@onready var weapon = preload("res://Scenes/Droppable/droppable_weapon.tscn")
 
 var is_bag_dropped : bool = false
 
@@ -18,23 +17,18 @@ func drop():
 func _on_bag_body_entered(body: Node) -> void:
 	if body.is_in_group("Throwable"):
 		drop_bag()
-		audio.stream = hit_sound
-		audio.play()
+		AudioManager.play_sound(SoundCache.hit_sound)
 		body.destroy()
 
 func drop_bag_and_stick():
 	is_bag_dropped = true
-	var bag = load("res://Scenes/Items/Bag.tscn").instantiate()
-	var stick = load("res://Scenes/Items/Stick.tscn").instantiate()
-	bag.global_position = self.global_position
-	stick.global_position = $Stick.global_position
-	stick.rotation = $Stick.rotation
+	drop_bag()
+	drop_stick()
 	self.queue_free()
-	drop_area.call_deferred('add_child', bag)
-	drop_area.call_deferred('add_child', stick)
 
 func drop_stick():
-	var stick = load("res://Scenes/Items/Stick.tscn").instantiate()
+	var stick : droppable_weapon = weapon.instantiate()
+	stick.set_item("polearm", "stick", %Health.damage_source_list[-1])
 	stick.global_position = $Stick.global_position
 	stick.rotation = $Stick.rotation
 	drop_area.call_deferred('add_child', stick)

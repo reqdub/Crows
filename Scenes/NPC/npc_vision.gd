@@ -3,10 +3,10 @@ extends Node2D
 class_name NPC_Vision
 
 @onready var npc_view = %ViewArea
-var parent_npc : npc
+var parent_npc
 var health_component : NPC_Health
 var combat_component : NPC_Combat
-var reaction_component : NPC_Reactions
+var reaction_component
 
 var ignore_reaction_list : Array[Node2D] = []
 

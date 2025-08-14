@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://4u2qbpkh2k0j"]
+
+[ext_resource type="Script" uid="uid://blxabp54qbhc" path="res://Scripts/collectable_item.gd" id="1_u2aua"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vpy52"]
+radius = 15.0
+
+[node name="Item" type="RigidBody2D"]
+collision_layer = 16
+collision_mask = 16
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_u2aua")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_vpy52")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

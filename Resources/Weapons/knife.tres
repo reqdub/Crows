@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://puqj1qsohnqy"]
+
+[ext_resource type="Script" uid="uid://dq5kr74pkedc3" path="res://Resources/Weapons/weapon.gd" id="1_qbj27"]
+
+[resource]
+script = ExtResource("1_qbj27")
+weapon_type = 5
+min_weapon_damage = 4
+max_weapon_damage = 12
+sprite_path = "res://Sprites/Weapon/Knife.png"

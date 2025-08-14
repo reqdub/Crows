@@ -6,7 +6,7 @@ class_name npc
 @export var name_list : Resource
 # @export var walk_speed = randi_range(500, 1000) # Now in NPC_Movement
 
-@onready var loot = preload("res://Scenes/item.tscn")
+@onready var loot = preload("res://Scenes/Droppable/collectable_item.tscn")
 @onready var signal_bus = get_node("/root/World/Signal_Bus")
 @onready var statemachine_node : StateMachine = %StateMachine
 @onready var danger_point = get_node("/root/World/Background/DangerPoint")
@@ -31,10 +31,10 @@ class_name npc
 var spawn_position
 var despawn_position
 var npc_name
+var day_statistics
 
 signal say_phrase(_npc_name, _text)
 
-# Keep these global NPC states here for now, if they're not directly managed by components
 var is_angry : bool = false
 var is_panic : bool = false
 
@@ -42,8 +42,9 @@ func _ready() -> void:
 	randomize()
 	drop_position = %LootDropPosition
 	setup_components()
-	npc_name = name_list.male_names[randi_range(0, 19)]
+	npc_name = name_list.peasant_names[randi_range(0, 19)]
 	statemachine_node.change_state(statemachine_node.state.WALK)
+	$DebugLabel.set_text(npc_name)
 
 func setup_components():
 	%Reactions.setup_component(self, statemachine_node, health_component, movement_component, combat_component, vision_component, visuals_component)
@@ -73,8 +74,9 @@ func _physics_process(_delta: float) -> void:
 func set_movement(direction : Vector2, movement_speed : float):
 	velocity = direction * movement_speed
 
-func _process(_delta: float) -> void:
-	$DebugLabel.set_text(str(movement_component.walk_speed))
-
 func _on_collect_area_body_entered(body: Node2D) -> void:
-	body.destroy()
+	if body.collect_area == self:
+		body.destroy()
+
+func add_day_statistics(statistics):
+	day_statistics = statistics

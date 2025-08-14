@@ -6,9 +6,17 @@ var player_node : player
 @onready var audio_manager = $AudioManager
 
 func _ready() -> void:
+	%DayNightCycle.connect("dawn", %Spawner._on_daytime_dawn)
+	%DayNightCycle.connect("day", %Spawner._on_daytime_day)
+	%DayNightCycle.connect("dusk", %Spawner._on_daytime_dusk)
+	%DayNightCycle.connect("night", %Spawner._on_daytime_night)
 	$Background/Player_Position.add_child(load("res://Scenes/Player.tscn").instantiate())
 	player_node = get_node("Background/Player_Position/Player")
 	player_node.statue = %GoddessPosition.global_position
+	player_node.connect("weapon_count_changed", %WeaponScrollBar._on_weapon_count_changed)
+	player_node.connect("add_weapon", %WeaponScrollBar._on_weapon_added)
+	player_node.connect("change_money_count", %UI._on_player_change_money_count)
+	%WeaponScrollBar.connect("weapon_changed", player_node.change_weapon)
 	Karma.player_node = player_node
 	Karma.connect("danger_increases", %Spawner._on_danger_increases)
 	%UI.connect_player(player_node)
@@ -22,7 +30,7 @@ func _on_dead_area_body_entered(body: Node2D) -> void:
 
 func _on_collect_area_body_entered(body: Node2D) -> void:
 	body.queue_free()
-	%UI.add_item("Money", 1)
+	%UI.add_item("coin", 1)
 
 func _on_drop_area_body_entered(body: Node2D) -> void:
 	if (body.is_in_group("Character")):

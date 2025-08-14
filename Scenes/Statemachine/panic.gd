@@ -13,6 +13,6 @@ func panic():
 		movement_node.movement_target = character.spawn_position.global_position
 	character.is_panic = true
 	character.ammunition_component.drop_ammunition()
-	movement_node.walk_speed *= randf_range(1.3, 1.8)
+	movement_node.walk_speed *= randf_range(2.0, 2.5)
 	movement_node.movement_target = Vector2.ZERO
 	movement_node.move_to_point()

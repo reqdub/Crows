@@ -1,30 +1,57 @@
 [gd_scene load_steps=4 format=3 uid="uid://cr0fpth8mwt50"]
 
 [ext_resource type="Script" uid="uid://brwcuaaweppgf" path="res://Scripts/test.gd" id="1_37kl0"]
-[ext_resource type="Texture2D" uid="uid://dgv6pkdqxd8ai" path="res://icon.svg" id="2_8uh7m"]
-[ext_resource type="Texture2D" uid="uid://c27bajlcpn8rr" path="res://Sprites/Character/Player/Head.png" id="3_6uqi0"]
+[ext_resource type="Texture2D" uid="uid://konii3i1fnj5" path="res://Sprites/UI/Guard_Progress_Border.png" id="2_qc4db"]
+[ext_resource type="Texture2D" uid="uid://cm8ww8qwynfup" path="res://Sprites/UI/Guard_Progress.png" id="3_ys1qc"]
 
 [node name="Test" type="Node2D"]
 script = ExtResource("1_37kl0")
 
-[node name="World" type="Node2D" parent="."]
-
-[node name="TweenStop" type="TextureButton" parent="World"]
-offset_left = 474.0
-offset_top = 500.0
-offset_right = 602.0
-offset_bottom = 628.0
-texture_normal = ExtResource("2_8uh7m")
-
-[node name="Marker2D" type="Marker2D" parent="World"]
-position = Vector2(408, 264)
-
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(574, 320)
+position = Vector2(112, 168)
+zoom = Vector2(2.865, 2.865)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(552, 298)
-scale = Vector2(6.13636, 4.69643)
-texture = ExtResource("3_6uqi0")
+[node name="Peasant" type="TextureProgressBar" parent="."]
+offset_top = 96.0
+offset_right = 121.0
+offset_bottom = 126.0
+texture_over = ExtResource("2_qc4db")
+texture_progress = ExtResource("3_ys1qc")
 
-[connection signal="pressed" from="World/TweenStop" to="." method="_on_tween_stop_pressed"]
+[node name="Bandit" type="TextureProgressBar" parent="."]
+offset_top = 144.0
+offset_right = 121.0
+offset_bottom = 174.0
+texture_over = ExtResource("2_qc4db")
+texture_progress = ExtResource("3_ys1qc")
+
+[node name="Guard" type="TextureProgressBar" parent="."]
+offset_top = 192.0
+offset_right = 121.0
+offset_bottom = 222.0
+texture_over = ExtResource("2_qc4db")
+texture_progress = ExtResource("3_ys1qc")
+
+[node name="Merchant" type="TextureProgressBar" parent="."]
+offset_top = 232.0
+offset_right = 121.0
+offset_bottom = 262.0
+texture_over = ExtResource("2_qc4db")
+texture_progress = ExtResource("3_ys1qc")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="Label" type="Label" parent="."]
+offset_left = 136.0
+offset_top = 96.0
+offset_right = 256.0
+offset_bottom = 272.0
+text = "Пешка
+
+Бандит
+
+Стражник
+Торговец"
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -50,6 +50,7 @@ Player=""
 Empty_Space="Игрок покинул данную зону и не был обнаружен"
 Bandit=""
 Peasant=""
+Weapon=""
 
 [input]
 

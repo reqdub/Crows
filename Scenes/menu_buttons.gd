@@ -1,22 +1,43 @@
-extends Control
+extends Node2D
 
-@onredy var line : Line2D = $Buttons/Line2D
-var buttons : Array = [$Buttons/Inventory, $Buttons/Skills, $Buttons/Menu]
-var selected_menu
-var drag_started : bool = false
+var menus_shown : bool = false
 
-func _on_menu_button_button_down() -> void:
-	drag_started = true
+@onready var main_button : Sprite2D = $MenuButton
 
-func _on_menu_button_button_up() -> void:
-	drag_started = false
+func _ready() -> void:
+	$Buttons/Inventory.visible = false
+	$Buttons/Weapons.visible = false
+	$Buttons/Menu.visible = false
+	menus_shown = false
 
-func menu_category_selected():
+func _on_menu_list_button_pressed() -> void:
+	if not menus_shown:
+		show_menus()
+	else:
+		hide_menus()
+
+func show_menus():
+	$AnimationPlayer.play("Show")
+	$Buttons/Inventory.visible = true
+	$Buttons/Weapons.visible = true
+	$Buttons/Menu.visible = true
+	menus_shown = true
+
+func hide_menus():
+	$AnimationPlayer.play("Hide")
+	await $AnimationPlayer.animation_finished
+	$Buttons/Inventory.visible = false
+	$Buttons/Weapons.visible = false
+	$Buttons/Menu.visible = false
+	menus_shown = false
+
+func _on_inventory_button_pressed() -> void:
 	pass
-	
-func find_nearest_menu():
-	pass
 
-func _process(delta: float) -> void:
-	if drag_started:
-		line.points[1] = %Camera.get_global_mouse_position()
+func _on_weapons_button_pressed() -> void:
+	%WeaponScrollBar.visible = !%WeaponScrollBar.visible
+	hide_menus()
+
+func _on_menu_button_pressed() -> void:
+	%Menu.show_menu()
+	hide_menus()

@@ -25,10 +25,10 @@ var is_player_control_blocked : bool = false
 var is_stealth_mode_on : bool = false
 
 func _ready() -> void:
-	Inventory.player_inventory["Money"] = 50
+	Inventory.add_money(50)
 	$MarginContainer/Karma/Label.set_text(str(Karma.get_current_karma()))
 	$MarginContainer/Karma/KarmaTexture.texture = good_karma_icon
-	$MarginContainer/Inventory/Money.set_text(str(Inventory.player_inventory["Money"]))
+	$MarginContainer/Inventory/Money.set_text(str(Inventory.get_money_count()))
 
 func connect_player(_player):
 	player_node = _player
@@ -37,13 +37,14 @@ func connect_player(_player):
 	player_node.connect("item_dropped", _on_player_item_dropped)
 	player_node.connect("criminal", _on_player_criminal)
 
-func _on_gui_input(_event: InputEvent) -> void:
-	if is_aiming and Input.is_action_just_released("Mouse_Left"):
+func _unhandled_input(event: InputEvent) -> void:
+	if is_aiming and event.is_action_released("Mouse_Left"):
 		throw()
 	if is_player_control_blocked: return
 	if is_stealth_mode_on: return
 	if is_throw_on_cooldown: return
-	if (Input.is_action_just_pressed("Mouse_Left")):
+	if event.is_action_pressed("Mouse_Left"):
+		%WeaponScrollBar.visible = false
 		is_aiming = true
 		aim.visible = true
 		$ThrowStrength.value = 0
@@ -119,18 +120,19 @@ func increase_area_dangerous(amount):
 
 func add_item(item_name, amount):
 		if amount == 0: return
-		Inventory.add_item(item_name, amount)
-		if item_name == "Money":
+		if item_name == "coin":
 			if coin_tween != null:
 				coin_tween = create_tween()
 				coin_tween.tween_property($MarginContainer/Inventory/Coin, "scale", Vector2(1.2, 1.2), 0.2)
 				coin_tween.tween_property($MarginContainer/Inventory/Coin, "scale", Vector2(1.0, 1.0), 0.2)
-		$MarginContainer/Inventory/Money.set_text(str(Inventory.player_inventory[item_name]))
+			$MarginContainer/Inventory/Money.set_text(str(Inventory.get_money_count()))
+		else:
+			Inventory.add_item(item_name, amount)
 
 func remove_item(item_name, amount):
 	if amount == 0: return
 	Inventory.remove_item(item_name, amount)
-	if item_name == "Money":
+	if item_name == "coin":
 		if coin_tween != null:
 			coin_tween = create_tween()
 			coin_tween.tween_property($MarginContainer/Inventory/Coin, "scale", Vector2(1.2, 1.2), 0.2)
@@ -150,17 +152,21 @@ func _player_control_blocked(blocked : bool):
 		$Aim.visible = false
 		$ThrowStrength.visible = false
 		$ThrowStrength.value = 0
-		$StealthCooldown.value = 0
-		$StealthCooldown.visible = false
+		$StealthLeft/StealthCooldown.value = 0
+		$StealthLeft/StealthCooldown.visible = false
+		$StealthRight/StealthCooldown.value = 0
+		$StealthRight/StealthCooldown.visible = false
 		$Pray.disabled = true
-		$Stealth.disabled = true
+		$StealthLeft.disabled = true
+		$StealthRight.disabled = true
 		is_throw_on_cooldown = false
 		is_stealth_on_cooldown = false
 		player_node.cancel_all_actions()
 	else:
 		is_stealth_mode_on = false
 		$Pray.disabled = false
-		$Stealth.disabled = false
+		$StealthLeft.disabled = false
+		$StealthRight.disabled = false
 		is_player_control_blocked = false
 
 func stealth_mode(mode : bool):
@@ -186,29 +192,34 @@ func _on_stealth_button_down() -> void:
 func _on_stealth_button_up() -> void:
 	if not is_player_control_blocked:
 		stealth_mode(false)
-		$Stealth.disabled = true
-		$StealthCooldown.visible = true
-		var stealth_tween = get_tree().create_tween()
-		stealth_tween.tween_property($StealthCooldown, "value", 100, stealth_cooldown_time - 0.1)
+		$StealthLeft.disabled = true
+		$StealthRight.disabled = true
+		$StealthLeft/StealthCooldown.visible = true
+		$StealthRight/StealthCooldown.visible = true
+		var stealth_tween = create_tween()
+		stealth_tween.tween_property($StealthLeft/StealthCooldown, "value", 100, stealth_cooldown_time - 0.1)
+		stealth_tween.parallel()
+		stealth_tween.tween_property($StealthRight/StealthCooldown, "value", 100, stealth_cooldown_time - 0.1)
 		await stealth_tween.finished
 		is_stealth_on_cooldown = false
 		if not is_player_control_blocked:
-			$StealthCooldown.visible = false
-			$StealthCooldown.value = 0
-			$Stealth.disabled = false
+			$StealthLeft/StealthCooldown.visible = false
+			$StealthLeft/StealthCooldown.value = 0
+			$StealthLeft.disabled = false
+			$StealthRight/StealthCooldown.visible = false
+			$StealthRight/StealthCooldown.value = 0
+			$StealthRight.disabled = false
 
 func _on_pray_pressed() -> void:
 	player_node.visual_component.pray()
 
 func _on_player_pray_finished():
-	var i = Karma.karma
-	while i < 0:
-		if Inventory.player_inventory["Money"] == 0:
-			return
-		await get_tree().create_timer(0.2).timeout
-		change_karma(1)
-		add_item("Money", -1)
-		i += 1
+	var karma_amount = Karma.karma
+	if karma_amount < 0:
+		if abs(karma_amount) > Inventory.get_money_count(): return
+	else:
+		remove_karma()
+		Inventory.remove_money(abs(karma_amount))
 
 func _on_player_criminal(is_criminal : bool):
 	if is_criminal:
@@ -220,5 +231,11 @@ func _on_player_criminal(is_criminal : bool):
 
 func _on_player_item_dropped(item_name, item_amount):
 	match item_name:
-		"Money":
-			add_item("Money", item_amount)
+		"coin":
+			remove_item("coin", item_amount)
+
+func _on_player_change_money_count(amount):
+	if amount > 0:
+		add_item("coin", amount)
+	else:
+		remove_item("coin", abs(amount))

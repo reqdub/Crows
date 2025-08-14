@@ -52,7 +52,7 @@ func _on_close_button_pressed() -> void:
 	self.visible = false
 	get_tree().paused = !get_tree().paused
 
-func _on_menu_button_pressed() -> void:
+func show_menu() -> void:
 	if is_buttons_blocked: return
 	self.visible = !self.visible
 	get_tree().paused = !get_tree().paused
