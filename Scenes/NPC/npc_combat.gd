@@ -14,6 +14,7 @@ var statemachine_node : StateMachine
 var health_component : NPC_Health
 var reactions_component
 var movement_component : NPC_Movement
+var loot_component : NPC_Loot
 
 @export var delay_before_start_fight : float = 0.5
 @export var attack_damage : int = randi_range(2, 8)
@@ -31,13 +32,14 @@ signal combat_started()
 signal combat_ended()
 signal attacked_target(target: Node2D, damage_dealt: int)
 
-func setup_component(_parent_npc, _statemachine_node, _movement_component, _health_component, _reactions_component, _vision_component):
+func setup_component(_parent_npc, _statemachine_node, _movement_component, _health_component, _reactions_component, _vision_component, _loot_component):
 	parent_npc = _parent_npc
 	statemachine_node = _statemachine_node
 	movement_component = _movement_component
 	health_component = _health_component
 	reactions_component = _reactions_component
 	vision_component = _vision_component
+	loot_component = _loot_component
 	
 	health_component.knocked_out.connect(_on_health_knocked_out)
 # Helper for reaction component to request state change, now goes through combat
@@ -49,7 +51,7 @@ func initiate_combat(target: Node2D) -> void:
 	combat_started.emit()
 	statemachine_node.change_state(statemachine_node.state.BATTLE)
 
-func start_combat(with_target):
+func start_combat(_with_target):
 	is_in_fight = true
 	if not statemachine_node.check_is_current_state(statemachine_node.state.BATTLE):
 		movement_component.stop_moving()
@@ -60,7 +62,8 @@ func start_combat(with_target):
 func end_combat(win: bool, _winner) -> void:
 	if not is_in_fight: return
 	is_in_fight = false
-	if reactions_component.check_terminal_statuses(): return
+	if reactions_component.check_terminal_statuses(): 
+		return
 	target_enemy = null
 	Logger.log(parent_npc.npc_name, str("Бой завершился, я победил? ", win))
 	if win:
@@ -70,6 +73,7 @@ func end_combat(win: bool, _winner) -> void:
 		await get_tree().create_timer(1.0).timeout
 		statemachine_node.change_state(statemachine_node.state.WALK)
 	else:
+		loot_component.drop_loot(_winner)
 		combat_ended.emit()
 		statemachine_node.change_state(statemachine_node.state.WALK)
 	
@@ -97,8 +101,9 @@ func deal_damage(target) -> void:
 	var attack_cooldown : float = randf_range(0.5, 1.0)
 	$AttackCooldown.start(attack_cooldown)
 
-func _on_health_knocked_out(is_knocked_out : bool) -> void:
+func _on_health_knocked_out(is_knocked_out : bool, by_who : Node2D) -> void:
 	if is_knocked_out:
+		loot_component.drop_loot(by_who)
 		if brawl_node.is_brawl_running:
 			brawl_node.stop_brawl()
 

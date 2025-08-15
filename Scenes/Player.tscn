@@ -1015,6 +1015,7 @@ offset_bottom = -31.0
 theme_override_font_sizes/font_size = 24
 
 [node name="PrescenceArea" type="Area2D" parent="."]
+unique_name_in_owner = true
 visible = false
 collision_layer = 16
 collision_mask = 16

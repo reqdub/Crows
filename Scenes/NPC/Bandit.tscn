@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://dtpfmv5cfd781"]
+[gd_scene load_steps=51 format=3 uid="uid://dtpfmv5cfd781"]
 
 [ext_resource type="Script" uid="uid://c8udagiapql22" path="res://Scenes/NPC/bandit.gd" id="1_1a065"]
 [ext_resource type="Resource" uid="uid://7vkgcnvj2tbm" path="res://Resources/npc_names.tres" id="2_4tmee"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://cmce2lfv4yjpm" path="res://Scenes/NPC/npc_ammunition.gd" id="11_hkarp"]
 [ext_resource type="Script" uid="uid://dexv3uft8olco" path="res://Scenes/NPC/npc_loot.gd" id="12_d0jvx"]
 [ext_resource type="Script" uid="uid://c36xb4nx4b8fb" path="res://Scenes/NPC/bandit_combat.gd" id="13_1a065"]
+[ext_resource type="Resource" uid="uid://b5hhnqn2jtkda" path="res://Resources/Loot/bandit_loot.tres" id="13_8bq6s"]
 [ext_resource type="Script" uid="uid://bpx6hedq075uw" path="res://Scenes/NPC/bandit_reactions.gd" id="13_gwr7r"]
 [ext_resource type="Script" uid="uid://cq6bva07e6c76" path="res://Scenes/NPC/bandit_health.gd" id="14_1a065"]
 [ext_resource type="Script" uid="uid://b55fu0pd5eaf3" path="res://Scenes/NPC/bandit_visuals.gd" id="16_1a065"]
@@ -899,6 +900,7 @@ unique_name_in_owner = true
 position = Vector2(0, -216)
 
 [node name="CollectArea" type="Area2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(0, -64)
 collision_layer = 0
 collision_mask = 16
@@ -978,7 +980,6 @@ position = Vector2(1.32324, 7.38375)
 rotation = 3.57618
 scale = Vector2(0.25, 0.25)
 script = ExtResource("8_u6vlq")
-weapon_type = "knife"
 weapon_name = "knife"
 
 [node name="Knife" type="Sprite2D" parent="Visual/RightHand/Knife"]
@@ -996,6 +997,7 @@ script = ExtResource("11_hkarp")
 [node name="Loot" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("12_d0jvx")
+loot = ExtResource("13_8bq6s")
 
 [node name="Reactions" type="Node" parent="."]
 unique_name_in_owner = true

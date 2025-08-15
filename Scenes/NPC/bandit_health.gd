@@ -37,7 +37,7 @@ var is_knockdown : bool = false
 signal health_changed(amount: int)
 signal damaged_by_hit(source_node: Node2D, is_headshot: bool) # Emitted when hit and damaged
 signal critical_health() # Emitted when health drops below 3 (your original logic)
-signal knocked_out(is_knocked_out : bool) # Emitted when health reaches 0 or critical threshold
+signal knocked_out(is_knocked_out : bool, by_who : Node2D) # Emitted when health reaches 0 or critical threshold
 
 enum Vitality {
 	WEAK,
@@ -83,11 +83,11 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 	if is_dead or is_knockdown:
 		return
 	if damage_amount == -1: return
+	if source_node.is_in_group("Throwable"):
+			source_node.disable()
+			source_node = source_node.thrower
 	if not damage_source_list.has(source_node):
 		damage_source_list.append(source_node)
-	else:
-		if source_node.is_in_group("Throwable"):
-			source_node.disable()
 	var health_before_damage_taken : int = current_health
 	if damage_amount > 0:
 		add_damage_indicator(damage_amount)
@@ -109,7 +109,7 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 			var health_tween = get_tree().create_tween()
 			health_tween.tween_property(health_bar, "value", current_health, 0.3)
 		if current_health <= knock_out_hp_treshhold:
-			knock_out()
+			knock_out(source_node)
 			return
 		elif current_health <= 3:
 			critical_health.emit()
@@ -120,16 +120,16 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 		karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken,  current_health, max_total_health)
 		add_damage_indicator(0)
 
-func knock_out() -> void:
+func knock_out(by_who) -> void:
 	is_knockdown = true
 	health_bar.visible = false
 	Logger.log(parent_npc.npc_name, "Получено слишком много урона, падаю без сознания")
 	statemachine_component.change_state(statemachine_component.state.KNOCKDOWN)
-	knocked_out.emit(true)
+	knocked_out.emit(true, by_who)
 
 func _on_knockdown_animation_finished():
 	is_knockdown = false
-	knocked_out.emit(false)
+	knocked_out.emit(false, damage_source_list[-1])
 
 func add_damage_indicator(amount: int) -> void:
 	var damage_indicator_instance = damage_indicator_prefab.instantiate()

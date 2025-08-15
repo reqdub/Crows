@@ -3,7 +3,7 @@ extends Node2D
 class_name Player_Health
 
 @onready var on_screen_text_node = get_node("/root/World/OnScreenText")
-@onready var damage_indicator = preload("res://Scenes/damage_indicator.tscn")
+@onready var player_damage_indicator = preload("res://Scenes/damage_indicator.tscn")
 @onready var health_bar = $HealthBar
 
 var parent
@@ -65,7 +65,7 @@ func regenerate_health():
 	add_damage_indicator(regen_amount, Color.GREEN)
 
 func add_damage_indicator(amount, color):
-	var damage_indicator_instance = damage_indicator.instantiate()
+	var damage_indicator_instance = player_damage_indicator.instantiate()
 	damage_indicator_instance.global_position = %IndicatorPosition.global_position
 	damage_indicator_instance.setup(amount, color)
 	on_screen_text_node.call_deferred("add_child", damage_indicator_instance)

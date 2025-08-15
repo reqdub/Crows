@@ -50,7 +50,7 @@ func _ready() -> void:
 
 func setup_components():
 	%Reactions.setup_component(self, statemachine_node, health_component, movement_component, combat_component, vision_component, visuals_component)
-	%Combat.setup_component(self, statemachine_node, movement_component, health_component, reactions_component, vision_component)
+	%Combat.setup_component(self, statemachine_node, movement_component, health_component, reactions_component, vision_component, loot_component)
 	%Visuals.setup_component(self, health_component)
 	%Health.setup_component(self, visuals_component, statemachine_node, karma_component, reactions_component)
 	%Movement.setup_component(self, statemachine_node, reactions_component, health_component, visuals_component)
@@ -58,7 +58,7 @@ func setup_components():
 	%Dialogue.setup_component(self)
 	%Vision.setup_component(self, health_component, combat_component, reactions_component)
 	%Inventory.setup_component(self)
-	%Loot.setup_component(self, inventory_component)
+	%Loot.setup_component(self)
 	%Karma.setup_component(self)
 	%Stealth.setup_component(self, visuals_component, statemachine_node)
 
@@ -70,7 +70,7 @@ func setup_npc(_spawn_point, _despawn_point):
 func say(phrase_type : String):
 	say_phrase.emit(npc_name, phrase_type)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if velocity != Vector2.ZERO:
 		move_and_slide()
 

@@ -206,7 +206,7 @@ func _on_health_damaged_by_hit(_source_node: Node2D, _is_headshot: bool) -> void
 		request_state_change(statemachine_node.state.CHASE)
 # --- Helper functions (moved from main NPC or new ones) ---
 
-func _react_to_knock_out_exit(is_knoked_out : bool):
+func _react_to_knock_out_exit(is_knoked_out : bool, _by_who : Node2D):
 	if not is_knoked_out:
 		parent_npc.say("panic")
 		request_state_change(statemachine_node.state.PANIC)

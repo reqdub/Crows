@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="loot_data" load_steps=2 format=3 uid="uid://dahbttid7vu45"]
+
+[ext_resource type="Script" uid="uid://3l757x4bgfun" path="res://Resources/Loot/loot_data.gd" id="1_3qgon"]
+
+[resource]
+script = ExtResource("1_3qgon")
+data = {
+"Collectable": {},
+"Non-Collectable": {},
+"Weapons": {
+"spear": {
+"amount": 5,
+"chance": 25,
+"name": "spear"
+}
+},
+"coin": {
+"amount": 10,
+"chance": 50
+}
+}

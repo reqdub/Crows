@@ -12,7 +12,8 @@ func panic():
 	else:
 		movement_node.movement_target = character.spawn_position.global_position
 	character.is_panic = true
-	character.ammunition_component.drop_ammunition()
+	var panic_is_triggered_by = character.health_component.damage_source_list[-1]
+	character.ammunition_component.drop_ammunition(panic_is_triggered_by)
 	movement_node.walk_speed *= randf_range(2.0, 2.5)
 	movement_node.movement_target = Vector2.ZERO
 	movement_node.move_to_point()

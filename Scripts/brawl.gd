@@ -22,6 +22,7 @@ signal brawl_ended
 
 func set_brawl_start_point():
 	global_position = fighter_2.global_position
+	$"../OnScreenText".global_position = global_position
 
 func start_brawl(fighter, target) -> void:
 	if is_brawl_running:

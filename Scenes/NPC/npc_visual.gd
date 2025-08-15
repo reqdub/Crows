@@ -25,9 +25,13 @@ func setup_component(_parent_npc, _health_component) -> void:
 	health_component.knocked_out.connect(_on_health_knocked_out)
 
 func randomize_visual() -> void:
-	var random_head = randi_range(1, 3)
-	#var head_texture_path = "res://Sprites/NPC/Heads/Male/Head" + str(random_head) + ".png"
-	#head_sprite.texture = load(head_texture_path)
+	var random_head = randi_range(1, 6)
+	var random_body = randi_range(1, 4)
+	var head_texture_path = "res://Sprites/NPC/Heads/Male/Head" + str(random_head) + ".png"
+	var body_texture_path = "res://Sprites/NPC/Body/Male/Body" + str(random_body) + ".png"
+	head_sprite.texture = load(head_texture_path)
+	body_sprite.texture = load(body_texture_path)
+	body_sprite.frame = 0
 	head_sprite.frame = 0
 	current_head_frame = 0
 
@@ -70,7 +74,7 @@ func update_damage_visuals() -> void:
 	if health_component.is_body_damaged and body_sprite:
 		body_sprite.frame = 1 # Damaged body frame
 
-func _on_health_knocked_out(is_knocked__out : bool) -> void:
+func _on_health_knocked_out(is_knocked__out : bool, _by_who : Node2D) -> void:
 	if is_knocked__out:
 		play_knockdown_animation()
 		head_sprite.frame = 3 # Head damaged on knockout (as per original)

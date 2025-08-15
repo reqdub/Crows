@@ -14,7 +14,7 @@ var max_health_tough = 25
 var damage_source_list : Array = []
 
 var parent_npc
-var visual_component : NPC_Visuals
+var visual_component
 var statemachine_component : StateMachine
 var reactions_component
 var karma_component : NPC_Karma
@@ -33,7 +33,7 @@ var is_knockdown : bool = false
 signal health_changed(amount: int)
 signal damaged_by_hit(source_node: Node2D, is_headshot: bool) # Emitted when hit and damaged
 signal critical_health() # Emitted when health drops below 3 (your original logic)
-signal knocked_out(is_knocked_out : bool) # Emitted when health reaches 0 or critical threshold
+signal knocked_out(is_knocked_out : bool, by_who : Node2D) # Emitted when health reaches 0 or critical threshold
 
 enum Vitality {
 	WEAK,
@@ -107,7 +107,7 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 		health_tween.tween_property(health_bar, "value", current_health, 0.3)
 		if current_health <= knock_out_hp_treshhold:
 			karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken, current_health, max_total_health)
-			knock_out()
+			knock_out(damage_source_list[-1])
 			return
 		elif current_health <= 3:
 			critical_health.emit()
@@ -120,16 +120,16 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 		if source_node.is_in_group("Player") or source_node.is_in_group("Throwable"):
 			karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken,  current_health, max_total_health)
 
-func knock_out() -> void:
+func knock_out(by_who : Node2D) -> void:
 	is_knockdown = true
 	health_bar.visible = false
 	Logger.log(parent_npc.npc_name, "Получено слишком много урона, падаю без сознания")
 	statemachine_component.change_state(statemachine_component.state.KNOCKDOWN)
-	knocked_out.emit(true)
+	knocked_out.emit(true, by_who)
 
 func _on_knockdown_animation_finished():
 	is_knockdown = false
-	knocked_out.emit(false)
+	knocked_out.emit(false, damage_source_list[-1])
 
 func add_damage_indicator(amount: int) -> void:
 	if not damage_indicator_prefab:
@@ -144,7 +144,7 @@ func add_damage_indicator(amount: int) -> void:
 		Logger.warn("OnScreenText node or %OnScreenIndicators not found for damage indicator. Placing at NPC position.")
 		# Fallback if the target UI nodes aren't found
 		damage_indicator_instance.global_position = get_parent().global_position
-		get_tree().get_root().add_child(damage_indicator_instance) # Add to root if no specific UI parent
+		on_screen_text_node.add_child(damage_indicator_instance) # Add to root if no specific UI parent
 
 func _on_npc_combat_started():
 	health_bar.visible = false

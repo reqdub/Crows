@@ -93,8 +93,9 @@ func _react_to_damaged_character(_char_node: Node2D) -> void:
 		Logger.log(parent_npc.npc_name, str(_char_node) + " ранен, нападаю на обидчика")
 		parent_npc.say("criminal_scum")
 		await get_tree().create_timer(delay_before_start_fight).timeout
-		if _char_node.combat_component.is_in_fight: return
-		combat_component.initiate_combat(potential_enemy)
+		if _char_node != null:
+			if _char_node.combat_component.is_in_fight: return
+			combat_component.initiate_combat(potential_enemy)
 	else:
 		is_damaged_npc_been_seen = true
 		movement_component.stop_moving()
@@ -213,7 +214,7 @@ func _on_health_damaged_by_hit(_source_node: Node2D, _is_headshot: bool) -> void
 		movement_component.movement_target = parent_npc.danger_point.global_position
 		request_state_change(statemachine_node.state.CHASE)
 
-func _react_to_knock_out_exit(is_knoked_out : bool):
+func _react_to_knock_out_exit(is_knoked_out : bool, _by_who : Node2D):
 	if not is_knoked_out:
 		parent_npc.say("guard_panic")
 		request_state_change(statemachine_node.state.PANIC)

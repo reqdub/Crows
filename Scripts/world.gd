@@ -15,7 +15,7 @@ func _ready() -> void:
 	player_node.statue = %GoddessPosition.global_position
 	player_node.connect("weapon_count_changed", %WeaponScrollBar._on_weapon_count_changed)
 	player_node.connect("add_weapon", %WeaponScrollBar._on_weapon_added)
-	player_node.connect("change_money_count", %UI._on_player_change_money_count)
+	player_node.connect("update_inventory", %UI._on_update_inventory)
 	%WeaponScrollBar.connect("weapon_changed", player_node.change_weapon)
 	Karma.player_node = player_node
 	Karma.connect("danger_increases", %Spawner._on_danger_increases)
@@ -32,10 +32,8 @@ func _on_collect_area_body_entered(body: Node2D) -> void:
 	body.queue_free()
 	%UI.add_item("coin", 1)
 
-func _on_drop_area_body_entered(body: Node2D) -> void:
-	if (body.is_in_group("Character")):
-		if body.loot_component:
-			body.loot_component.drop_loot()
+func _on_drop_area_body_entered(_body: Node2D) -> void:
+	pass
 
 func _on_floor_2_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Throwable"): body.disable()

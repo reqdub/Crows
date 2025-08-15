@@ -34,7 +34,6 @@ func connect_player(_player):
 	player_node = _player
 	player_node.connect("block_player_control", _player_control_blocked)
 	player_node.connect("pray_finished", _on_player_pray_finished)
-	player_node.connect("item_dropped", _on_player_item_dropped)
 	player_node.connect("criminal", _on_player_criminal)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -117,27 +116,6 @@ func remove_karma():
 func increase_area_dangerous(amount):
 	var guard_progress_tween = create_tween()
 	guard_progress_tween.tween_property(%GuardProgress, "value", amount, 2.0)
-
-func add_item(item_name, amount):
-		if amount == 0: return
-		if item_name == "coin":
-			if coin_tween != null:
-				coin_tween = create_tween()
-				coin_tween.tween_property($MarginContainer/Inventory/Coin, "scale", Vector2(1.2, 1.2), 0.2)
-				coin_tween.tween_property($MarginContainer/Inventory/Coin, "scale", Vector2(1.0, 1.0), 0.2)
-			$MarginContainer/Inventory/Money.set_text(str(Inventory.get_money_count()))
-		else:
-			Inventory.add_item(item_name, amount)
-
-func remove_item(item_name, amount):
-	if amount == 0: return
-	Inventory.remove_item(item_name, amount)
-	if item_name == "coin":
-		if coin_tween != null:
-			coin_tween = create_tween()
-			coin_tween.tween_property($MarginContainer/Inventory/Coin, "scale", Vector2(1.2, 1.2), 0.2)
-			coin_tween.tween_property($MarginContainer/Inventory/Coin, "scale", Vector2(1.0, 1.0), 0.2)
-	$MarginContainer/Inventory/Money.set_text(str(Inventory.player_inventory[item_name]))
 
 func _process(delta: float) -> void:
 	if is_aiming and not is_player_control_blocked:
@@ -229,13 +207,5 @@ func _on_player_criminal(is_criminal : bool):
 		$CriminalIcon.visible = false
 		$CriminalIcon/AnimationPlayer.stop()
 
-func _on_player_item_dropped(item_name, item_amount):
-	match item_name:
-		"coin":
-			remove_item("coin", item_amount)
-
-func _on_player_change_money_count(amount):
-	if amount > 0:
-		add_item("coin", amount)
-	else:
-		remove_item("coin", abs(amount))
+func _on_update_inventory():
+	$MarginContainer/Inventory/Money.set_text(str(Inventory.get_money_count()))

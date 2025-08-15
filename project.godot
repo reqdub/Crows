@@ -51,6 +51,7 @@ Empty_Space="Игрок покинул данную зону и не был об
 Bandit=""
 Peasant=""
 Weapon=""
+Collectable=""
 
 [input]
 

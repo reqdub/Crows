@@ -9,9 +9,7 @@ var has_loot : bool = true
 var non_coollectable_drop_chance : int = 25
 
 var bag_inventory : Dictionary = {
-	"Collectable" : {
-		"coin" : randi_range(0, 5)
-	},
+	"coin" : randi_range(0, 5),
 	"Non-Collectable" :
 		{
 			"apple" : randi_range(0, 2),
@@ -27,13 +25,14 @@ func _ready() -> void:
 	await get_tree().create_timer(10.0).timeout
 	self.queue_free()
 
-func drop_loot():
-	for collectable_item : String in bag_inventory["Collectable"]:
-		for number_of_items in bag_inventory["Collectable"][collectable_item]:
-			var collectable_loot_instance = collectable_loot.instantiate()
-			collectable_loot_instance.set_item(collectable_item)
-			collectable_loot_instance.global_position = $DropPosition.global_position
-			get_node("/root/World/Background/Walk_Area").call_deferred("add_child", collectable_loot_instance)
+func drop_loot(collector : Node2D):
+	for category in bag_inventory.keys():
+		if category == "coin":
+			for amount in bag_inventory[category]:
+				var collectable_loot_instance = collectable_loot.instantiate()
+				collectable_loot_instance.set_item("coin", 1, collector)
+				collectable_loot_instance.global_position = $DropPosition.global_position
+				get_node("/root/World/Background/Walk_Area").call_deferred("add_child", collectable_loot_instance)
 	for non_collectable_item : String in bag_inventory["Non-Collectable"]:
 		for number_of_items in bag_inventory["Non-Collectable"][non_collectable_item]:
 			if randi_range(0, 100) <= non_coollectable_drop_chance:
@@ -47,7 +46,7 @@ func _on_body_entered(body: Node) -> void:
 		call_deferred("set_contact_monitor", false)
 		call_deferred("set_freeze_enabled", true)
 		$Sprite2D.visible = false
-		drop_loot()
+		drop_loot(body.thrower)
 		$CPUParticles2D.emitting = true
 
 func _on_cpu_particles_2d_finished() -> void:

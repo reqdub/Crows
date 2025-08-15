@@ -73,7 +73,7 @@ func update_damage_visuals() -> void:
 	if health_component.is_body_damaged and body_sprite:
 		body_sprite.frame = 1 # Damaged body frame
 
-func _on_health_knocked_out(is_knocked__out : bool) -> void:
+func _on_health_knocked_out(is_knocked__out : bool, _by_who : Node2D) -> void:
 	if is_knocked__out:
 		play_knockdown_animation()
 		head_sprite.frame = 3 # Head damaged on knockout (as per original)

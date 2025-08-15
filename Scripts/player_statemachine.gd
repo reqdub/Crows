@@ -20,7 +20,7 @@ func setup_component(_parent, _health_component, _visual_component):
 	visual_component = _visual_component
 
 func change_state(new_state):
-	exit_state()
+	await exit_state()
 	enter_state(new_state)
 
 func enter_state(new_state):
@@ -47,6 +47,9 @@ func exit_state():
 			pass
 		3:#KNOCKDOWN
 			parent.block_player_control.emit(false)
+			await get_tree().create_timer(2.0).timeout
+			%PrescenceArea.set_deferred("monitorable", true)
+			%PrescenceArea.set_deferred("monitoring", true)
 
 func idle_state():
 	current_state = state.IDLE

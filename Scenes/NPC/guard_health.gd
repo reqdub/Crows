@@ -114,7 +114,7 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 			var health_tween = get_tree().create_tween()
 			health_tween.tween_property(health_bar, "value", current_health, 0.3)
 		if current_health <= knock_out_hp_treshhold:
-			knock_out()
+			knock_out(source_node)
 			return
 		elif current_health <= 3:
 			critical_health.emit()
@@ -127,16 +127,16 @@ func take_damage(source_node: Node2D, damage_amount: int, is_headshot: bool = fa
 			karma_component.calculate_karma(damage_amount, is_headshot, health_before_damage_taken,  current_health, max_total_health)
 		add_damage_indicator(0)
 
-func knock_out() -> void:
+func knock_out(by_who) -> void:
 	is_knockdown = true
 	health_bar.visible = false
 	Logger.log(parent_npc.npc_name, "Получено слишком много урона, падаю без сознания")
 	statemachine_component.change_state(statemachine_component.state.KNOCKDOWN)
-	knocked_out.emit(true)
+	knocked_out.emit(true, by_who)
 
 func _on_knockdown_animation_finished():
 	is_knockdown = false
-	knocked_out.emit(false)
+	knocked_out.emit(false, damage_source_list[-1])
 
 func add_damage_indicator(amount: int) -> void:
 	var damage_indicator_instance = damage_indicator_prefab.instantiate()

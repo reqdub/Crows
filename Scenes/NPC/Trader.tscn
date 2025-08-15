@@ -21,7 +21,6 @@
 [ext_resource type="Script" uid="uid://bh54h0xose8vc" path="res://Scenes/NPC/npc_combat.gd" id="15_xeork"]
 [ext_resource type="Script" uid="uid://dh7420a0r2wl2" path="res://Scenes/NPC/npc_health.gd" id="16_hv52u"]
 [ext_resource type="Script" uid="uid://cia0ny0huuriw" path="res://Scenes/NPC/npc_karma.gd" id="17_ltuwd"]
-[ext_resource type="Script" uid="uid://c5s3foypv5d4h" path="res://Scenes/NPC/npc_visual.gd" id="18_7dy6o"]
 [ext_resource type="Script" uid="uid://7mnq8tnahcbc" path="res://Scenes/NPC/npc_movement.gd" id="19_euvfs"]
 [ext_resource type="Script" uid="uid://x75kdc2eb1mv" path="res://Scenes/NPC/npc_dialogue.gd" id="20_umyt6"]
 [ext_resource type="Script" uid="uid://df7f8lc81gsse" path="res://Scenes/NPC/trader_reactions.gd" id="21_4hrwl"]
@@ -29,6 +28,7 @@
 [ext_resource type="Script" uid="uid://d1npchkre804x" path="res://Scenes/NPC/npc_vision.gd" id="22_f5jg8"]
 [ext_resource type="Texture2D" uid="uid://bkhd5qpo7jcxk" path="res://Sprites/Character/View.png" id="23_60ytv"]
 [ext_resource type="Script" uid="uid://b5ka1xxnunxhb" path="res://Scenes/Statemachine/state_machine.gd" id="24_hog8b"]
+[ext_resource type="Script" uid="uid://bu1vr026eaesy" path="res://Scenes/NPC/trader_visuals.gd" id="25_4hrwl"]
 [ext_resource type="Script" uid="uid://dj6pi3o0ark70" path="res://Scenes/Statemachine/idle.gd" id="25_m7hkm"]
 [ext_resource type="Script" uid="uid://pr4e0twtdmp3" path="res://Scenes/Statemachine/walk.gd" id="26_eivkm"]
 [ext_resource type="Script" uid="uid://by5mceetv5cgc" path="res://Scenes/Statemachine/panic.gd" id="27_kq0aq"]
@@ -1213,7 +1213,7 @@ script = ExtResource("17_ltuwd")
 
 [node name="Visuals" type="Node2D" parent="."]
 unique_name_in_owner = true
-script = ExtResource("18_7dy6o")
+script = ExtResource("25_4hrwl")
 
 [node name="Movement" type="Node" parent="."]
 unique_name_in_owner = true

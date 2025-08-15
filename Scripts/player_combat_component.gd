@@ -13,7 +13,7 @@ var body_armour : int = 0
 var arms_armour : int = 0
 
 var block_chance : int = 0
-var dodge_chance : int = 75
+var dodge_chance : int = 15
 
 var parent
 var health_component : Player_Health
@@ -55,6 +55,8 @@ func change_weapon(_weapon):
 	%Weapon.texture = load(current_weapon.sprite_path)
 
 func start_combat(with_target):
+	%PrescenceArea.set_deferred("monitorable", false)
+	%PrescenceArea.set_deferred("monitoring", false)
 	if visual_component.is_praying:
 		visual_component.stop_praying()
 	Logger.log("Player начинает бой c", with_target.npc_name)
@@ -62,21 +64,24 @@ func start_combat(with_target):
 	statemachine.change_state(statemachine.state.FIGHT)
 
 func end_combat(win : bool, winner = null):
-	if not win:
-		if winner != null:
-			if winner.is_in_group("Guard"):
-				parent.is_criminal_scum = false
-				parent.criminal.emit(false)
-				parent.drop_loot(winner)
-			elif winner.is_in_group("Bandit"):
-				parent.drop_loot(winner)
 	Logger.log("Player ", "заканчивает бой")
 	is_in_fight = false
-	if win: statemachine.change_state(statemachine.state.IDLE)
+	if win:
+		await get_tree().create_timer(1.0).timeout
+		%PrescenceArea.set_deferred("monitorable", true)
+		%PrescenceArea.set_deferred("monitoring", true)
+		statemachine.change_state(statemachine.state.IDLE)
 	else:
+		if winner.is_in_group("Guard"):
+			parent.is_criminal_scum = false
+			parent.criminal.emit(false)
+			parent.drop_loot(winner)
+		elif winner.is_in_group("Bandit"):
+			parent.drop_loot(winner)
 		audioplayer.stream = hit_sound
 		audioplayer.play()
 		statemachine.change_state(statemachine.state.KNOCKDOWN)
+	await get_tree().create_timer(1.0).timeout
 	if not parent.is_player_in_initial_position:
 		parent.block_player_control.emit(true)
 		await parent.walk_to(parent.initial_position)
@@ -92,12 +97,12 @@ func take_hit(_source, amount, _is_headshot):
 	if dice_roll() <= block_chance:
 		var battle_text_instance : battle_text_indicator = battle_text_prefab.instantiate()
 		battle_text_instance.global_position = %IndicatorPosition.global_position
-		battle_text_instance.setup("Блок", Color.YELLOW)
+		battle_text_instance.setup("Вы блокировалири", Color.YELLOW)
 		OnScreenText.call_deferred("add_child", battle_text_instance)
 	elif dice_roll() <= dodge_chance:
 		var battle_text_instance : battle_text_indicator = battle_text_prefab.instantiate()
 		battle_text_instance.global_position = %IndicatorPosition.global_position
-		battle_text_instance.setup("Уклонение", Color.GREEN)
+		battle_text_instance.setup("Вы уклонились", Color.GREEN)
 		OnScreenText.call_deferred("add_child", battle_text_instance)
 	else: 
 		if _is_headshot:
@@ -119,7 +124,7 @@ func deal_damage(target):
 	var is_headshot : bool = false
 	if randi_range(0, 100) < 20:
 		is_headshot = true
-	target.combat_component.take_hit(target, damage_to_deal, is_headshot)
+	target.combat_component.take_hit(self, damage_to_deal, is_headshot)
 	can_attack = false
 	var attack_cooldown : float = randf_range(0.8, 1.4)
 	$AttackCooldown.start(attack_cooldown)

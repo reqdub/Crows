@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://dhuap0eyxirkg"]
+[gd_scene load_steps=48 format=3 uid="uid://dhuap0eyxirkg"]
 
 [ext_resource type="Script" uid="uid://dvqlq2sgr4hm0" path="res://Scenes/NPC/guard.gd" id="1_srxxb"]
 [ext_resource type="Resource" uid="uid://7vkgcnvj2tbm" path="res://Resources/npc_names.tres" id="2_bkty7"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://dexv3uft8olco" path="res://Scenes/NPC/npc_loot.gd" id="12_6d2y4"]
 [ext_resource type="Script" uid="uid://7m467ndtjtnf" path="res://Scenes/NPC/guard_reactions.gd" id="12_l7tr6"]
 [ext_resource type="Texture2D" uid="uid://sgsnbyywla03" path="res://Sprites/Effects/stun.png" id="12_pidik"]
+[ext_resource type="Resource" uid="uid://dahbttid7vu45" path="res://Resources/Loot/guard_loot.tres" id="13_2sj7i"]
 [ext_resource type="Script" uid="uid://ip0cwj71sys2" path="res://Scenes/NPC/guard_combat.gd" id="13_l7tr6"]
 [ext_resource type="Script" uid="uid://b5ka1xxnunxhb" path="res://Scenes/Statemachine/state_machine.gd" id="14_a3le4"]
 [ext_resource type="Script" uid="uid://bkdht8c6r6keg" path="res://Scenes/NPC/guard_health.gd" id="14_l7tr6"]
@@ -882,6 +883,7 @@ unique_name_in_owner = true
 position = Vector2(0, -216)
 
 [node name="CollectArea" type="Area2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(0, -64)
 collision_layer = 0
 collision_mask = 16
@@ -962,7 +964,6 @@ position = Vector2(-30.7299, -0.415418)
 rotation = -0.195477
 scale = Vector2(0.25, 0.25)
 script = ExtResource("7_l7tr6")
-weapon_type = "polearm"
 weapon_name = "spear"
 
 [node name="Stick" type="Sprite2D" parent="Visual/RightHand/Spear"]
@@ -982,6 +983,7 @@ script = ExtResource("11_jlxlp")
 [node name="Loot" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("12_6d2y4")
+loot = ExtResource("13_2sj7i")
 
 [node name="Reactions" type="Node" parent="."]
 unique_name_in_owner = true

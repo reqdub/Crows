@@ -14,10 +14,10 @@ extends Node2D
 @export var max_number_of_bandits = 1
 
 var weigth_spawn_dict = {
-	"peasant" : 5.0,
-	"guard" : 2.5,
-	"bandit" : 1.0,
-	"merchant" : 1.5
+	"peasant" : 10.0,
+	"guard" : 1.5,
+	"bandit" : 0.5,
+	"merchant" : 0.2
 }
 
 var npc_count = {
@@ -183,12 +183,12 @@ func _on_new_day_started():
 
 func _on_daytime_dawn():
 	weigth_spawn_dict.peasant *= 2.0
-	weigth_spawn_dict.merchant *= 2.5
+	weigth_spawn_dict.merchant *= 1.5
 	weigth_spawn_dict.bandit *= 0.5
 	weigth_spawn_dict.guard *= 0.5
 func _on_daytime_day():
 	weigth_spawn_dict.peasant *= 2.0
-	weigth_spawn_dict.merchant *= 2.5
+	weigth_spawn_dict.merchant *= 1.5
 	weigth_spawn_dict.bandit *= 0.5
 	weigth_spawn_dict.guard *= 0.5
 func _on_daytime_dusk():

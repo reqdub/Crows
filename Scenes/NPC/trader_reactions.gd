@@ -10,7 +10,7 @@ var health_component : NPC_Health
 var movement_component : NPC_Movement
 var combat_component : NPC_Combat
 var vision_component : NPC_Vision
-var visual_component : NPC_Visuals
+var visual_component
 # Add reference to a future combat component if you create one, e.g.:
 # @onready var combat_component : NPC_Combat = parent_npc.combat_component
 

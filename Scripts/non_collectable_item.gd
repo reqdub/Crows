@@ -16,7 +16,7 @@ func _on_body_entered(_body: Node) -> void:
 	pass
 	#AudioManager.play_sound(SoundCache.coin_flip_sound)
 
-func set_item(item_name : String, _custom_collector = null, item_category : String = ""):
+func set_item(item_name : String, _custom_collector = null):
 	$Sprite2D.texture = load("res://Sprites/Items/" + item_name + ".png")
 
 func destroy():

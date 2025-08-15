@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://blp3a3k5imhd1"]
+[gd_scene load_steps=51 format=3 uid="uid://blp3a3k5imhd1"]
 
 [ext_resource type="AudioStream" uid="uid://c3a0m678i2l7a" path="res://Sounds/Footsteps/footstep_1.wav" id="2_feki1"]
 [ext_resource type="Resource" uid="uid://7vkgcnvj2tbm" path="res://Resources/npc_names.tres" id="2_w3kb3"]
@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bkhd5qpo7jcxk" path="res://Sprites/Character/View.png" id="4_s0nbw"]
 [ext_resource type="Texture2D" uid="uid://b60ctx7f77gus" path="res://Sprites/Character/Player/Shadow.png" id="6_iiypd"]
 [ext_resource type="Texture2D" uid="uid://cbh20l1v3bn45" path="res://Sprites/NPC/Arms/Male/Arms1.png" id="7_dv8px"]
-[ext_resource type="Texture2D" uid="uid://b871hwjfy4rc7" path="res://Sprites/NPC/Peasant Male/Head.png" id="8_bwvm2"]
+[ext_resource type="Texture2D" uid="uid://ikdvn86p550q" path="res://Sprites/NPC/Heads/Male/Head6.png" id="7_yb16o"]
 [ext_resource type="Texture2D" uid="uid://hy7fgx1p83w" path="res://Sprites/NPC/Body/Male/Body1.png" id="9_2xnqw"]
 [ext_resource type="Script" uid="uid://cct6evi5jskic" path="res://Scenes/NPC/npc_inventory.gd" id="9_bwvm2"]
 [ext_resource type="Script" uid="uid://dexv3uft8olco" path="res://Scenes/NPC/npc_loot.gd" id="9_dv8px"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://x75kdc2eb1mv" path="res://Scenes/NPC/npc_dialogue.gd" id="12_dv8px"]
 [ext_resource type="Texture2D" uid="uid://bhycyf4n7lh2m" path="res://Sprites/Items/Bag.png" id="12_fbofu"]
 [ext_resource type="Texture2D" uid="uid://sgsnbyywla03" path="res://Sprites/Effects/stun.png" id="13_yb16o"]
+[ext_resource type="Resource" uid="uid://bvhkye68owpgb" path="res://Resources/Loot/peasant_loot.tres" id="14_r4ljd"]
 [ext_resource type="Script" uid="uid://cia0ny0huuriw" path="res://Scenes/NPC/npc_karma.gd" id="15_2xnqw"]
 [ext_resource type="Script" uid="uid://b5ka1xxnunxhb" path="res://Scenes/Statemachine/state_machine.gd" id="15_qsanh"]
 [ext_resource type="Script" uid="uid://d1npchkre804x" path="res://Scenes/NPC/npc_vision.gd" id="16_iiypd"]
@@ -829,12 +830,12 @@ height = 86.0
 radius = 46.0
 height = 92.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_gc6e7"]
-radius = 6.00521
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nyftf"]
 radius = 18.0
 height = 80.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gc6e7"]
+radius = 6.00521
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_m4aiy"]
 radius = 2.0
@@ -861,6 +862,7 @@ libraries = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -8)
 shape = SubResource("CapsuleShape2D_cy40q")
 
@@ -900,23 +902,6 @@ hframes = 2
 vframes = 2
 frame = 1
 
-[node name="Head" type="Sprite2D" parent="Visual"]
-position = Vector2(0, -78)
-scale = Vector2(4, 4)
-texture = ExtResource("8_bwvm2")
-flip_h = true
-hframes = 2
-vframes = 2
-frame = 3
-
-[node name="HeadCollision" type="Area2D" parent="Visual/Head"]
-collision_layer = 64
-collision_mask = 64
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Visual/Head/HeadCollision"]
-position = Vector2(0.25, -1.75)
-shape = SubResource("CircleShape2D_gc6e7")
-
 [node name="Body" type="Sprite2D" parent="Visual"]
 position = Vector2(0, -7)
 scale = Vector2(4, 4)
@@ -925,6 +910,7 @@ flip_h = true
 hframes = 2
 
 [node name="BodyArea" type="Area2D" parent="Visual/Body"]
+visible = false
 position = Vector2(0, 1.75)
 scale = Vector2(0.25, 0.25)
 collision_layer = 64
@@ -933,6 +919,23 @@ collision_mask = 64
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Visual/Body/BodyArea"]
 position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_nyftf")
+
+[node name="Head" type="Sprite2D" parent="Visual"]
+position = Vector2(0, -78)
+scale = Vector2(4, 4)
+texture = ExtResource("7_yb16o")
+flip_h = true
+hframes = 2
+vframes = 2
+
+[node name="HeadCollision" type="Area2D" parent="Visual/Head"]
+visible = false
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visual/Head/HeadCollision"]
+position = Vector2(0.25, -1.75)
+shape = SubResource("CircleShape2D_gc6e7")
 
 [node name="RightHand" type="Sprite2D" parent="Visual"]
 position = Vector2(-36, -36)
@@ -999,6 +1002,7 @@ script = ExtResource("11_a0fft")
 [node name="Loot" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("9_dv8px")
+loot = ExtResource("14_r4ljd")
 
 [node name="Reactions" type="Node" parent="."]
 unique_name_in_owner = true
@@ -1173,8 +1177,8 @@ scale = Vector2(4, 4)
 texture = ExtResource("6_iiypd")
 
 [connection signal="body_entered" from="CollectArea" to="." method="_on_collect_area_body_entered"]
-[connection signal="body_entered" from="Visual/Head/HeadCollision" to="Combat" method="_on_head_collision_body_entered"]
 [connection signal="body_entered" from="Visual/Body/BodyArea" to="Combat" method="_on_body_area_body_entered"]
+[connection signal="body_entered" from="Visual/Head/HeadCollision" to="Combat" method="_on_head_collision_body_entered"]
 [connection signal="body_entered" from="Visual/RightHand/Bag/Bag" to="Visual/RightHand/Bag" method="_on_bag_body_entered"]
 [connection signal="timeout" from="Combat/AttackCooldown" to="Combat" method="_on_attack_cooldown_timeout"]
 [connection signal="body_entered" from="Vision/ViewArea" to="Vision" method="_on_view_area_body_entered"]

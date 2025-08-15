@@ -16,7 +16,7 @@ class_name Trader
 @onready var dialogue_component : NPC_Dialogue = %Dialogue
 @onready var health_component : NPC_Health = %Health
 @onready var reactions_component = %Reactions
-@onready var visuals_component : NPC_Visuals = %Visuals
+@onready var visuals_component = %Visuals
 @onready var combat_component : NPC_Combat = %Combat
 @onready var movement_component : NPC_Movement = %Movement
 @onready var vision_component : NPC_Vision = %Vision
@@ -47,7 +47,7 @@ func _ready() -> void:
 
 func setup_components():
 	%Reactions.setup_component(self, statemachine_node, health_component, movement_component, combat_component, vision_component, visuals_component)
-	%Combat.setup_component(self, statemachine_node, movement_component, health_component, reactions_component, vision_component)
+	%Combat.setup_component(self, statemachine_node, movement_component, health_component, reactions_component, vision_component, loot_component)
 	%Visuals.setup_component(self, health_component)
 	%Health.setup_component(self, visuals_component, statemachine_node, karma_component, reactions_component)
 	%Movement.setup_component(self, statemachine_node, reactions_component, health_component, visuals_component)

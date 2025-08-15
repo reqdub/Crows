@@ -8,6 +8,7 @@ class_name player
 @onready var drop_area = get_node("/root/World/Background/Drops")
 @onready var collectable_drop = preload("res://Scenes/Droppable/collectable_item.tscn")
 @onready var non_collectable_drop = preload("res://Scenes/Droppable/non_collectable_item.tscn")
+@onready var weapon_drop = preload("res://Scenes/Droppable/droppable_weapon.tscn")
 
 @onready var throw_sound = load("res://Sounds/SFX/throw.wav")
 
@@ -20,12 +21,11 @@ class_name player
 
 signal block_player_control(blocked : bool)
 signal pray_finished
-signal item_dropped(item_name, item_amount)
 signal criminal(is_scum : bool)
 
 signal add_weapon(weapon_name, weapon_count)
 signal weapon_count_changed(weapon_name)
-signal change_money_count(amount)
+signal update_inventory
 
 enum look_side {
 	LEFT,
@@ -156,36 +156,52 @@ func change_weapon(weapon):
 	combat_component.change_weapon(weapon)
 
 func drop_loot(loot_collector):
-	drop_items("coin", loot_collector)
-	
-func drop_items(item_category, loot_collector):
-	match item_category:
-		"coin" : 
-			var amount = Inventory.player_inventory["coin"]
-			item_dropped.emit("coin", amount)
-			for i in amount:
-				var droppable_item_instance = collectable_drop.instantiate()
-				droppable_item_instance.set_item("coin", loot_collector, "",)
-				droppable_item_instance.global_position = self.global_position
-				drop_area.call_deferred("add_child", droppable_item_instance)
-		"Collectable" :
-			var items_list : Array = Inventory.player_inventory["Collectable"]
-			for item in items_list:
-				var item_amount = Inventory.player_inventory["Collectable"][item]
-				var droppable_item_instance = collectable_drop.instantiate()
-				droppable_item_instance.set_item(item, loot_collector, "Collectable")
-				droppable_item_instance.global_position = self.global_position
-				drop_area.call_deferred("add_child", droppable_item_instance)
-		"Non-Collectable" : 
-			var items_list : Array = Inventory.player_inventory["Non-Collectable"]
-			for item in items_list:
-				var item_amount = Inventory.player_inventory["Non-Collectable"][item]
-				var droppable_item_instance = collectable_drop.instantiate()
-				droppable_item_instance.set_item(item, loot_collector, "Non-Collectable")
-				droppable_item_instance.global_position = self.global_position
-				drop_area.call_deferred("add_child", droppable_item_instance)
-		"Weapons" : 
-			var amount = Inventory.player_inventory["Weapons"]
+	for item_category in Inventory.player_inventory:
+		match item_category:
+			"coin" : 
+				var amount = Inventory.player_inventory["coin"]
+				for i in amount:
+					Inventory.remove_money(1)
+					var droppable_item_instance = collectable_drop.instantiate()
+					droppable_item_instance.set_item("coin", 1, loot_collector)
+					droppable_item_instance.global_position = self.global_position
+					drop_area.call_deferred("add_child", droppable_item_instance)
+					update_inventory.emit()
+			"Collectable" :
+				var items_list : Array = Inventory.player_inventory["Collectable"].keys()
+				for item in items_list:
+					var item_amount = Inventory.player_inventory["Collectable"][item]["amount"]
+					for i in range(item_amount):
+						Inventory.remove_item("Collectable", item, 1)
+						var droppable_item_instance = collectable_drop.instantiate()
+						droppable_item_instance.set_item(item, 1, loot_collector)
+						droppable_item_instance.global_position = self.global_position
+						drop_area.call_deferred("add_child", droppable_item_instance)
+						update_inventory.emit()
+			"Non-Collectable" : 
+				var items_list : Array = Inventory.player_inventory["Non-Collectable"].keys()
+				for item in items_list:
+					var item_amount = Inventory.player_inventory["Non-Collectable"][item]["amount"]
+					for i in range(item_amount):
+						Inventory.remove_item("Non-Collectable", item, 1)
+						var droppable_item_instance = collectable_drop.instantiate()
+						droppable_item_instance.set_item(item, 1, loot_collector)
+						droppable_item_instance.global_position = self.global_position
+						drop_area.call_deferred("add_child", droppable_item_instance)
+						update_inventory.emit()
+			"Weapons" :
+				var items_list : Array = Inventory.player_inventory["Weapons"].keys()
+				for item in items_list:
+					if item == "rock": continue
+					var item_amount = Inventory.player_inventory["Weapons"][item]["amount"]
+					for i in range(item_amount):
+						Inventory.remove_item("Weapons", item, 1)
+						var droppable_item_instance = weapon_drop.instantiate()
+						droppable_item_instance.set_item(item, 1, loot_collector)
+						droppable_item_instance.global_position = self.global_position
+						drop_area.call_deferred("add_child", droppable_item_instance)
+						weapon_count_changed.emit(item)
+						update_inventory.emit()
 
 func look_left():
 	looking_at = look_side.LEFT
@@ -228,15 +244,15 @@ func _on_prescence_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Weapon"):
 		var weapon_name = body.item_name
 		var weapon_amount = body.item_amount
-		add_equipment("Weapons", weapon_name, weapon_amount)
+		Inventory.add_item("Weapons", weapon_name, weapon_amount)
+		add_weapon.emit(weapon_name)
 		body.queue_free()
-
-func add_equipment(item_category, item_name, item_amount):
-	if Inventory.player_inventory[item_category].has(item_name):
-		Inventory.player_inventory[item_category][item_name]["amount"] += item_amount
-	else:
-		Inventory.player_inventory[item_category][item_name] = {"amount" : item_amount}
-	add_weapon.emit(item_name)
-
-func change_money(amount):
-	change_money_count.emit(amount)
+	elif body.is_in_group("Collectable"):
+		var item_name = body.item_name
+		var item_amount = body.item_amount
+		if item_name == "coin":
+			Inventory.add_money(item_amount)
+		else:
+			Inventory.add_item("Collectable", item_name, item_amount)
+		body.queue_free()
+	update_inventory.emit()

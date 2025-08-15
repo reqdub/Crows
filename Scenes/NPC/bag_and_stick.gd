@@ -8,11 +8,11 @@ var is_bag_dropped : bool = false
 func _ready() -> void:
 	%Ammunition.add_ammunition(self)
 
-func drop():
+func drop(_by_who):
 	if is_bag_dropped:
-		drop_stick()
+		drop_stick(_by_who)
 	else:
-		drop_bag_and_stick()
+		drop_bag_and_stick(_by_who)
 
 func _on_bag_body_entered(body: Node) -> void:
 	if body.is_in_group("Throwable"):
@@ -20,15 +20,15 @@ func _on_bag_body_entered(body: Node) -> void:
 		AudioManager.play_sound(SoundCache.hit_sound)
 		body.destroy()
 
-func drop_bag_and_stick():
+func drop_bag_and_stick(_by_who):
 	is_bag_dropped = true
 	drop_bag()
-	drop_stick()
+	drop_stick(_by_who)
 	self.queue_free()
 
-func drop_stick():
+func drop_stick(_by_who):
 	var stick : droppable_weapon = weapon.instantiate()
-	stick.set_item("polearm", "stick", %Health.damage_source_list[-1])
+	stick.set_item("stick", 1, _by_who)
 	stick.global_position = $Stick.global_position
 	stick.rotation = $Stick.rotation
 	drop_area.call_deferred('add_child', stick)
